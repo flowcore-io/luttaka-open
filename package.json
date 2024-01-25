@@ -10,7 +10,9 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "build-image": "./scripts/build-image.sh",
+    "start-container": "docker compose --env-file container.env up"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",
