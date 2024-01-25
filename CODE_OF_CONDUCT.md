@@ -85,3 +85,7 @@ available at https://www.contributor-covenant.org/version/2/0/code_of_conduct/.
 
 Please note that this is a general template for a code of conduct, and it can be customized to fit the specific needs
 and values of your open source project.
+
+## License
+
+The license is MIT. [You can read more about it here](./LICENSE)

@@ -82,6 +82,14 @@ Deploy with Vercel
 The project is open to contributions. Feel free to open an issue or even a pull-request!
 You can [read mode about our contribution guidelines in here](./CONTRIBUTING.md).
 
+## Contact
+
+If you have any questions, concerns, or suggestions, please reach out to us through one of the following channels:
+
+- [GitHub Issues](https://github.com/flowcore-io/application-conference/issues)
+- [Discord](https://discord.gg/Jw4HGPaG)
+- [Email](mailto:flowcore@flowcore.com)
+
 # Run locally
 
 1. Clone the repository (or fork it if you intend to contribute)
@@ -99,4 +107,4 @@ You can [read mode about our contribution guidelines in here](./CONTRIBUTING.md)
 
 # License
 
-MIT, see LICENSE.
+The license is MIT. [You can read more about it here](./LICENSE)
