@@ -1,4 +1,5 @@
-The Flowcore Conference App is an open source application to manage tickets, networking and content at conferences. You can either use the official instance at conference.flowcore.app, or deploy your own instance:
+The Flowcore Conference App is an open source application to manage tickets, networking and content at conferences. You
+can either use the official instance at conference.flowcore.app, or deploy your own instance:
 
 Deploy with Vercel
 
@@ -79,6 +80,7 @@ Deploy with Vercel
 # Contribute
 
 The project is open to contributions. Feel free to open an issue or even a pull-request!
+You can [read mode about our contribution guidelines in here](./CONTRIBUTING.md).
 
 # Run locally
 
