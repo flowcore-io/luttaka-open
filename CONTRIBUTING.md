@@ -1,11 +1,8 @@
 # Contribution
 
-Certainly! Here is an example of a ﻿[CONTRIBUTING.md](http://xn--contributing-7n50e.md/) file that you can use as a
-template for your open-source project on GitHub:
+# Contributing to Flowcore Open Source Conference App
 
-# Contributing to Application Conference
-
-Thank you for considering contributing to the Application Conference! We appreciate your interest and support. This
+Thank you for considering contributing to the Flowcore Open Source Conference App! We appreciate your interest and support. This
 document outlines the guidelines and instructions for contributing to our project. Please read them carefully to ensure
 a smooth and collaborative contribution process.
 
@@ -67,11 +64,11 @@ details.
 
 If you have any questions, concerns, or suggestions, please reach out to us through one of the following channels:
 
-- [GitHub Issues](https://github.com/flowcore-io/application-conference/issues)
+- [GitHub Issues](https://github.com/flowcore-io/open-source-conference-app/issues)
 - [Discord](https://discord.gg/Jw4HGPaG)
 - [Email](mailto:flowcore@flowcore.com)
 
 ## License
 
-__MIT__: A permissive software license allowing unrestricted reuse and modification of the code, with limited
+**MIT**: A permissive software license allowing unrestricted reuse and modification of the code, with limited
 restrictions and requirements.

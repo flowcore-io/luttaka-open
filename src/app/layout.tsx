@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Flowcore Conference App",
+  title: "Flowcore Open Source Conference App",
   description: "The open source Conference App from Flowcore",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
