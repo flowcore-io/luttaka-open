@@ -11,6 +11,8 @@ RUN apt update && \
     apt clean && \
     apt autoclean && \
     apt autoremove && \
+    chmod +x scripts/image-startup.sh && \
+    mv .container.env .env && \
     npm install --ignore-scripts && \
     npm install -g prisma
 
