@@ -94,15 +94,15 @@ If you have any questions, concerns, or suggestions, please reach out to us thro
 
 1. Clone the repository (or fork it if you intend to contribute)
 2. npm install
-3. Start a PostgreSQL server. You can run ./scripts start-local-db.sh if you don’t have a server already.
-4. Copy the file .env.example as .env
+3. Start a PostgreSQL server. You can run `npm run docker:db`
+4. Copy the file `.env.example` as `.env` and fill in the missing information
 5. npm run dev
 
 # Run in a container
 
 1. Run npm run build-image to build the docker image from the Dockerfile
-2. Copy the file container.env.example as container.env
-3. Run npm run start-container to start the postgres and the flowcoreconference containers
+2. Copy the file `.env.example` as `.container.env` and adjust the values to match the container environment
+3. Run npm run `docker:app` to start the postgres and the app containers
 4. You can access the app by browsing to http://localhost:3000
 
 # License
