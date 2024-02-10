@@ -69,6 +69,4 @@ If you have any questions, concerns, or suggestions, please reach out to us thro
 - [Email](mailto:flowcore@flowcore.com)
 
 ## License
-
-**MIT**: A permissive software license allowing unrestricted reuse and modification of the code, with limited
-restrictions and requirements.
+Please see the [license](./LICENSE) for more details
