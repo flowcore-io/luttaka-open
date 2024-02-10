@@ -11,21 +11,40 @@ a smooth and collaborative contribution process.
 We welcome contributions of all types, including bug fixes, feature enhancements, documentation improvements, and more.
 Here are a few ways you can contribute:
 
-- Report bugs and request new features by opening issues
-- Submit pull requests to contribute code changes
-- Improve documentation
-- Help answer questions and provide support to other community members
+### Issues ###
+You can create issues on the GitHub page, suggesting either:
 
-## Getting Started
+#### Bug Reports ####
+If you encounter a bug, then please report it as an issue - describing exactly what the  bug is, and how to reproduce it.
+
+You are welcome to additionally suggest a solution, either by solving the issue yourself with a pull request (see next section) - or describe a possible solution to the bug, to speed up the resolve for whomever will implement a solve. 
+
+There is a **bug report** issue template that you can use to guide your writing.
+
+#### Feature Request ####
+If you feel that you have come up with a cool or useful feature that should be added, then please provide one as an issue.
+
+Use the **feature request** issue template to guide your writing.
+
+### Pull Requests ###
+You can contribute any and all code you see fit, that helps improve the overall product. In order to get the code into the main source,  it will have to be reviewed and approved by the owners of the pull request.
+However, you are welcome to help in reviewing PRs if you wish, to reduce the review time for other developers.
+
+A pull request can range from bug fixes, new features, any and all code improvements, and documentation improvements.
 
 To get started with contributing, please follow these steps:
 
-1. Fork the repository and clone it to your local machine.
+1. clone the project to your machine (or optionally fork the project first).
 2. Create a new branch for your contributions.
+    - for better clarity, please prefix your branch name as follows:
+        - **fix/** (for bug fixes)
+        - **feature/** (for new features and improvements)
+        - **doc/** (for documentation changes)
 3. Make the necessary changes and test them locally.
 4. Commit your changes with [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/#summary) messages.
-5. Push your branch to your forked repository.
+5. Push your branch to the repo (or optionally your forked repository).
 6. Submit a pull request to the main repository.
+7. Wait for review
 
 ## Submitting Contributions
 
