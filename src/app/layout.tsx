@@ -8,6 +8,7 @@ import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import PublicPage from "./public-page";
 import ProtectedPage from "./protected-page";
 import { Toaster } from "@/components/ui/toaster";
+import { Viewport } from "next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,10 +16,15 @@ const inter = Inter({
 });
 
 export const metadata = {
+  manifest: "/manifest.json",
   title: "Flowcore Open Source Conference App",
   description: "The open source Conference App from Flowcore",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
+
+export const viewport: Viewport = {
+  themeColor: "#FFFFFF"
+}
 
 export default function RootLayout({
   children,
