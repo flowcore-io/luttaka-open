@@ -1,0 +1,22 @@
+dataCore:
+  name: conference-app
+  description: "This Data Core contains the data for the open source conference app"
+  flowTypes:
+    - name: conference.0
+      description: "actions and events related to a conference"
+      eventTypes:
+        - name: conference.created.0
+          description: "a new conference has been created"
+        - name: conference.updated.0
+          description: "a conference has been updated hello"
+        - name: conference.archived.0
+          description: "a conference has been archived"
+    - name: ticket.0
+      description: "actions and events related to a ticket"
+      eventTypes:
+        - name: ticket.created.0
+          description: "a new ticket has been created"
+        - name: ticket.updated.0
+          description: "a ticket has been updated"
+        - name: ticket.archived.0
+          description: "a ticket has been archived"
