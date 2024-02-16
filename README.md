@@ -104,7 +104,7 @@ flowcore data-core apply -t <tenant> -f flowcore-manifest.yaml
 
 > Replace `<tenant>` with the name of your tenant.
 > If you want to create the data core with a different name, you can use the `-n` flag to specify the name.
-> Requires the Flowcore CLI version 2.2.0 or higher.
+> Requires the Flowcore CLI version 2.2.1 or higher.
 
 # Tenants
 

@@ -1,5 +1,6 @@
 dataCore:
   name: conference-app
+  deleteProtection: true
   description: "This Data Core contains the data for the open source conference app"
   flowTypes:
     - name: conference.0
