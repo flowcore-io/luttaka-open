@@ -4,6 +4,7 @@ import React, {type FC, useMemo} from "react";
 import Link from "next/link";
 import {type UserProfileDto} from "@/dtos/profile/user-profile.dto";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {convertUrlToSlugWithDomain} from "@/lib/format/convert-url-to-slug-with-domain";
 
 export type UserProfileProps = {
   user: UserProfileDto;
@@ -12,10 +13,10 @@ export type UserProfileProps = {
 
 export const UserProfile: FC<UserProfileProps> = ({user}) => {
 
-  const prettySocials = useMemo(() => {
-    // trim away the http(s)://www
-    return user.socials?.replace(/(^\w+:|^)\/\//, "").replace("www.", "");
-  }, []);
+  const prettySocials = useMemo(
+    () => convertUrlToSlugWithDomain(user.socials ?? ""),
+    [user.socials]
+  );
 
   return (
     <div className={"md:flex md:space-x-4"}>
