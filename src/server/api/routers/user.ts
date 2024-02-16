@@ -3,6 +3,7 @@ import {clerkClient} from "@clerk/nextjs/server";
 import {UserByIdDto} from "@/dtos/user/user-by-id.dto";
 import {type UserProfileDto} from "@/dtos/profile/user-profile.dto";
 import {UpdateUserProfileDto} from "@/dtos/profile/update-profile.dto";
+import {getInitialsFromString} from "@/server/lib/format/get-initials-from-string";
 
 export const userRouter = createTRPCRouter({
   get: protectedProcedure
@@ -19,7 +20,8 @@ export const userRouter = createTRPCRouter({
         title: "",
         socials: "",
         company: "",
-        avatarUrl: user.imageUrl
+        avatarUrl: user.imageUrl,
+        initials: getInitialsFromString(displayName),
       }
     }),
 
@@ -42,7 +44,8 @@ export const userRouter = createTRPCRouter({
         title: "",
         socials: "",
         company: "",
-        avatarUrl: user.imageUrl
+        avatarUrl: user.imageUrl,
+        initials: getInitialsFromString(displayName),
       }
     }),
 

@@ -22,7 +22,7 @@ export const UserProfile: FC<UserProfileProps> = ({user}) => {
     <div className={"md:flex md:space-x-4"}>
       <Avatar className={"rounded w-[100%] h-auto md:h-56 md:w-56"}>
         <AvatarImage src={user.avatarUrl} alt={"profile picture"}/>
-        <AvatarFallback>DP</AvatarFallback>
+        <AvatarFallback className={"rounded"}>{user.initials}</AvatarFallback>
       </Avatar>
       <div>
         <div className={"text-center mt-2 md:text-left"}>

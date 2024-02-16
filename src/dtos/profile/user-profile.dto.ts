@@ -6,4 +6,5 @@ export type UserProfileDto = {
   socials?: string;
   company?: string;
   avatarUrl?: string;
+  initials: string;
 }
