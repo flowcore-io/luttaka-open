@@ -11,6 +11,7 @@ import {UpdateUserProfileDto} from "@/dtos/profile/update-profile.dto";
 import {type UserProfileDto} from "@/dtos/profile/user-profile.dto";
 import {Textarea} from "@/components/ui/textarea";
 import {api} from "@/trpc/react";
+import {useRouter} from "next/navigation";
 
 export type UserProfileProps = {
   user: UserProfileDto;
@@ -19,11 +20,13 @@ export type UserProfileProps = {
 export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
 
   const updateUser = api.user.update.useMutation();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof UpdateUserProfileDto>>({
     resolver: zodResolver(UpdateUserProfileDto),
     defaultValues: {
-      displayName: user.displayName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       title: user.title,
       company: user.company,
       description: user.description,
@@ -34,6 +37,7 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
 
   const onSubmit = useCallback((values: z.infer<typeof UpdateUserProfileDto>) => {
     updateUser.mutate(values);
+    router.refresh();
   }, []);
 
   return (
@@ -41,16 +45,26 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-3"}>
         <FormField
           control={form.control}
-          name={"displayName"}
+          name={"firstName"}
           render={({field}) => (
             <FormItem>
-              <FormLabel>Display Name</FormLabel>
+              <FormLabel>First Name</FormLabel>
               <FormControl>
-                <Input placeholder={"display name"} {...field} />
+                <Input placeholder={"first name"} {...field} />
               </FormControl>
-              <FormDescription>
-                This is the name that people see when they look at your profile
-              </FormDescription>
+              <FormMessage/>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"lastName"}
+          render={({field}) => (
+            <FormItem>
+              <FormLabel>Last Name</FormLabel>
+              <FormControl>
+                <Input placeholder={"last name"} {...field} />
+              </FormControl>
               <FormMessage/>
             </FormItem>
           )}

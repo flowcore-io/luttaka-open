@@ -13,13 +13,21 @@ export const userRouter = createTRPCRouter({
       const user = await clerkClient.users.getUser(input.userId);
       const displayName = `${user.firstName} ${user.lastName}`;
 
+      const metadata = user.publicMetadata;
+      const description: string = metadata.description as string ?? "";
+      const title: string = metadata.title as string ?? "";
+      const socials: string = metadata.socials as string ?? "";
+      const company: string = metadata.company as string ?? "";
+
       return {
         userId: user.id,
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
         displayName: displayName,
-        description: "",
-        title: "",
-        socials: "",
-        company: "",
+        description,
+        title,
+        socials,
+        company,
         avatarUrl: user.imageUrl,
         initials: getInitialsFromString(displayName),
       }
@@ -37,13 +45,21 @@ export const userRouter = createTRPCRouter({
       const user = await clerkClient.users.getUser(userId);
       const displayName = `${user.firstName} ${user.lastName}`;
 
+      const metadata = user.publicMetadata;
+      const description: string = metadata.description as string ?? "";
+      const title: string = metadata.title as string ?? "";
+      const socials: string = metadata.socials as string ?? "";
+      const company: string = metadata.company as string ?? "";
+
       return {
         userId: user.id,
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
         displayName: displayName,
-        description: "",
-        title: "",
-        socials: "",
-        company: "",
+        description,
+        title,
+        socials,
+        company,
         avatarUrl: user.imageUrl,
         initials: getInitialsFromString(displayName),
       }
@@ -51,8 +67,25 @@ export const userRouter = createTRPCRouter({
 
   update: protectedProcedure
     .input(UpdateUserProfileDto)
-    .mutation(async ({input}): Promise<boolean> => {
-      // todo: push changes to flowcore
+    .mutation(async ({ctx, input}): Promise<boolean> => {
+
+      const userId = ctx.auth?.userId;
+
+      await clerkClient.users.updateUser(userId, {
+        firstName: input.firstName,
+        lastName: input.lastName,
+      });
+
+      await clerkClient.users.updateUserMetadata(userId, {
+        publicMetadata: {
+          title: input.title,
+          description: input.description,
+          socials: input.socials,
+          company: input.company,
+        }
+      });
+
+      // todo: update avatar
       console.log("user updated", input);
       return true;
     })
