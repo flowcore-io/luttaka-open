@@ -8,7 +8,7 @@ dataCore:
         - name: conference.created.0
           description: "a new conference has been created"
         - name: conference.updated.0
-          description: "a conference has been updated hello"
+          description: "a conference has been updated"
         - name: conference.archived.0
           description: "a conference has been archived"
     - name: ticket.0
