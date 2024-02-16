@@ -35,8 +35,8 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
     }
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof UpdateUserProfileDto>) => {
-    updateUser.mutate(values);
+  const onSubmit = useCallback(async (values: z.infer<typeof UpdateUserProfileDto>) => {
+    await updateUser.mutateAsync(values);
     router.refresh();
   }, []);
 
