@@ -90,6 +90,27 @@ If you have any questions, concerns, or suggestions, please reach out to us thro
 - [Discord](https://discord.gg/Jw4HGPaG)
 - [Email](mailto:flowcore@flowcore.com)
 
+# Prerequisites
+
+To run the application locally, you will need to create the datacore and scenarios required for the application to work. 
+You can use the Flowcore CLI to create the datacore and scenarios, or you can use the Flowcore Platform to create them manually.
+
+To create the datacores use the following commands:
+
+```shell
+npm install -g @flowcore/cli
+flowcore data-core apply -t <tenant> -f flowcore-manifest.yaml
+```
+
+> Replace `<tenant>` with the name of your tenant.
+> If you want to create the data core with a different name, you can use the `-n` flag to specify the name.
+> Requires the Flowcore CLI version 2.2.1 or higher.
+
+# Tenants
+
+Your tenant is part of the url when you go to your organization in the Flowcore Platform. For example, if you go to `https://flowcore.io/flowcore`, then `flowcore` is your tenant.
+You can also see the tenant where you select between your active organizations in the top left corner of the UI.
+
 # Run locally
 
 1. Clone the repository (or fork it if you intend to contribute)
