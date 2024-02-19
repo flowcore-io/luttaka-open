@@ -1,0 +1,4 @@
+tenant: <some tenant>
+dataCore:
+  name: conference-app-dev
+  isPublic: true

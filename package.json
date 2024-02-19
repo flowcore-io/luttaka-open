@@ -13,7 +13,9 @@
     "lint": "next lint",
     "start": "next start",
     "docker:db": "docker compose up -d postgres",
-    "docker:app": "docker compose --env-file .container.env up"
+    "docker:app": "docker compose --env-file .container.env up",
+    "flowcore:dev": "flowcore apply -f flowcore.yaml -f flowcore.local.yaml",
+    "flowcore:prod": "flowcore apply -f flowcore.yaml"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",
@@ -21,6 +23,7 @@
     "@hookform/resolvers": "^3.3.3",
     "@prisma/client": "^5.7.1",
     "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",

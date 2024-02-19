@@ -47,6 +47,13 @@ const Sidebar = ({isSidebarOpen, setIsSidebarOpen}: SidebarProps) => {
             superuserRequired: true,
             icon: Users,
           },
+          {
+            href: "/me",
+            title: "Profile",
+            label: "",
+            superuserRequired: false,
+            icon: User,
+          }
         ]}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
