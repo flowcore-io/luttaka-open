@@ -6,7 +6,7 @@ import {useAuth} from "@clerk/nextjs";
 import {useEffect, useState} from "react";
 
 export default function Tickets() {
-  const {isLoaded, userId, sessionId, getToken} = useAuth();
+  const {isLoaded, userId} = useAuth();
   const [tickets, setTickets] = useState<{ id: string }[]>([]);
   useEffect(() => {
     if (!userId) return;
