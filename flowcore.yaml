@@ -1,3 +1,4 @@
+tenant: flowcore
 dataCore:
   name: conference-app
   deleteProtection: true

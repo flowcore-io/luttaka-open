@@ -99,12 +99,20 @@ To create the datacores use the following commands:
 
 ```shell
 npm install -g @flowcore/cli
-flowcore data-core apply -t <tenant> -f flowcore-manifest.yaml
 ```
 
-> Replace `<tenant>` with the name of your tenant.
-> If you want to create the data core with a different name, you can use the `-n` flag to specify the name.
-> Requires the Flowcore CLI version 2.2.1 or higher.
+then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fill in the missing information. Then you 
+can run the following command to spin up an environment for development:
+
+```shell
+yarn flowcore:dev
+```
+
+this will create the required resources in the Flowcore Platform, inside your tenant.
+
+> Requires the Flowcore CLI version 2.3.0 or higher.
+> Production can be created with `yarn flowcore:prod`
+> The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
 
 # Tenants
 
