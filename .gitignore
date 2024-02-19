@@ -40,3 +40,6 @@ yarn-error.log*
 
 # jetbrains webstorm ide
 .idea
+
+# ignore the local flowcore config
+flowcore.local.yaml
