@@ -1,15 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import flowcoreLogo from "@/images/flowcore-logo.svg";
-import { Nav } from "./nav";
-import { Home, Users } from "lucide-react";
+import {Nav} from "./nav";
+import {Home, User, Users} from "lucide-react";
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
   setIsSidebarOpen?: (isOpen: boolean) => void;
 }
 
-const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
+const Sidebar = ({isSidebarOpen, setIsSidebarOpen}: SidebarProps) => {
   return (
     <aside className="w-42 flex h-screen flex-col bg-slate-700 p-4 text-white ">
       <div className="mb-8 flex flex-col items-start">
@@ -21,7 +21,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             }
           }}
         >
-          <Image src={flowcoreLogo as string} alt="Flowcore" priority />
+          <Image src={flowcoreLogo as string} alt="Flowcore" priority/>
         </Link>
       </div>
       <Nav
@@ -40,6 +40,13 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             superuserRequired: true,
             icon: Users,
           },
+          {
+            href: "/me",
+            title: "Profile",
+            label: "",
+            superuserRequired: false,
+            icon: User,
+          }
         ]}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
