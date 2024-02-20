@@ -1,4 +1,4 @@
-The Flowcore Open Source Conference App is an open source application to manage tickets, networking and content at conferences. You
+The Flowcore Open Source Conference App is an open source application to manage schemas, networking and content at conferences. You
 can either use the official instance at conference.flowcore.app, or deploy your own instance:
 
 Deploy with Vercel
@@ -7,8 +7,8 @@ Deploy with Vercel
 
 - Tickets
 - [ ] Buy ticket with credit/debit cards
-- [ ] See which tickets have been bought
-- [ ] Assign tickets to others
+- [ ] See which schemas have been bought
+- [ ] Assign schemas to others
 - [ ] Show QR-code during check-in
 - Networking
 - [ ] Search for participants
@@ -24,9 +24,9 @@ Deploy with Vercel
 # Basic features for conference administrators
 
 - Tickets
-- [ ] Manual registration of sold tickets
-- [ ] See which tickets have been bought
-- [ ] Assign tickets that have been bought
+- [ ] Manual registration of sold schemas
+- [ ] See which schemas have been bought
+- [ ] Assign schemas that have been bought
 - [ ] Print participant label
 - [ ] Check-in participant (scan QR-code)
 - Networking
@@ -92,7 +92,7 @@ If you have any questions, concerns, or suggestions, please reach out to us thro
 
 # Prerequisites
 
-To run the application locally, you will need to create the datacore and scenarios required for the application to work. 
+To run the application locally, you will need to create the datacore and scenarios required for the application to work.
 You can use the Flowcore CLI to create the datacore and scenarios, or you can use the Flowcore Platform to create them manually.
 
 To create the datacores use the following commands:
@@ -101,7 +101,7 @@ To create the datacores use the following commands:
 npm install -g @flowcore/cli
 ```
 
-then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fill in the missing information. Then you 
+then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fill in the missing information. Then you
 can run the following command to spin up an environment for development:
 
 ```shell
