@@ -92,7 +92,7 @@ If you have any questions, concerns, or suggestions, please reach out to us thro
 
 # Prerequisites
 
-To run the application locally, you will need to create the datacore and scenarios required for the application to work. 
+To run the application locally, you will need to create the datacore and scenarios required for the application to work.
 You can use the Flowcore CLI to create the datacore and scenarios, or you can use the Flowcore Platform to create them manually.
 
 To create the datacores use the following commands:
@@ -101,7 +101,7 @@ To create the datacores use the following commands:
 npm install -g @flowcore/cli
 ```
 
-then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fill in the missing information. Then you 
+then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fill in the missing information. Then you
 can run the following command to spin up an environment for development:
 
 ```shell
