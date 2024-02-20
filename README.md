@@ -110,7 +110,7 @@ yarn flowcore:dev
 
 this will create the required resources in the Flowcore Platform, inside your tenant.
 
-> Requires the Flowcore CLI version 2.3.0 or higher.
+> Requires the Flowcore CLI version 2.4.0 or higher.
 > Production can be created with `yarn flowcore:prod`
 > The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
 

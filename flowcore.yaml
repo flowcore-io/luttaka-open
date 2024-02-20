@@ -22,3 +22,21 @@ dataCore:
           description: "a ticket has been updated"
         - name: ticket.archived.0
           description: "a ticket has been archived"
+scenario:
+  name: conference-app
+  description: "This scenario contains the transformers for the open source conference app"
+  transformers:
+    - name: tickets
+      description: "transformer for tickets"
+      dataCore: conference-app
+      flowType: ticket.0
+      events:
+        - ticket.created.0
+        - ticket.updated.0
+        - ticket.archived.0
+      parameters:
+        - name: PROXY_ENDPOINT
+          type: manual
+          value: "https://flowcore-rene.loca.lt/api/transform/ticket/create"
+      blueprint:
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.1.0.zip"
