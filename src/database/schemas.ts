@@ -6,9 +6,3 @@ export const tickets = pgTable("tickets", {
   userId: text("user_id").notNull(),
   state: text("state").notNull(),
 })
-
-export const conferences = pgTable("conferences", {
-  id: uuid("id").primaryKey(),
-  name: text("name").notNull(),
-  description: text("description").notNull(),
-})

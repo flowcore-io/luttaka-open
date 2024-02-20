@@ -14,7 +14,7 @@
     "docker:app": "docker compose --env-file .container.env up",
     "flowcore:dev": "flowcore apply -f flowcore.yaml -f flowcore.local.yaml",
     "flowcore:prod": "flowcore apply -f flowcore.yaml",
-    "stream:ticket": "env-cmd -x flowcore stream \\$FLOWCORE_DOMAIN/\\$FLOWCORE_TENANT/\\$FLOWCORE_DATACORE/ticket.0/[ticket.created.0,ticket.updated.0,ticket.archived.0].stream -o http -d http://localhost:3000/api/proxy"
+    "stream:ticket": "env-cmd -x flowcore stream \\$FLOWCORE_BASEURL/\\$FLOWCORE_TENANT/\\$FLOWCORE_DATACORE/ticket.0/[ticket.created.0,ticket.updated.0,ticket.archived.0].stream -o http -d http://localhost:3000/api/proxy"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",

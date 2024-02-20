@@ -7,7 +7,7 @@ export async function sendWebhook<T>(
   data: T,
 ) {
   const url = [
-    process.env.FLOWCORE_WEBHOOK_DOMAIN,
+    process.env.FLOWCORE_WEBHOOK_BASEURL,
     "event",
     process.env.FLOWCORE_TENANT,
     process.env.FLOWCORE_DATACORE,

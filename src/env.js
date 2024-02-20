@@ -9,8 +9,8 @@ export const env = createEnv({
   server: {
     POSTGRES_URL: z.string().url(),
     CLERK_SECRET_KEY: z.string(),
-    FLOWCORE_DOMAIN: z.string(),
-    FLOWCORE_WEBHOOK_DOMAIN: z.string(),
+    FLOWCORE_BASEURL: z.string(),
+    FLOWCORE_WEBHOOK_BASEURL: z.string(),
     FLOWCORE_TENANT: z.string(),
     FLOWCORE_DATACORE: z.string(),
     FLOWCORE_KEY: z.string(),
@@ -38,8 +38,8 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-    FLOWCORE_DOMAIN: process.env.FLOWCORE_DOMAIN,
-    FLOWCORE_WEBHOOK_DOMAIN: process.env.FLOWCORE_WEBHOOK_DOMAIN,
+    FLOWCORE_BASEURL: process.env.FLOWCORE_BASEURL,
+    FLOWCORE_WEBHOOK_BASEURL: process.env.FLOWCORE_WEBHOOK_BASEURL,
     FLOWCORE_TENANT: process.env.FLOWCORE_TENANT,
     FLOWCORE_DATACORE: process.env.FLOWCORE_DATACORE,
     FLOWCORE_KEY: process.env.FLOWCORE_KEY,
