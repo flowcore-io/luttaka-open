@@ -1,5 +1,5 @@
-import {createEnv} from "@t3-oss/env-nextjs";
-import {z} from "zod";
+import { createEnv } from "@t3-oss/env-nextjs"
+import { z } from "zod"
 
 export const env = createEnv({
   /**
@@ -9,8 +9,12 @@ export const env = createEnv({
   server: {
     POSTGRES_URL: z.string().url(),
     CLERK_SECRET_KEY: z.string(),
-    FLOWCORE_DATACORE: z.string().url(),
+    FLOWCORE_DOMAIN: z.string(),
+    FLOWCORE_WEBHOOK_DOMAIN: z.string(),
+    FLOWCORE_TENANT: z.string(),
+    FLOWCORE_DATACORE: z.string(),
     FLOWCORE_KEY: z.string(),
+    TRANSFORMER_SECRET: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -34,8 +38,12 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    FLOWCORE_DOMAIN: process.env.FLOWCORE_DOMAIN,
+    FLOWCORE_WEBHOOK_DOMAIN: process.env.FLOWCORE_WEBHOOK_DOMAIN,
+    FLOWCORE_TENANT: process.env.FLOWCORE_TENANT,
     FLOWCORE_DATACORE: process.env.FLOWCORE_DATACORE,
     FLOWCORE_KEY: process.env.FLOWCORE_KEY,
+    TRANSFORMER_SECRET: process.env.TRANSFORMER_SECRET,
     NODE_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
@@ -49,4 +57,4 @@ export const env = createEnv({
    * `SOME_VAR: z.string()` and `SOME_VAR=''` will throw an error.
    */
   emptyStringAsUndefined: true,
-});
+})
