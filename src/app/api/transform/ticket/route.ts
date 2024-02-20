@@ -8,12 +8,14 @@ import EventTransformer from "@/lib/event-transformer"
 import { eq } from "drizzle-orm"
 import { db } from "@/database"
 import { tickets } from "@/database/schemas"
-import { getTicketById } from "@/services/ticket.service"
 
 const eventTransformer = new EventTransformer(ticket, {
   created: async (payload: unknown) => {
+    console.log("Got created event", payload)
     const parsedPayload = TicketEventCreatedPayloadDto.parse(payload)
-    const exists = await getTicketById(parsedPayload.id)
+    const exists = await db.query.tickets.findFirst({
+      where: eq(tickets.id, parsedPayload.id),
+    })
     if (exists) {
       return
     }
@@ -21,7 +23,9 @@ const eventTransformer = new EventTransformer(ticket, {
   },
   updated: async (payload: unknown) => {
     const parsedPayload = TicketEventUpdatedPayloadDto.parse(payload)
-    const exists = await getTicketById(parsedPayload.id)
+    const exists = await db.query.tickets.findFirst({
+      where: eq(tickets.id, parsedPayload.id),
+    })
     if (!exists) {
       return
     }
@@ -32,7 +36,9 @@ const eventTransformer = new EventTransformer(ticket, {
   },
   archived: async (payload: unknown) => {
     const parsedPayload = TicketEventArchivedPayloadDto.parse(payload)
-    const exists = await getTicketById(parsedPayload.id)
+    const exists = await db.query.tickets.findFirst({
+      where: eq(tickets.id, parsedPayload.id),
+    })
     if (!exists) {
       return
     }
