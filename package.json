@@ -1,13 +1,11 @@
 {
   "name": "flowcore-open-source-conference-app",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "scripts": {
     "build": "next build",
     "build:image": "chmod +x ./scripts/build-image.sh && ./scripts/build-image.sh",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
+    "db:push": "env-cmd -x drizzle-kit push:pg --schema=src/database/schemas.ts --driver pg --connectionString=\\$POSTGRES_URL",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
@@ -15,7 +13,8 @@
     "docker:db": "docker compose up -d postgres",
     "docker:app": "docker compose --env-file .container.env up",
     "flowcore:dev": "flowcore apply -f flowcore.yaml -f flowcore.local.yaml",
-    "flowcore:prod": "flowcore apply -f flowcore.yaml"
+    "flowcore:prod": "flowcore apply -f flowcore.yaml",
+    "stream:ticket": "env-cmd -x flowcore stream \\$FLOWCORE_DOMAIN/\\$FLOWCORE_TENANT/\\$FLOWCORE_DATACORE/ticket.0/[ticket.created.0,ticket.updated.0,ticket.archived.0].stream -o http -d http://localhost:3000/api/proxy"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",
@@ -47,8 +46,10 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "drizzle-orm": "^0.29.3",
+    "env-cmd": "^10.1.0",
     "lucide-react": "^0.303.0",
     "next": "^14.0.3",
+    "pg": "^8.11.3",
     "postgres": "^3.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -83,5 +84,6 @@
   "ct3aMetadata": {
     "initVersion": "7.25.0"
   },
-  "packageManager": "npm@10.2.3"
+  "packageManager": "npm@10.2.3",
+  "license": "MIT"
 }
