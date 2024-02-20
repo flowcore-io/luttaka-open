@@ -1,15 +1,15 @@
-import flowcoreLogo from "@/images/flowcore-logo.svg";
-import {Home, Ticket, Users} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import {Nav} from "./nav";
+import flowcoreLogo from "@/images/flowcore-logo.svg"
+import { Home, Ticket, User, Users } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { Nav } from "./nav"
 
 interface SidebarProps {
-  isSidebarOpen?: boolean;
-  setIsSidebarOpen?: (isOpen: boolean) => void;
+  isSidebarOpen?: boolean
+  setIsSidebarOpen?: (isOpen: boolean) => void
 }
 
-const Sidebar = ({isSidebarOpen, setIsSidebarOpen}: SidebarProps) => {
+const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
   return (
     <aside className="w-42 flex h-screen flex-col bg-slate-700 p-4 text-white ">
       <div className="mb-8 flex flex-col items-start">
@@ -17,11 +17,10 @@ const Sidebar = ({isSidebarOpen, setIsSidebarOpen}: SidebarProps) => {
           href="/"
           onClick={() => {
             if (isSidebarOpen && setIsSidebarOpen) {
-              setIsSidebarOpen(false);
+              setIsSidebarOpen(false)
             }
-          }}
-        >
-          <Image src={flowcoreLogo as string} alt="Flowcore" priority/>
+          }}>
+          <Image src={flowcoreLogo as string} alt="Flowcore" priority />
         </Link>
       </div>
       <Nav
@@ -53,13 +52,13 @@ const Sidebar = ({isSidebarOpen, setIsSidebarOpen}: SidebarProps) => {
             label: "",
             superuserRequired: false,
             icon: User,
-          }
+          },
         ]}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
     </aside>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar
