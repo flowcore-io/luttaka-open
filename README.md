@@ -1,4 +1,4 @@
-The Flowcore Open Source Conference App is an open source application to manage schemas, networking and content at conferences. You
+The Flowcore Open Source Conference App is an open source application to manage tickets, networking and content at conferences. You
 can either use the official instance at conference.flowcore.app, or deploy your own instance:
 
 Deploy with Vercel
@@ -7,8 +7,8 @@ Deploy with Vercel
 
 - Tickets
 - [ ] Buy ticket with credit/debit cards
-- [ ] See which schemas have been bought
-- [ ] Assign schemas to others
+- [ ] See which tickets have been bought
+- [ ] Assign tickets to others
 - [ ] Show QR-code during check-in
 - Networking
 - [ ] Search for participants
@@ -24,9 +24,9 @@ Deploy with Vercel
 # Basic features for conference administrators
 
 - Tickets
-- [ ] Manual registration of sold schemas
-- [ ] See which schemas have been bought
-- [ ] Assign schemas that have been bought
+- [ ] Manual registration of sold tickets
+- [ ] See which tickets have been bought
+- [ ] Assign tickets that have been bought
 - [ ] Print participant label
 - [ ] Check-in participant (scan QR-code)
 - Networking

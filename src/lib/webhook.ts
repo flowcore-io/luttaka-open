@@ -14,5 +14,6 @@ export async function sendWebhook<T>(
     aggregator,
     event,
   ].join("/")
+  console.log("webhook", url)
   await axios.post(url, data, { params: { key: process.env.FLOWCORE_KEY } })
 }
