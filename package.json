@@ -13,7 +13,8 @@
     "docker:app": "docker compose --env-file .container.env up",
     "flowcore:dev": "flowcore apply -f flowcore.yaml -f flowcore.local.yaml",
     "flowcore:prod": "flowcore apply -f flowcore.yaml",
-    "stream:ticket": "env-cmd -x flowcore stream \\$FLOWCORE_BASEURL/\\$FLOWCORE_TENANT/\\$FLOWCORE_DATACORE/ticket.0/[ticket.created.0,ticket.updated.0,ticket.archived.0].stream -o http -d http://localhost:3000/api/proxy"
+    "stream:ticket": "env-cmd -x flowcore stream \\$FLOWCORE_BASEURL/\\$FLOWCORE_TENANT/\\$FLOWCORE_DATACORE/ticket.0/[ticket.created.0,ticket.updated.0,ticket.archived.0].stream -o http -d http://localhost:3000/api/proxy",
+    "tunnel": "env-cmd -x lt --subdomain flowcore-\\$FLOWCORE_TENANT --port 3000"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",
@@ -72,6 +73,7 @@
     "autoprefixer": "^10.4.14",
     "drizzle-kit": "^0.20.14",
     "eslint": "^8.54.0",
+    "localtunnel": "^2.0.2",
     "postcss": "^8.4.31",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.7",
