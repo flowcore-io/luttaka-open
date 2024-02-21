@@ -1,7 +1,8 @@
-import {createTRPCRouter} from "@/server/api/trpc";
-import {contactRouter} from "./routers/contact";
-import {userRouter} from "@/server/api/routers/user";
-import {authorizationRouter} from "@/server/api/routers/authorization";
+import { ticketRouter } from "@/server/api/routers/ticket"
+import { createTRPCRouter } from "@/server/api/trpc"
+import { contactRouter } from "./routers/contact"
+import { userRouter } from "@/server/api/routers/user"
+import { authorizationRouter } from "./routers/authorization"
 
 /**
  * This is the primary router for your server.
@@ -11,8 +12,9 @@ import {authorizationRouter} from "@/server/api/routers/authorization";
 export const appRouter = createTRPCRouter({
   contact: contactRouter,
   user: userRouter,
+  ticket: ticketRouter,
   authorization: authorizationRouter,
-});
+})
 
 // export type definition of API
-export type AppRouter = typeof appRouter;
+export type AppRouter = typeof appRouter
