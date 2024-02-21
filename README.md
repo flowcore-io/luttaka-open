@@ -110,7 +110,7 @@ yarn flowcore:dev
 
 this will create the required resources in the Flowcore Platform, inside your tenant.
 
-> Requires the Flowcore CLI version 2.4.0 or higher.
+> Requires the Flowcore CLI version 2.5.0 or higher.
 > Production can be created with `yarn flowcore:prod`
 > The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
 
@@ -126,6 +126,7 @@ You can also see the tenant where you select between your active organizations i
 3. Start a PostgreSQL server. You can run `npm run docker:db`
 4. Copy the file `.env.example` as `.env` and fill in the missing information
 5. npm run dev
+6. npm run local:stream
 
 # Run in a container
 
