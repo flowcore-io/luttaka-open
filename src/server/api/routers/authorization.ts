@@ -1,5 +1,5 @@
 import {createTRPCRouter, protectedProcedure} from "@/server/api/trpc";
-import {type UserRole} from "@/contracts/user/user-role";
+import {UserRole} from "@/contracts/user/user-role";
 import {clerkClient} from "@clerk/nextjs/server";
 import {SetUserRoleInput} from "@/contracts/authorization/set-user-role-input";
 import {verifyUserIdMiddleware} from "@/server/api/routers/middlewares/verify-user-id.middleware";
@@ -13,7 +13,7 @@ export const authorizationRouter = createTRPCRouter({
       const user = await clerkClient.users.getUser(ctx.auth!.userId);
       const privateMetadata = user.privateMetadata;
 
-      return privateMetadata.role as UserRole ?? "user";
+      return privateMetadata.role as UserRole ?? UserRole.user;
     }),
 
   setRole: protectedProcedure
