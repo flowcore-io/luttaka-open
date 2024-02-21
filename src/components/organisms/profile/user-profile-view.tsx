@@ -2,16 +2,16 @@
 
 import React, {type FC, useMemo} from "react";
 import Link from "next/link";
-import {type UserProfileDto} from "@/dtos/profile/user-profile.dto";
+import {type UserProfile} from "@/contracts/profile/user-profile";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {convertUrlToSlugWithDomain} from "@/lib/format/convert-url-to-slug-with-domain";
 
 export type UserProfileProps = {
-  user: UserProfileDto;
+  user: UserProfile;
 }
 
 
-export const UserProfile: FC<UserProfileProps> = ({user}) => {
+export const UserProfileView: FC<UserProfileProps> = ({user}) => {
 
   const prettySocials = useMemo(
     () => convertUrlToSlugWithDomain(user.socials ?? ""),
