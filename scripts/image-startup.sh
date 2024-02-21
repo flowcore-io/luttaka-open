@@ -1,5 +1,4 @@
 #!/bin/bash
 
-prisma migrate deploy
-prisma generate
+npm run db:push
 npm run dev

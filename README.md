@@ -72,7 +72,7 @@ Deploy with Vercel
 - Next.js for the web application
 - TailwindCSS for the styling
 - shadcn/UI for the UI components
-- Prisma to access the database
+- Drizzle to access the database
 - Vercel for hosting (application and database)
 - Stripe for payment processing
 - Flowcore for data infrastructure
