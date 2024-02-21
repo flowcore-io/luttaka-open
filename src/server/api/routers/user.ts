@@ -1,14 +1,14 @@
 import {createTRPCRouter, protectedProcedure} from "@/server/api/trpc";
 import {clerkClient} from "@clerk/nextjs/server";
-import {UserByIdDto} from "@/dtos/user/user-by-id.dto";
-import {type UserProfileDto} from "@/dtos/profile/user-profile.dto";
-import {UpdateUserProfileDto} from "@/dtos/profile/update-profile.dto";
+import {UserByIdInput} from "@/contracts/user/user-by-id-input";
+import {type UserProfile} from "@/contracts/profile/user-profile";
+import {UpdateUserProfileInput} from "@/contracts/profile/update-profile-input";
 import {getInitialsFromString} from "@/server/lib/format/get-initials-from-string";
 
 export const userRouter = createTRPCRouter({
   get: protectedProcedure
-    .input(UserByIdDto)
-    .query(async ({input}): Promise<UserProfileDto> => {
+    .input(UserByIdInput)
+    .query(async ({input}): Promise<UserProfile> => {
 
       const user = await clerkClient.users.getUser(input.userId);
       const displayName = `${user.firstName} ${user.lastName}`;
@@ -34,7 +34,7 @@ export const userRouter = createTRPCRouter({
     }),
 
   me: protectedProcedure
-    .query(async ({ctx}): Promise<UserProfileDto> => {
+    .query(async ({ctx}): Promise<UserProfile> => {
 
       const userId = ctx.auth?.userId;
       if (!userId) {
@@ -66,7 +66,7 @@ export const userRouter = createTRPCRouter({
     }),
 
   update: protectedProcedure
-    .input(UpdateUserProfileDto)
+    .input(UpdateUserProfileInput)
     .mutation(async ({ctx, input}): Promise<boolean> => {
 
       const userId = ctx.auth?.userId;

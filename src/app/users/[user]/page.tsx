@@ -1,5 +1,5 @@
 import {api} from "@/trpc/server";
-import {UserProfile} from "@/components/organisms/profile/user-profile";
+import {UserProfileView} from "@/components/organisms/profile/user-profile-view";
 import {type WithUrlParams} from "@/lib/next-app.types";
 
 export type UserProfileProps = {
@@ -14,7 +14,7 @@ export default async function User({params}: WithUrlParams<UserProfileProps>) {
 
   return (
     <div>
-      <UserProfile
+      <UserProfileView
         user={user}
       />
     </div>

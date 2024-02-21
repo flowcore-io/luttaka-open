@@ -1,1 +1,0 @@
-export type UserRoleDto = "admin" | "user";

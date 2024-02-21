@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-export const SetUserRoleDto = z.object({
+export const SetUserRoleInput = z.object({
   userId: z.string().min(1),
   role: z.union([
     z.literal("admin"),

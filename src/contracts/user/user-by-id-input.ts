@@ -1,5 +1,5 @@
 import {z} from "zod";
 
-export const UserByIdDto = z.object({
+export const UserByIdInput = z.object({
   userId: z.string().min(1)
 })
