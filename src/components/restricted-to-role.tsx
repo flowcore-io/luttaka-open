@@ -1,9 +1,9 @@
-import {type UserRoleDto} from "@/dtos/user/user-role.dto";
+import {type UserRole} from "@/contracts/user/user-role";
 import {type FC, type PropsWithChildren} from "react";
 import {api} from "@/trpc/react";
 
 export type RestrictedToRoleProps = {
-  role: UserRoleDto;
+  role: UserRole;
 }
 
 /**

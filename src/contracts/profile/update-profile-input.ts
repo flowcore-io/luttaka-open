@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-export const UpdateUserProfileDto = z.object({
+export const UpdateUserProfileInput = z.object({
   firstName: z.string().min(1).max(255),
   lastName: z.string().min(1).max(255),
   title: z.string().optional(),

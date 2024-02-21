@@ -1,4 +1,4 @@
-export type UserProfileDto = {
+export type UserProfile = {
   userId: string;
   displayName: string;
   firstName: string;

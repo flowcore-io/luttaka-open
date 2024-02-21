@@ -1,6 +1,6 @@
 import {api} from "@/trpc/server";
 import {UserProfileForm} from "@/components/organisms/profile/user-profile-form";
-import {UserProfile} from "@/components/organisms/profile/user-profile";
+import {UserProfileView} from "@/components/organisms/profile/user-profile-view";
 import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
@@ -26,7 +26,7 @@ export default async function MyUserRedirectPage() {
           </div>
         </CardHeader>
         <CardContent className={"px-3"}>
-          <UserProfile user={user}/>
+          <UserProfileView user={user}/>
         </CardContent>
       </Card>
 

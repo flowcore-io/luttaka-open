@@ -5,6 +5,7 @@ import {Menu} from "lucide-react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {useState} from "react";
 import {RestrictedToRole} from "@/components/restricted-to-role";
+import {UserRole} from "@/contracts/user/user-role";
 
 const ProtectedPage = ({children}: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,7 +27,7 @@ const ProtectedPage = ({children}: { children: React.ReactNode }) => {
       <div className="relative flex w-96 flex-1 flex-col overflow-y-auto overflow-x-hidden">
         <Header/>
         <main>
-          <RestrictedToRole role={"admin"}>
+          <RestrictedToRole role={UserRole.admin}>
             <div className={"mt-1 bg-primary text-center"}>
               <p className={"text-primary-foreground font-thin text-[0.85rem]"}>you are an <b>admin</b></p>
             </div>

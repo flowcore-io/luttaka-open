@@ -7,14 +7,14 @@ import {Input} from "@/components/ui/input";
 import {type z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button} from "@/components/ui/button";
-import {UpdateUserProfileDto} from "@/dtos/profile/update-profile.dto";
-import {type UserProfileDto} from "@/dtos/profile/user-profile.dto";
+import {UpdateUserProfileInput} from "@/contracts/profile/update-profile-input";
+import {type UserProfile} from "@/contracts/profile/user-profile";
 import {Textarea} from "@/components/ui/textarea";
 import {api} from "@/trpc/react";
 import {useRouter} from "next/navigation";
 
 export type UserProfileProps = {
-  user: UserProfileDto;
+  user: UserProfile;
 }
 
 export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
@@ -22,8 +22,8 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
   const updateUser = api.user.update.useMutation();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof UpdateUserProfileDto>>({
-    resolver: zodResolver(UpdateUserProfileDto),
+  const form = useForm<z.infer<typeof UpdateUserProfileInput>>({
+    resolver: zodResolver(UpdateUserProfileInput),
     defaultValues: {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -35,7 +35,7 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
     }
   });
 
-  const onSubmit = useCallback(async (values: z.infer<typeof UpdateUserProfileDto>) => {
+  const onSubmit = useCallback(async (values: z.infer<typeof UpdateUserProfileInput>) => {
     await updateUser.mutateAsync(values);
     router.refresh();
   }, []);
