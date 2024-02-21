@@ -22,6 +22,7 @@ const eventTransformer = new EventTransformer(ticket, {
     await db.insert(tickets).values(parsedPayload)
   },
   updated: async (payload: unknown) => {
+    console.log("Got updated event", payload)
     const parsedPayload = TicketEventUpdatedPayloadDto.parse(payload)
     const exists = await db.query.tickets.findFirst({
       where: eq(tickets.id, parsedPayload.id),
@@ -35,6 +36,7 @@ const eventTransformer = new EventTransformer(ticket, {
       .where(eq(tickets.id, parsedPayload.id))
   },
   archived: async (payload: unknown) => {
+    console.log("Got archived event", payload)
     const parsedPayload = TicketEventArchivedPayloadDto.parse(payload)
     const exists = await db.query.tickets.findFirst({
       where: eq(tickets.id, parsedPayload.id),

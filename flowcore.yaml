@@ -39,4 +39,4 @@ scenario:
           type: manual
           value: "https://flowcore-rene.loca.lt/api/transform/ticket/create"
       blueprint:
-        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.1.0.zip"
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"

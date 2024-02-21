@@ -22,12 +22,12 @@ export async function POST(request: NextRequest) {
         },
       })
     }
-    return new NextResponse(null, { status: 201 })
+    return NextResponse.json({ success: true })
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error occurred:", error.message)
     }
 
-    return new NextResponse(null, { status: 400 })
+    return NextResponse.json({ success: false }, { status: 400 })
   }
 }
