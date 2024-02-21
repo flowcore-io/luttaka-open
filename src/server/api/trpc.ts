@@ -6,15 +6,12 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC, TRPCError } from "@trpc/server";
+import {initTRPC, TRPCError} from "@trpc/server";
 import superjson from "superjson";
-import { ZodError } from "zod";
-import type {
-  SignedInAuthObject,
-  SignedOutAuthObject,
-} from "@clerk/nextjs/server";
+import {ZodError} from "zod";
+import type {SignedInAuthObject, SignedOutAuthObject,} from "@clerk/nextjs/server";
 
-import { db } from "@/server/db";
+import {db} from "@/database";
 
 /**
  * 1. CONTEXT
