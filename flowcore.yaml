@@ -4,29 +4,29 @@ dataCore:
   deleteProtection: true
   description: "This Data Core contains the data for the open source conference app"
   flowTypes:
-    - name: conference.0
+    conference.0:
       description: "actions and events related to a conference"
       eventTypes:
-        - name: conference.created.0
+        conference.created.0:
           description: "a new conference has been created"
-        - name: conference.updated.0
+        conference.updated.0:
           description: "a conference has been updated"
-        - name: conference.archived.0
+        conference.archived.0:
           description: "a conference has been archived"
-    - name: ticket.0
+    ticket.0:
       description: "actions and events related to a ticket"
       eventTypes:
-        - name: ticket.created.0
+        ticket.created.0:
           description: "a new ticket has been created"
-        - name: ticket.updated.0
+        ticket.updated.0:
           description: "a ticket has been updated"
-        - name: ticket.archived.0
+        ticket.archived.0:
           description: "a ticket has been archived"
 scenario:
   name: conference-app
   description: "This scenario contains the transformers for the open source conference app"
   transformers:
-    - name: tickets
+    tickets:
       description: "transformer for tickets"
       dataCore: conference-app
       flowType: ticket.0
@@ -37,6 +37,10 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://flowcore-rene.loca.lt/api/transform/ticket/create"
+          value: "https://flowcore-orgname.loca.lt/api/transform/ticket/create"
+        - name: PROXY_SECRET_HEADER
+          type: secret
+          value: open-source-conference-app-secret
       blueprint:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
+
