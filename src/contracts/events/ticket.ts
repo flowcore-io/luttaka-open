@@ -21,20 +21,20 @@ export const TicketEventDto = EventDto.merge(
 )
 
 export const TicketEventCreatedPayloadDto = z.object({
-  id: z.string().uuid(),
-  conferenceId: z.string().uuid(),
+  id: z.string(),
+  conferenceId: z.string(),
   userId: z.string(),
   state: z.string(),
 })
 
-export const TicketEventUpdatedPayloadDto = TicketEventCreatedPayloadDto.pick({
-  id: true,
-  userId: true,
-  state: true,
+export const TicketEventUpdatedPayloadDto = z.object({
+  id: z.string(),
+  conferenceId: z.string().optional(),
+  userId: z.string().optional(),
+  state: z.string().optional(),
 })
-  .partial()
-  .required({ id: true })
 
-export const TicketEventArchivedPayloadDto = TicketEventCreatedPayloadDto.pick({
-  id: true,
+export const TicketEventArchivedPayloadDto = z.object({
+  id: z.string(),
+  _reason: z.string().optional(),
 })

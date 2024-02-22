@@ -37,9 +37,10 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://flowcore-rene.loca.lt/api/transform/ticket/create"
+          value: "https://flowcore-orgname.loca.lt/api/transform/ticket/create"
         - name: PROXY_SECRET_HEADER
           type: secret
           value: open-source-conference-app-secret
       blueprint:
-        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.1.0.zip"
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
+
