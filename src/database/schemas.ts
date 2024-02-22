@@ -1,8 +1,8 @@
-import { text, pgTable, uuid } from "drizzle-orm/pg-core"
+import { text, pgTable } from "drizzle-orm/pg-core"
 
 export const tickets = pgTable("tickets", {
-  id: uuid("id").primaryKey(),
-  conferenceId: uuid("conference_id").notNull(),
+  id: text("id").primaryKey(),
+  conferenceId: text("conference_id").notNull(),
   userId: text("user_id").notNull(),
   state: text("state").notNull(),
 })
