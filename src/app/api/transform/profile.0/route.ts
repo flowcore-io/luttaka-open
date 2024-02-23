@@ -14,7 +14,7 @@ const eventTransformer = new EventTransformer(profileEvent, {
     const data = ProfileCreatedEventPayload.parse(payload);
 
     const existingProfile = await db.query.profiles.findFirst(
-      {where: eq(profiles.id, data.id)}
+      {where: eq(profiles.userId, data.userId)}
     );
 
     if (existingProfile) {
