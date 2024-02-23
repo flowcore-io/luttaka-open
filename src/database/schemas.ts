@@ -15,3 +15,17 @@ export const users = pgTable("users", {
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
 });
+
+export const profiles = pgTable("profiles", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").unique().notNull(),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  title: text("title"),
+  description: text("description"),
+  socials: text("socials"),
+  company: text("company"),
+  avatarUrl: text("avatar_url"),
+  archived: boolean("archived").notNull().default(false),
+  reason: text("reason")
+});
