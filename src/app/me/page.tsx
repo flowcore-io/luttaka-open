@@ -7,26 +7,26 @@ import {Button} from "@/components/ui/button";
 
 export default async function MyUserRedirectPage() {
 
-  const user = await api.user.me.query();
+  const profile = await api.profile.me.query();
 
   return (
     <div className={"md:flex w-[100%] md:space-x-10"}>
       <div className={"flex-1"}>
         <UserProfileForm
-          user={user}
+          user={profile}
         />
       </div>
       <Card className={"flex-2 mt-8 md:mt-0"}>
         <CardHeader>
           <div className={"flex justify-between"}>
             <h1 className={"text-2xl font-bold"}>Your Profile</h1>
-            <Link className={""} href={`/users/${user.userId}`}>
+            <Link className={""} href={`/users/${profile.id}`}>
               <Button>Visit</Button>
             </Link>
           </div>
         </CardHeader>
         <CardContent className={"px-3"}>
-          <UserProfileView user={user}/>
+          <UserProfileView profile={profile}/>
         </CardContent>
       </Card>
 

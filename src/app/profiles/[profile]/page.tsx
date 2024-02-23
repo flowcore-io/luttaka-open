@@ -3,19 +3,19 @@ import {UserProfileView} from "@/components/organisms/profile/user-profile-view"
 import {type WithUrlParams} from "@/lib/next-app.types";
 
 export type UserProfileProps = {
-  user: string;
+  profile: string;
 }
 
 export default async function User({params}: WithUrlParams<UserProfileProps>) {
 
-  const user = await api.user.get.query({
-    userId: params.user
+  const profile = await api.profile.get.query({
+    profileId: params.profile
   });
 
   return (
     <div>
       <UserProfileView
-        user={user}
+        profile={profile}
       />
     </div>
   );
