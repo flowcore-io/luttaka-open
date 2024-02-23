@@ -18,7 +18,7 @@ const eventTransformer = new EventTransformer(profileEvent, {
     );
 
     if (existingProfile) {
-      await db.update(profiles).set({
+      const result = await db.update(profiles).set({
         userId: data.userId, // todo: evaluate if this is a good idea
         firstName: data.firstName,
         lastName: data.lastName,
@@ -28,10 +28,14 @@ const eventTransformer = new EventTransformer(profileEvent, {
         company: data.company,
         avatarUrl: data.avatarUrl
       }).where(eq(profiles.id, data.id));
+
+      if (result.rowCount > 0) {
+        console.warn(`Profile ${data.id} already existed, updated instead`);
+      }
       return;
     }
 
-    await db.insert(profiles).values({
+    const result = await db.insert(profiles).values({
       id: data.id,
       userId: data.userId,
       firstName: data.firstName,
@@ -42,6 +46,10 @@ const eventTransformer = new EventTransformer(profileEvent, {
       company: data.company,
       avatarUrl: data.avatarUrl
     });
+
+    if (result.rowCount > 0) {
+      console.log(`Created profile ${data.id}}`);
+    }
   },
   updated: async (payload: unknown) => {
     const data = ProfileUpdatedEventPayload.parse(payload);
@@ -55,7 +63,7 @@ const eventTransformer = new EventTransformer(profileEvent, {
       return;
     }
 
-    await db.update(profiles).set({
+    const result = await db.update(profiles).set({
       firstName: data.firstName,
       lastName: data.lastName,
       title: data.title,
@@ -65,6 +73,9 @@ const eventTransformer = new EventTransformer(profileEvent, {
       avatarUrl: data.avatarUrl
     }).where(eq(profiles.id, data.id));
 
+    if (result.rowCount > 0) {
+      console.log(`Updated profile ${data.id}}`);
+    }
   },
   archived: async (payload: unknown) => {
     const data = ProfileArchivedEventPayload.parse(payload);
