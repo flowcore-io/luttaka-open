@@ -22,7 +22,6 @@ export const AccountSetup: FC<PropsWithChildren> = (props) => {
     return props.children;
   }
 
-
   return (
     <div className={"flex justify-center items-center"}>
       <Card className={"m-3 absolute top-[50%] translate-y-[-50%]"}>
