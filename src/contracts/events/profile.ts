@@ -21,7 +21,6 @@ export const ProfileUpdatedEventPayload = z.object({
   avatarUrl: z.string().optional()
 });
 
-
 export const ProfileCreatedEventPayload = ProfileUpdatedEventPayload.extend({
   userId: z.string(),
 });
