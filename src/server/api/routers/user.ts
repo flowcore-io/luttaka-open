@@ -1,92 +1,50 @@
 import {createTRPCRouter, protectedProcedure} from "@/server/api/trpc";
-import {clerkClient} from "@clerk/nextjs/server";
-import {UserByIdInput} from "@/contracts/user/user-by-id-input";
-import {type UserProfile} from "@/contracts/profile/user-profile";
-import {UpdateUserProfileInput} from "@/contracts/profile/update-profile-input";
-import {getInitialsFromString} from "@/server/lib/format/get-initials-from-string";
+import {verifyUserIdMiddleware} from "@/server/api/routers/middlewares/verify-user-id.middleware";
+import {UserRole} from "@/contracts/user/user-role";
+import {SetUserRoleInput} from "@/contracts/authorization/set-user-role-input";
+import {adminsOnlyMiddleware} from "@/server/api/routers/middlewares/admins-only.middleware";
+import {getUserByExternalId} from "@/server/api/services/user/get-user-by-external-id";
+import {getUserById} from "@/server/api/services/user/get-user-by-id";
+import {sendWebhook} from "@/lib/webhook";
+import {userEvent, type UserUpdatedEventPayload} from "@/contracts/events/user";
+import {type z} from "zod";
+import {waitFor} from "@/server/lib/delay/wait-for";
+import {db} from "@/database";
+import {eq} from "drizzle-orm";
+import {users} from "@/database/schemas";
 
 export const userRouter = createTRPCRouter({
-  get: protectedProcedure
-    .input(UserByIdInput)
-    .query(async ({input}): Promise<UserProfile> => {
+  role: protectedProcedure
+    .use(verifyUserIdMiddleware)
+    .query(async ({ctx}): Promise<UserRole> => {
 
-      const user = await clerkClient.users.getUser(input.userId);
-      const displayName = `${user.firstName} ${user.lastName}`;
-
-      const metadata = user.publicMetadata;
-      const description: string = metadata.description as string ?? "";
-      const title: string = metadata.title as string ?? "";
-      const socials: string = metadata.socials as string ?? "";
-      const company: string = metadata.company as string ?? "";
-
-      return {
-        userId: user.id,
-        firstName: user.firstName ?? "",
-        lastName: user.lastName ?? "",
-        displayName: displayName,
-        description,
-        title,
-        socials,
-        company,
-        avatarUrl: user.imageUrl,
-        initials: getInitialsFromString(displayName),
-      }
+      const user = await getUserByExternalId(ctx.auth!.userId);
+      return user.role as UserRole ?? UserRole.user;
     }),
 
-  me: protectedProcedure
-    .query(async ({ctx}): Promise<UserProfile> => {
+  setRole: protectedProcedure
+    .input(SetUserRoleInput)
+    .use(adminsOnlyMiddleware)
+    .mutation(async ({input}) => {
 
-      const userId = ctx.auth?.userId;
-      if (!userId) {
-        throw new Error("User not found");
-      }
+      const user = await getUserById(input.userId);
 
-      // todo: refactor duplicated code
-      const user = await clerkClient.users.getUser(userId);
-      const displayName = `${user.firstName} ${user.lastName}`;
-
-      const metadata = user.publicMetadata;
-      const description: string = metadata.description as string ?? "";
-      const title: string = metadata.title as string ?? "";
-      const socials: string = metadata.socials as string ?? "";
-      const company: string = metadata.company as string ?? "";
-
-      return {
-        userId: user.id,
-        firstName: user.firstName ?? "",
-        lastName: user.lastName ?? "",
-        displayName: displayName,
-        description,
-        title,
-        socials,
-        company,
-        avatarUrl: user.imageUrl,
-        initials: getInitialsFromString(displayName),
-      }
-    }),
-
-  update: protectedProcedure
-    .input(UpdateUserProfileInput)
-    .mutation(async ({ctx, input}): Promise<boolean> => {
-
-      const userId = ctx.auth?.userId;
-
-      await clerkClient.users.updateUser(userId, {
-        firstName: input.firstName,
-        lastName: input.lastName,
-      });
-
-      await clerkClient.users.updateUserMetadata(userId, {
-        publicMetadata: {
-          title: input.title,
-          description: input.description,
-          socials: input.socials,
-          company: input.company,
+      await sendWebhook<z.infer<typeof UserUpdatedEventPayload>>(
+        userEvent.flowType,
+        userEvent.eventType.updated,
+        {
+          userId: user.id,
+          role: input.role
         }
-      });
+      )
 
-      // todo: update avatar
-      console.log("user updated", input);
-      return true;
+      const result = await waitFor(
+        () => db.query.users.findFirst({where: eq(users.id, input.userId)}),
+        (user) => (user?.role as UserRole ?? "user") === input.role
+      );
+
+      if (!result) {
+        throw new Error("Failed to update user role");
+      }
     })
 })
