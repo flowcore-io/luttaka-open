@@ -40,6 +40,13 @@ export const accountRouter = createTRPCRouter({
     .mutation(async ({ctx}): Promise<string> => {
 
       const externalId = ctx.auth!.userId;
+      const user = await db.query.users.findFirst(
+        {where: eq(users.externalId, externalId)}
+      );
+
+      if (user) {
+        return user.id;
+      }
 
       const userId = shortUUID.generate();
       await sendWebhook<z.infer<typeof UserCreatedEventPayload>>(
@@ -68,6 +75,14 @@ export const accountRouter = createTRPCRouter({
     .use(verifyUserIdMiddleware)
     .mutation(async ({ctx, input}) => {
 
+      const profile = await db.query.profiles.findFirst(
+        {where: eq(profiles.userId, input.userId)}
+      );
+
+      if (profile) {
+        return profile.id;
+      }
+
       const clerkUser = await clerkClient.users.getUser(ctx.auth.userId);
 
       const profileId = shortUUID.generate();
@@ -75,8 +90,8 @@ export const accountRouter = createTRPCRouter({
         profileEvent.flowType,
         profileEvent.eventType.created,
         {
-          id: profileId,
           userId: input.userId,
+          id: profileId,
           firstName: clerkUser.firstName ?? "",
           lastName: clerkUser.lastName ?? "",
           title: "",
