@@ -3,6 +3,7 @@ import {createTRPCRouter} from "@/server/api/trpc"
 import {userRouter} from "@/server/api/routers/user"
 import {authorizationRouter} from "./routers/authorization"
 import {accountRouter} from "@/server/api/routers/account";
+import {profileRouter} from "@/server/api/routers/profile";
 
 /**
  * This is the primary router for your server.
@@ -11,6 +12,7 @@ import {accountRouter} from "@/server/api/routers/account";
  */
 export const appRouter = createTRPCRouter({
   user: userRouter,
+  profile: profileRouter,
   ticket: ticketRouter,
   authorization: authorizationRouter,
   account: accountRouter,
