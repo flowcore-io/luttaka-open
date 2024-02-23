@@ -13,6 +13,15 @@ dataCore:
           description: "a conference has been updated"
         conference.archived.0:
           description: "a conference has been archived"
+    user.0:
+      description: "actions and events related to a user"
+      eventTypes:
+        user.externally-changed.0:
+          description: "a new user has been created from an external system"
+        user.updated.0:
+          description: "a user has been updated"
+        user.archived.0:
+          description: "a user has been archived"
     ticket.0:
       description: "actions and events related to a ticket"
       eventTypes:
@@ -38,6 +47,23 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://flowcore-orgname.loca.lt/api/transform/ticket/create"
+        - name: PROXY_SECRET_HEADER
+          type: secret
+          value: open-source-conference-app-secret
+      blueprint:
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
+    users:
+      description: "transformer for users"
+      dataCore: conference-app
+      flowType: user.0
+      events:
+        - user.externally-changed.0
+        - user.updated.0
+        - user.archived.0
+      parameters:
+        - name: PROXY_ENDPOINT
+          type: manual
+          value: "https://flowcore-orgname.loca.lt/api/transform/user/create"
         - name: PROXY_SECRET_HEADER
           type: secret
           value: open-source-conference-app-secret
