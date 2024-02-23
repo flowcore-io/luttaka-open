@@ -16,8 +16,8 @@ dataCore:
     user.0:
       description: "actions and events related to a user"
       eventTypes:
-        user.externally-changed.0:
-          description: "a new user has been created from an external system"
+        user.created.0:
+          description: "a user has been created"
         user.updated.0:
           description: "a user has been updated"
         user.archived.0:
@@ -66,7 +66,7 @@ scenario:
       dataCore: conference-app
       flowType: user.0
       events:
-        - user.externally-changed.0
+        - user.created.0
         - user.updated.0
         - user.archived.0
       parameters:
