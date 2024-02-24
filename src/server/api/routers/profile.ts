@@ -67,13 +67,18 @@ export const profileRouter = createTRPCRouter({
       const result = await waitFor(
         () => db.query.profiles.findFirst({where: eq(profiles.id, profileId)}),
         (profile) => {
-          return profile?.firstName === input.firstName
-            && profile?.lastName === input.lastName
-            && profile?.title === input.title
-            && profile?.description === input.description
-            && profile?.socials === input.socials
-            && profile?.company === input.company
-            && profile?.avatarUrl === input.avatarUrl;
+
+          if (!profile) {
+            return false;
+          }
+
+          return profile.firstName === input.firstName
+            && profile.lastName === input.lastName
+            && profile.title === input.title
+            && profile.description === input.description
+            && profile.socials === input.socials
+            && profile.company === input.company
+            && profile.avatarUrl === input.avatarUrl;
         }
       );
 
