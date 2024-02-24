@@ -25,7 +25,11 @@ export const AccountSetup: FC<PropsWithChildren> = (props) => {
     setupProfile.mutate({userId: setupUser.data});
   }, [setupUser.data]);
 
-  if (!setupUser.isLoading && !setupProfile.isLoading) {
+  if (isAccountSetup.isLoading || !!isAccountSetup.data) {
+    return props.children;
+  }
+
+  if (setupUser.isSuccess && setupProfile.isSuccess) {
     return props.children;
   }
 
