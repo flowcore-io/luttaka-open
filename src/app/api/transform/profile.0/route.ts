@@ -74,7 +74,7 @@ const eventTransformer = new EventTransformer(profileEvent, {
     }).where(eq(profiles.id, data.id));
 
     if (result.rowCount > 0) {
-      console.log(`Updated profile ${data.id}}`);
+      console.log(`Updated profile ${data.id}`);
     }
   },
   archived: async (payload: unknown) => {
