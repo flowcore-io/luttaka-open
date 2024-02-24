@@ -22,7 +22,7 @@ export const AccountProgress: FC<AccountProgressProps> = (props) => {
     if (props.active) {
       return <CircleDashed className={"animate-spin"}/>
     }
-  }, []);
+  }, [props.active, props.done, props.inactiveIcon]);
 
   const titlePostfix = useMemo(() => props.active ? "..." : "", [props.active]);
 
