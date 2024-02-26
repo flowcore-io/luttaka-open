@@ -1,33 +1,74 @@
 import {UserCreatedEventPayload} from "@/contracts/events/user";
 import {db} from "@/database";
 import {eq} from "drizzle-orm";
-import {users} from "@/database/schemas";
+import {profiles, users} from "@/database/schemas";
+import shortUUID from "short-uuid";
+import {type z} from "zod";
 
 export const createUserEventAction = async (payload: unknown) => {
   const data = UserCreatedEventPayload.parse(payload);
 
+  const createdUser = await createUser(data);
+  if (!createdUser) {
+    return;
+  }
+
+  await createProfile(data);
+}
+
+const createUser = async (data: z.infer<typeof UserCreatedEventPayload>) => {
   const existingUser = await db.query.users.findFirst({
     where: eq(users.externalId, data.externalId)
   });
 
   if (existingUser) {
-    console.warn(`User ${existingUser.id} is already created with external id "${data.externalId}"`);
-
-    await db.update(users).set({
-      id: data.userId,
-      role: data.role
-    }).where(eq(users.externalId, data.externalId));
-    
-    return;
+    console.error(`User ${existingUser.id} is already created with external id "${data.externalId}"`);
+    return false;
   }
 
-  const result = await db.insert(users).values({
+  const userResults = await db.insert(users).values({
     id: data.userId,
     externalId: data.externalId,
     role: data.role
   });
 
-  if (result.rowCount > 0) {
-    console.log(`User ${data.userId} created with external id "${data.externalId}" and role "${data.role}"`);
+  if (userResults.rowCount < 1) {
+    console.error(`User ${data.userId} was not created with external id "${data.externalId}" and role "${data.role}"`);
+    return false;
   }
+
+  console.log(`Created user ${data.userId}`);
+  return true;
+}
+
+const createProfile = async (data: z.infer<typeof UserCreatedEventPayload>) => {
+
+  const existingProfile = await db.query.profiles.findFirst({
+    where: eq(profiles.userId, data.userId)
+  });
+
+  if (existingProfile) {
+    console.error(`Profile ${existingProfile.id} is already created with user id "${data.userId}"`);
+    return false;
+  }
+
+  const profileResults = await db.insert(profiles).values({
+    id: shortUUID.generate(),
+    userId: data.userId,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    title: data.title,
+    description: data.description,
+    socials: data.socials,
+    company: data.company,
+    avatarUrl: data.avatarUrl
+  });
+
+  if (profileResults.rowCount < 1) {
+    console.error(`Profile ${data.userId} was not created with external id "${data.externalId}" and role "${data.role}"`);
+    return false;
+  }
+  
+  console.log(`Created profile ${data.userId}`);
+  return true;
 }

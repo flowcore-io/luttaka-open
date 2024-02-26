@@ -9,8 +9,6 @@ import shortUUID from "short-uuid";
 import {type UserCreatedEventPayload, userEvent} from "@/contracts/events/user";
 import {UserRole} from "@/contracts/user/user-role";
 import {waitFor} from "@/server/lib/delay/wait-for";
-import {UserByIdInput} from "@/contracts/user/user-by-id-input";
-import {type ProfileCreatedEventPayload, profileEvent} from "@/contracts/events/profile";
 import {clerkClient} from "@clerk/nextjs/server";
 
 export const accountRouter = createTRPCRouter({
@@ -35,7 +33,7 @@ export const accountRouter = createTRPCRouter({
       return !!profile;
     }),
 
-  setupUser: protectedProcedure
+  setupAccount: protectedProcedure
     .use(verifyUserIdMiddleware)
     .mutation(async ({ctx}): Promise<string> => {
 
@@ -48,63 +46,27 @@ export const accountRouter = createTRPCRouter({
         return user.id;
       }
 
+      const externalUser = await clerkClient.users.getUser(externalId);
+
       const userId = shortUUID.generate();
       await sendWebhook<z.infer<typeof UserCreatedEventPayload>>(
         userEvent.flowType, userEvent.eventType.created, {
           userId: userId,
           role: UserRole.user,
-          externalId
-        }
-      );
-
-      const result = await waitFor(
-        async () =>
-          db.query.users.findFirst({where: eq(users.externalId, externalId)}),
-        (result) => !!result
-      );
-
-      if (!result) {
-        throw new Error("User not found");
-      }
-
-      return result.id;
-    }),
-
-  setupProfile: protectedProcedure
-    .input(UserByIdInput)
-    .use(verifyUserIdMiddleware)
-    .mutation(async ({ctx, input}) => {
-
-      const profile = await db.query.profiles.findFirst(
-        {where: eq(profiles.userId, input.userId)}
-      );
-
-      if (profile) {
-        return profile.id;
-      }
-
-      const clerkUser = await clerkClient.users.getUser(ctx.auth.userId);
-
-      const profileId = shortUUID.generate();
-      await sendWebhook<z.infer<typeof ProfileCreatedEventPayload>>(
-        profileEvent.flowType,
-        profileEvent.eventType.created,
-        {
-          userId: input.userId,
-          id: profileId,
-          firstName: clerkUser.firstName ?? "",
-          lastName: clerkUser.lastName ?? "",
+          externalId,
+          firstName: externalUser.firstName ?? "",
+          lastName: externalUser.lastName ?? "",
           title: "",
           description: "",
           socials: "",
           company: "",
-          avatarUrl: clerkUser.imageUrl ?? ""
+          avatarUrl: externalUser.imageUrl ?? "",
         }
       );
 
       const result = await waitFor(
         async () =>
-          db.query.profiles.findFirst({where: eq(profiles.userId, input.userId)}),
+          db.query.profiles.findFirst({where: eq(profiles.userId, userId)}),
         (result) => !!result
       );
 

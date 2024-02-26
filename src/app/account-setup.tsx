@@ -8,24 +8,16 @@ import {AccountProgress} from "@/app/account-progress";
 export const AccountSetup: FC<PropsWithChildren> = (props) => {
 
   const isAccountSetup = api.account.isAccountSetup.useQuery();
-  const setupUser = api.account.setupUser.useMutation();
-  const setupProfile = api.account.setupProfile.useMutation();
+  const apiSetupAccount = api.account.setupAccount.useMutation();
 
   useEffect(() => {
     if (isAccountSetup.isLoading || isAccountSetup.data === true) {
       return;
     }
-    setupUser.mutate();
+    apiSetupAccount.mutate();
   }, [isAccountSetup.data]);
 
-  useEffect(() => {
-    if (!setupUser.data) {
-      return;
-    }
-    setupProfile.mutate({userId: setupUser.data});
-  }, [setupUser.data]);
-
-  if (!setupUser.isLoading && !setupProfile.isLoading) {
+  if (!apiSetupAccount.isLoading) {
     return props.children;
   }
 
@@ -37,14 +29,9 @@ export const AccountSetup: FC<PropsWithChildren> = (props) => {
         </CardHeader>
         <CardContent className={"space-y-2"}>
           <AccountProgress
-            active={setupUser.isLoading}
-            done={setupUser.isSuccess}
+            active={apiSetupAccount.isLoading}
+            done={apiSetupAccount.isSuccess}
             title={"Setting up your user"}
-            inactiveIcon={<User/>}/>
-          <AccountProgress
-            active={setupProfile.isLoading}
-            done={setupProfile.isSuccess}
-            title={"Setting up your profile"}
             inactiveIcon={<User/>}/>
         </CardContent>
       </Card>

@@ -10,9 +10,9 @@ import {getProfileByUserId} from "@/server/api/services/profile/get-profile-by-u
 import {UserByIdInput} from "@/contracts/user/user-by-id-input";
 import {UpdateUserProfileInput} from "@/contracts/profile/update-profile-input";
 import {sendWebhook} from "@/lib/webhook";
-import {profileEvent, type ProfileUpdatedEventPayload} from "@/contracts/events/profile";
 import {type z} from "zod";
 import {waitFor} from "@/server/lib/delay/wait-for";
+import {type UpdateUserProfileEventPayload, userEvent} from "@/contracts/events/user";
 
 export const profileRouter = createTRPCRouter({
 
@@ -50,11 +50,11 @@ export const profileRouter = createTRPCRouter({
       const profile = await getProfileByUserId(UserByIdInput.parse({userId: user.id}));
       const profileId = profile.id;
 
-      await sendWebhook<z.infer<typeof ProfileUpdatedEventPayload>>(
-        profileEvent.flowType,
-        profileEvent.eventType.updated,
+      await sendWebhook<z.infer<typeof UpdateUserProfileEventPayload>>(
+        userEvent.flowType,
+        userEvent.eventType.updatedProfile,
         {
-          id: profileId,
+          userId: user.id,
           firstName: input.firstName,
           lastName: input.lastName,
           title: input.title,
