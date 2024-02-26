@@ -14,6 +14,18 @@ export async function sendWebhook<T>(
     aggregator,
     event,
   ].join("/")
-  console.log("webhook", url)
-  await axios.post(url, data, { params: { key: process.env.FLOWCORE_KEY } })
+  try {
+    console.log("send", url, data)
+    await axios.post(url, data, { params: { key: process.env.FLOWCORE_KEY } })
+  } catch (error) {
+    console.error(
+      "Failed to send webhook",
+      error instanceof Error ? error.message : error,
+    )
+    throw new Error("Failed to send webhook")
+  }
+}
+
+export function webhookFactory<T>(aggregator: string, event: string) {
+  return (data: T) => sendWebhook<T>(aggregator, event, data)
 }

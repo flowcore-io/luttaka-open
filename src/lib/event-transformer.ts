@@ -19,13 +19,13 @@ export default class EventTransformer {
   async post(request: NextRequest) {
     try {
       if (request.headers.get("X-Secret") !== process.env.TRANSFORMER_SECRET) {
-        return new Response(null, { status: 401 })
+        return Response.json({ success: false }, { status: 401 })
       }
       await this.transform(await request.json())
-      return new Response(null, { status: 201 })
+      return Response.json({ success: true }, { status: 200 })
     } catch (error) {
       console.error("Error occurred:", error)
-      return new Response(null, { status: 400 })
+      return Response.json({ success: false }, { status: 400 })
     }
   }
 

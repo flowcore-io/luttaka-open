@@ -1,89 +1,171 @@
 import {
-  ticket,
-  type TicketEventArchivedPayloadDto,
-  TicketEventCreatedPayloadDto,
+  sendTicketArchivedEvent,
+  sendTicketCreatedEvent,
+  sendTicketTransferCancelledEvent,
+  sendTicketTransferCreatedEvent,
+  sendTicketTransferAcceptedEvent,
+  sendTicketUpdatedEvent,
 } from "@/contracts/events/ticket"
 import { db } from "@/database"
-import { tickets } from "@/database/schemas"
-import { sendWebhook } from "@/lib/webhook"
+import { tickets, ticketTransfers } from "@/database/schemas"
+import waitForPredicate from "@/lib/wait-for-predicate"
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
-import { eq } from "drizzle-orm"
-import { retry } from "radash"
-import shortUuId from "short-uuid"
+import { and, eq } from "drizzle-orm"
+import shortUuid from "short-uuid"
 import { z } from "zod"
 
-const GetTicketInput = z.object({
-  id: z.string(),
-})
-
 const GetTicketListInput = z.object({
-  userId: z.string(),
+  conferenceId: z.string(),
 })
 
-const CreateTicketInput = TicketEventCreatedPayloadDto.omit({
-  id: true,
+const CreateTicketInput = z.object({
+  conferenceId: z.string(),
 })
 
 const ArchiveTicketInput = z.object({
   id: z.string(),
 })
 
+const CreateTicketTransferInput = z.object({
+  ticketId: z.string(),
+})
+
+const AcceptTicketTransferInput = z.object({
+  transferId: z.string(),
+})
+
 export const ticketRouter = createTRPCRouter({
-  get: protectedProcedure.input(GetTicketInput).query(({ input }) => {
-    return db.query.tickets.findFirst({ where: eq(tickets.id, input.id) })
-  }),
-  list: protectedProcedure.input(GetTicketListInput).query(({ input }) => {
-    return db.query.tickets.findMany({
-      where: eq(tickets.userId, input.userId),
-    })
+  list: protectedProcedure.input(GetTicketListInput).query(({ ctx, input }) => {
+    const userId = ctx.auth.userId
+    return db
+      .select({
+        id: tickets.id,
+        userId: tickets.userId,
+        conferenceId: tickets.conferenceId,
+        state: tickets.state,
+        transferId: ticketTransfers.id,
+      })
+      .from(tickets)
+      .leftJoin(
+        ticketTransfers,
+        and(
+          eq(tickets.id, ticketTransfers.ticketId),
+          eq(ticketTransfers.state, "open"),
+        ),
+      )
+      .where(
+        and(
+          eq(tickets.userId, userId),
+          eq(tickets.conferenceId, input.conferenceId),
+        ),
+      )
+      .execute()
   }),
   create: protectedProcedure
     .input(CreateTicketInput)
-    .mutation(async ({ input }) => {
-      const id: string = shortUuId.generate()
-      await sendCreatedTicketEvent({ id, ...input })
+    .mutation(async ({ ctx, input }) => {
+      // TODO: Check if user is allowed to create ticket
+      const userId = ctx.auth.userId
+      const id = shortUuid.generate()
+      await sendTicketCreatedEvent({
+        id,
+        userId,
+        conferenceId: input.conferenceId,
+        state: "open",
+      })
       try {
-        await waitForTicket(id, true)
+        await waitForPredicate(
+          () => db.query.tickets.findFirst({ where: eq(tickets.id, id) }),
+          (result) => !!result,
+        )
       } catch (error) {
-        await sendArchivedTicketEvent({ id, _reason: "Rollback ticket create" })
-        return null
+        await sendTicketArchivedEvent({ id, _reason: "rollback" })
+        throw new Error("Failed to create ticket")
       }
       return id
     }),
   archive: protectedProcedure
     .input(ArchiveTicketInput)
     .mutation(async ({ input }) => {
-      await sendArchivedTicketEvent({ id: input.id })
+      await sendTicketArchivedEvent({ id: input.id })
       try {
-        await waitForTicket(input.id, false)
+        await waitForPredicate(
+          () => db.query.tickets.findFirst({ where: eq(tickets.id, input.id) }),
+          (result) => !result,
+        )
         return true
       } catch (error) {
         return false
       }
     }),
+
+  createTransfer: protectedProcedure
+    .input(CreateTicketTransferInput)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.auth.userId
+      const ticket = await db.query.tickets.findFirst({
+        where: and(eq(tickets.id, input.ticketId), eq(tickets.userId, userId)),
+      })
+      if (!ticket) {
+        throw new Error("Ticket not found")
+      } else if (ticket.state !== "open") {
+        throw new Error("Ticket not eligible for transfer")
+      }
+      const id: string = shortUuid.generate()
+      await sendTicketTransferCreatedEvent({ id, state: "open", ...input })
+      try {
+        await waitForPredicate(
+          () =>
+            db.query.ticketTransfers.findFirst({
+              where: eq(ticketTransfers.id, id),
+            }),
+          (result) => !!result,
+        )
+      } catch (error) {
+        await sendTicketTransferCancelledEvent({
+          transferId: id,
+          _reason: "rollback",
+        })
+        throw new Error("Ticket transfer creation failed")
+      }
+      return id
+    }),
+  acceptTransfer: protectedProcedure
+    .input(AcceptTicketTransferInput)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.auth.userId
+      const ticketTransfer = await db.query.ticketTransfers.findFirst({
+        where: and(
+          eq(ticketTransfers.id, input.transferId),
+          eq(ticketTransfers.state, "open"),
+        ),
+      })
+      if (!ticketTransfer) {
+        throw new Error("Invalid redeem code")
+      }
+      const ticket = await db.query.tickets.findFirst({
+        where: and(
+          eq(tickets.id, ticketTransfer.ticketId),
+          eq(tickets.state, "open"),
+        ),
+      })
+      if (!ticket) {
+        throw new Error("Ticket not found")
+      }
+      try {
+        await sendTicketUpdatedEvent({ id: ticket.id, userId })
+        await sendTicketTransferAcceptedEvent({ transferId: input.transferId })
+        await waitForPredicate(
+          () =>
+            db.query.ticketTransfers.findFirst({
+              where: eq(ticketTransfers.id, input.transferId),
+            }),
+          (result) => result?.state === "accepted",
+        )
+      } catch (error) {
+        console.log(error)
+        return false
+      }
+      return true
+    }),
 })
-
-async function sendCreatedTicketEvent(
-  input: z.infer<typeof TicketEventCreatedPayloadDto>,
-) {
-  await sendWebhook(ticket.flowType, ticket.eventType.created, input)
-}
-
-async function sendArchivedTicketEvent(
-  input: z.infer<typeof TicketEventArchivedPayloadDto>,
-) {
-  await sendWebhook(ticket.flowType, ticket.eventType.archived, input)
-}
-
-async function waitForTicket(id: string, exists: boolean) {
-  await retry({ times: 6, delay: 250 }, async () => {
-    console.log("Waiting for ticket", id, "to", exists ? "exist" : "not exist")
-    const ticket = await db.query.tickets.findFirst({
-      where: eq(tickets.id, id),
-    })
-    if (exists === !!ticket) {
-      return
-    }
-    throw new Error("Retry")
-  })
-}

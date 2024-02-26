@@ -1,5 +1,5 @@
-import {type NextRequest, NextResponse} from "next/server"
-import {z} from "zod"
+import { type NextRequest, NextResponse } from "next/server"
+import { z } from "zod"
 import axios from "axios"
 
 const EventDto = z.object({
@@ -14,19 +14,21 @@ export async function POST(request: NextRequest) {
   try {
     const json: unknown = await request.json()
     const body = EventDto.parse(json)
-
-    await axios.post(`http://localhost:3000/api/transform/${body.aggregator}`, body, {
-      headers: {
-        "X-Secret": process.env.TRANSFORMER_SECRET,
+    await axios.post(
+      `http://localhost:3000/api/transform/${body.aggregator}`,
+      body,
+      {
+        headers: {
+          "X-Secret": process.env.TRANSFORMER_SECRET,
+        },
       },
-    })
-
-    return NextResponse.json({success: true})
+    )
+    return NextResponse.json({ success: true })
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error occurred:", error.message)
     }
 
-    return NextResponse.json({success: false}, {status: 400})
+    return NextResponse.json({ success: false }, { status: 400 })
   }
 }

@@ -1,17 +1,18 @@
 "use client"
 
+import { Ticket } from "@/app/tickets/ticket.component"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { api } from "@/trpc/react"
 import { useAuth } from "@clerk/nextjs"
-import { Trash, Loader } from "lucide-react"
-import { useQRCode } from "next-qrcode"
+import { Loader } from "lucide-react"
 import { useCallback, useState } from "react"
 
 const conferenceId = "xxxxxxxxxxxxxxxxxxxxxx"
@@ -19,12 +20,12 @@ const conferenceId = "xxxxxxxxxxxxxxxxxxxxxx"
 export default function Tickets() {
   const { isLoaded, userId } = useAuth()
   const [loading, setLoading] = useState(false)
+  const [ticketRedeemDialogOpened, setTicketRedeemDialogOpened] =
+    useState(false)
+  const [transferId, setTransferId] = useState("")
   const { toast } = useToast()
 
-  const { data: tickets, refetch } = api.ticket.list.useQuery(
-    { userId: userId! },
-    { enabled: !!userId },
-  )
+  const { data: tickets, refetch } = api.ticket.list.useQuery({ conferenceId })
 
   const apiCreateTicket = api.ticket.create.useMutation()
   const createTicket = useCallback(async () => {
@@ -32,20 +33,37 @@ export default function Tickets() {
       return
     }
     setLoading(true)
-    const id = await apiCreateTicket.mutateAsync({
-      userId,
-      conferenceId,
-      state: "open",
-    })
-    if (id) {
-      await refetch()
+    try {
+      await apiCreateTicket.mutateAsync({ conferenceId })
       toast({ title: "Ticket created" })
-    } else {
-      toast({ title: "Ticket create failed", variant: "destructive" })
-      await refetch()
+    } catch (error) {
+      const title =
+        error instanceof Error ? error.message : "Ticket create failed"
+      toast({ title, variant: "destructive" })
     }
+    await refetch()
     setLoading(false)
   }, [userId])
+
+  const apiAcceptTicketTransfer = api.ticket.acceptTransfer.useMutation()
+  const acceptTicketTransfer = useCallback(async () => {
+    if (!transferId) {
+      return
+    }
+    setLoading(true)
+    try {
+      await apiAcceptTicketTransfer.mutateAsync({
+        transferId,
+      })
+      toast({ title: "Ticket redeemed, it should show in your list shortly" })
+    } catch (error) {
+      const title = error instanceof Error ? error.message : "Redeem failed"
+      toast({ title, variant: "destructive" })
+    }
+    await refetch()
+    setLoading(false)
+    setTicketRedeemDialogOpened(false)
+  }, [userId, transferId])
 
   if (!isLoaded || !userId) {
     return null
@@ -60,9 +78,14 @@ export default function Tickets() {
         <div className="flex-1 text-right">
           <Button
             onClick={() => createTicket()}
-            className="float-right"
+            className="mr-2"
             disabled={loading}>
             {loading ? <Loader className={"animate-spin"} /> : "Create ticket"}
+          </Button>
+          <Button
+            onClick={() => setTicketRedeemDialogOpened(true)}
+            disabled={loading}>
+            {loading ? <Loader className={"animate-spin"} /> : "Redeem ticket"}
           </Button>
         </div>
       </div>
@@ -76,99 +99,28 @@ export default function Tickets() {
           }}
         />
       ))}
-    </main>
-  )
-}
 
-interface TicketProps {
-  ticket: {
-    id: string
-    userId: string
-    conferenceId: string
-    state: string
-  }
-  refetch: () => Promise<void>
-}
-function Ticket({ ticket, refetch }: TicketProps) {
-  const [loading, setLoading] = useState(false)
-  const [ticketDialogOpened, setTicketDialogOpened] = useState(false)
-  const { Canvas } = useQRCode()
-  const { toast } = useToast()
-
-  const apiArchiveTicket = api.ticket.archive.useMutation()
-  const archiveTicket = useCallback(async () => {
-    setLoading(true)
-    const success = await apiArchiveTicket.mutateAsync({ id: ticket.id })
-    if (success) {
-      await refetch()
-      toast({ title: "Ticket deleted" })
-    } else {
-      toast({ title: "Delete ticket failed", variant: "destructive" })
-    }
-    setLoading(false)
-  }, [ticket.id])
-
-  return (
-    <>
-      <div
-        key={ticket.id}
-        onClick={() => setTicketDialogOpened(true)}
-        className="hover:scale-101 mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:shadow-lg">
-        <div className={"flex-1"}>
-          <Canvas
-            text={`ticket:${ticket.id},user:${ticket.userId}`}
-            options={{
-              errorCorrectionLevel: "M",
-              margin: 3,
-              scale: 4,
-              width: 100,
-              color: {
-                dark: "#31112d",
-              },
-            }}
-          />
-        </div>
-        <div className={"flex-1"}>{ticket.id}</div>
-        <div className={"flex-1 text-right"}>
-          <Button
-            size={"sm"}
-            onClick={(e) => {
-              e.stopPropagation()
-              return archiveTicket()
-            }}
-            disabled={loading}>
-            {loading ? <Loader className={"animate-spin"} /> : <Trash />}
-          </Button>
-        </div>
-      </div>
       <Dialog
-        open={ticketDialogOpened}
-        modal
-        onOpenChange={(opened) => setTicketDialogOpened(opened)}>
+        open={ticketRedeemDialogOpened}
+        onOpenChange={(open) => {
+          !open && setTicketRedeemDialogOpened(open)
+        }}>
         <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Conference Ticket</DialogTitle>
-          </DialogHeader>
-          <div className={"flex justify-center"}>
-            <Canvas
-              text={`ticket:${ticket.id},user:${ticket.userId}`}
-              options={{
-                errorCorrectionLevel: "M",
-                margin: 3,
-                scale: 4,
-                width: 300,
-                color: {
-                  dark: "#31112d",
-                },
-              }}
+          <DialogHeader>Redeem ticket</DialogHeader>
+          <div>
+            <Input
+              value={transferId}
+              placeholder={"Redeem code"}
+              onChange={(code) => setTransferId(code.currentTarget.value)}
             />
           </div>
-          <code className={"text-center"}>
-            <div>Ticket ID: {ticket.id}</div>
-            <div>User ID: {ticket.userId}</div>
-          </code>
+          <DialogFooter>
+            <Button onClick={acceptTicketTransfer} disabled={loading}>
+              Redeem
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
+    </main>
   )
 }
