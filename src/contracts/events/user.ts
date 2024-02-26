@@ -7,23 +7,31 @@ export const userEvent = {
     created: "user.created.0",
     updated: "user.updated.0",
     archived: "user.archived.0",
+    updatedProfile: "user.profile-updated.0",
   },
 } as const
 
-export const UserCreatedEventPayload = z.object({
+export const UpdateUserProfileEventPayload = z.object({
   userId: z.string(),
-  role: z.nativeEnum(UserRole),
-  externalId: z.string(),
+
+  // profile details
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  socials: z.string().optional(),
+  company: z.string().optional(),
+  avatarUrl: z.string().optional()
 });
 
-export const UserDeletedExternallyEventPayload = z.object({
-  id: z.string(),
-  deleted: z.boolean()
+export const UserCreatedEventPayload = UpdateUserProfileEventPayload.extend({
+  externalId: z.string(),
+  role: z.nativeEnum(UserRole).optional(),
 });
 
 export const UserUpdatedEventPayload = z.object({
   userId: z.string(),
-  role: z.nativeEnum(UserRole)
+  role: z.nativeEnum(UserRole).optional(),
 });
 
 export const UserArchivedEventPayload = z.object({
