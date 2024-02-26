@@ -19,7 +19,7 @@ export type UserProfileProps = {
 
 export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
 
-  const updateUser = api.user.update.useMutation();
+  const updateProfile = api.profile.update.useMutation();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof UpdateUserProfileInput>>({
@@ -36,7 +36,7 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
   });
 
   const onSubmit = useCallback(async (values: z.infer<typeof UpdateUserProfileInput>) => {
-    await updateUser.mutateAsync(values);
+    await updateProfile.mutateAsync(values);
     router.refresh();
   }, []);
 

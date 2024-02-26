@@ -17,7 +17,7 @@ export type RestrictedToRoleProps = {
  */
 export const RestrictedToRole: FC<PropsWithChildren<RestrictedToRoleProps>> = (props) => {
 
-  const userRole = api.authorization.role.useQuery();
+  const userRole = api.user.role.useQuery();
 
   if (!userRole.data) {
     return null;

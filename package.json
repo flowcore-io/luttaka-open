@@ -14,7 +14,6 @@
     "flowcore:dev": "flowcore apply -f flowcore.yaml -f flowcore.local.yaml",
     "flowcore:prod": "flowcore apply -f flowcore.yaml",
     "local:stream": "env-cmd -x flowcore scenario local -f flowcore.yaml -f flowcore.local.yaml -s now -e http://localhost:3000/api/transform -H \"X-Secret: \\$TRANSFORMER_SECRET\""
-
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",
