@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const json: unknown = await request.json()
     const body = EventDto.parse(json)
     if (body.aggregator === ticket.flowType) {
-      await axios.post("http://localhost:3000/api/transform/ticket", body, {
+      await axios.post("http://localhost:3000/api/transform/ticket.0", body, {
         headers: {
           "X-Secret": process.env.TRANSFORMER_SECRET,
         },

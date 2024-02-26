@@ -22,6 +22,12 @@ dataCore:
           description: "a ticket has been updated"
         ticket.archived.0:
           description: "a ticket has been archived"
+        ticket.transfer-created.0:
+          description: "a ticket transfer has been created"
+        ticket.transfer-accepted.0:
+          description: "a ticket transfer has been accepted"
+        ticket.transfer-cancelled.0:
+          description: "a ticket transfer has been cancelled"
 scenario:
   name: conference-app
   description: "This scenario contains the transformers for the open source conference app"
@@ -34,13 +40,15 @@ scenario:
         - ticket.created.0
         - ticket.updated.0
         - ticket.archived.0
+        - ticket.transfer-created.0
+        - ticket.transfer-accepted.0
+        - ticket.transfer-cancelled.0
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://flowcore-orgname.loca.lt/api/transform/ticket/create"
+          value: "https://flowcore-orgname.loca.lt/api/transform/ticket.0"
         - name: PROXY_SECRET_HEADER
           type: secret
           value: open-source-conference-app-secret
       blueprint:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
-
