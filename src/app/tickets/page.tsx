@@ -62,6 +62,7 @@ export default function Tickets() {
     }
     await refetch()
     setLoading(false)
+    setTicketRedeemDialogOpened(false)
   }, [userId, transferId])
 
   if (!isLoaded || !userId) {

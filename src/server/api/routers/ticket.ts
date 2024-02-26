@@ -122,7 +122,10 @@ export const ticketRouter = createTRPCRouter({
           (result) => !!result,
         )
       } catch (error) {
-        await sendTicketTransferCancelledEvent({ id, _reason: "rollback" })
+        await sendTicketTransferCancelledEvent({
+          transferId: id,
+          _reason: "rollback",
+        })
         throw new Error("Ticket transfer creation failed")
       }
       return id
@@ -149,18 +152,18 @@ export const ticketRouter = createTRPCRouter({
       if (!ticket) {
         throw new Error("Ticket not found")
       }
-
-      await sendTicketUpdatedEvent({ id: ticket.id, userId })
-      await sendTicketTransferAcceptedEvent({ id: ticket.id, userId })
       try {
+        await sendTicketUpdatedEvent({ id: ticket.id, userId })
+        await sendTicketTransferAcceptedEvent({ transferId: input.transferId })
         await waitForPredicate(
           () =>
-            db.query.tickets.findFirst({
-              where: eq(tickets.id, ticket.id),
+            db.query.ticketTransfers.findFirst({
+              where: eq(ticketTransfers.id, input.transferId),
             }),
-          (result) => result?.userId === userId,
+          (result) => result?.state === "accepted",
         )
       } catch (error) {
+        console.log(error)
         return false
       }
       return true

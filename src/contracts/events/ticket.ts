@@ -39,12 +39,11 @@ export const TicketEventTransferCreatedPayload = z.object({
 })
 
 export const TicketEventTransferAcceptedPayload = z.object({
-  id: z.string(),
-  userId: z.string(),
+  transferId: z.string(),
 })
 
 export const TicketEventTransferCancelledPayload = z.object({
-  id: z.string(),
+  transferId: z.string(),
   _reason: z.string().optional(),
 })
 

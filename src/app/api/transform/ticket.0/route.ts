@@ -2,6 +2,7 @@ import {
   ticket,
   TicketEventArchivedPayload,
   TicketEventCreatedPayload,
+  TicketEventTransferAcceptedPayload,
   TicketEventTransferCancelledPayload,
   TicketEventTransferCreatedPayload,
   TicketEventUpdatedPayload,
@@ -9,7 +10,7 @@ import {
 import EventTransformer from "@/lib/event-transformer"
 import { eq } from "drizzle-orm"
 import { db } from "@/database"
-import { tickets } from "@/database/schemas"
+import { tickets, ticketTransfers } from "@/database/schemas"
 
 const eventTransformer = new EventTransformer(ticket, {
   created: async (payload: unknown) => {
@@ -51,14 +52,22 @@ const eventTransformer = new EventTransformer(ticket, {
   transferCreated: async (payload: unknown) => {
     console.log("Got transfer created event", payload)
     const parsedPayload = TicketEventTransferCreatedPayload.parse(payload)
+    await db.insert(ticketTransfers).values(parsedPayload)
   },
   transferAccepted: async (payload: unknown) => {
     console.log("Got transfer accepted event", payload)
-    const parsedPayload = TicketEventTransferCreatedPayload.parse(payload)
+    const parsedPayload = TicketEventTransferAcceptedPayload.parse(payload)
+    await db
+      .update(ticketTransfers)
+      .set({ state: "accepted" })
+      .where(eq(ticketTransfers.id, parsedPayload.transferId))
   },
   transferCancelled: async (payload: unknown) => {
     console.log("Got transfer cancelled event", payload)
     const parsedPayload = TicketEventTransferCancelledPayload.parse(payload)
+    await db
+      .delete(ticketTransfers)
+      .where(eq(ticketTransfers.id, parsedPayload.transferId))
   },
 })
 
