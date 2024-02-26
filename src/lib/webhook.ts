@@ -1,7 +1,11 @@
 import axios from "axios"
 import * as process from "process"
 
-async function sendWebhook<T>(aggregator: string, event: string, data: T) {
+export async function sendWebhook<T>(
+  aggregator: string,
+  event: string,
+  data: T,
+) {
   const url = [
     process.env.FLOWCORE_WEBHOOK_BASEURL,
     "event",
@@ -11,6 +15,7 @@ async function sendWebhook<T>(aggregator: string, event: string, data: T) {
     event,
   ].join("/")
   try {
+    console.log("send", url, data)
     await axios.post(url, data, { params: { key: process.env.FLOWCORE_KEY } })
   } catch (error) {
     console.error(
