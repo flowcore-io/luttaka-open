@@ -7,3 +7,7 @@ scenario:
   transformers:
     tickets:
       dataCore: conference-app-dev
+    users:
+      dataCore: conference-app-dev
+    profiles:
+      dataCore: conference-app-dev

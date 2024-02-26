@@ -105,13 +105,13 @@ then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fi
 can run the following command to spin up an environment for development:
 
 ```shell
-yarn flowcore:dev
+npm run flowcore:dev
 ```
 
 this will create the required resources in the Flowcore Platform, inside your tenant.
 
 > Requires the Flowcore CLI version 2.5.0 or higher.
-> Production can be created with `yarn flowcore:prod`
+> Production can be created with `npm run flowcore:prod`
 > The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
 
 # Tenants
@@ -119,20 +119,25 @@ this will create the required resources in the Flowcore Platform, inside your te
 Your tenant is part of the url when you go to your organization in the Flowcore Platform. For example, if you go to `https://flowcore.io/flowcore`, then `flowcore` is your tenant.
 You can also see the tenant where you select between your active organizations in the top left corner of the UI.
 
+# Clerk
+
+You need to create an account with [Clerk](https://clerk.com) and create a new application. You need the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to be set in your `.env` file.
+
 # Run locally
 
 1. Clone the repository (or fork it if you intend to contribute)
-2. npm install
+2. `npm install`
 3. Start a PostgreSQL server. You can run `npm run docker:db`
-4. Copy the file `.env.example` as `.env` and fill in the missing information
-5. npm run dev
-6. npm run local:stream
+4. Run `npm run db:push` to create the database tables
+5. Copy the file `.env.example` as `.env` and fill in the missing information
+6. `npm run dev`
+7. `npm run local:stream`
 
 # Run in a container
 
-1. Run npm run build-image to build the docker image from the Dockerfile
+1. Run `npm run build-image` to build the docker image from the Dockerfile
 2. Copy the file `.env.example` as `.container.env` and adjust the values to match the container environment
-3. Run npm run `docker:app` to start the postgres and the app containers
+3. Run `npm run docker:app` to start the postgres and the app containers
 4. You can access the app by browsing to http://localhost:3000
 
 # License
