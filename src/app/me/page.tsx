@@ -5,6 +5,8 @@ import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
 export default async function MyUserRedirectPage() {
 
   const profile = await api.profile.me.query();
