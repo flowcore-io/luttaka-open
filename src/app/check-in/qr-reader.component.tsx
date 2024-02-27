@@ -2,11 +2,8 @@ import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import QrScanner from "qr-scanner"
 
-import "./qr-reader.css"
-
 interface QrReaderProps {
-  onScanSuccess: (result: QrScanner.ScanResult) => void
-  onScanFail?: (err: string | Error) => void
+  onScanSuccess: (result: string) => void
 }
 
 const QrReader = (props: QrReaderProps) => {
@@ -16,18 +13,20 @@ const QrReader = (props: QrReaderProps) => {
   const qrBoxEl = useRef<HTMLDivElement>(null)
   const [qrOn, setQrOn] = useState<boolean>(true)
 
+  const onScanSuccess = (result: QrScanner.ScanResult) => {
+    scanner.current?.stop()
+    props.onScanSuccess(result.data)
+  }
+
   useEffect(() => {
     if (videoEl?.current && !scanner.current) {
-      // 👉 Instantiate the QR Scanner
-      scanner.current = new QrScanner(videoEl?.current, props.onScanSuccess, {
-        onDecodeError: props.onScanFail,
+      scanner.current = new QrScanner(videoEl?.current, onScanSuccess, {
         preferredCamera: "environment",
         highlightScanRegion: true,
         highlightCodeOutline: true,
         overlay: qrBoxEl?.current ?? undefined,
       })
 
-      // 🚀 Start QR Scanner
       scanner?.current
         ?.start()
         .then(() => setQrOn(true))
@@ -38,7 +37,7 @@ const QrReader = (props: QrReaderProps) => {
 
     return () => {
       if (!videoEl?.current) {
-        scanner?.current?.stop()
+        scanner.current?.stop()
       }
     }
   }, [])
@@ -51,16 +50,20 @@ const QrReader = (props: QrReaderProps) => {
   }, [qrOn])
 
   return (
-    <div className="qr-reader">
-      {/* QR */}
-      <video ref={videoEl}></video>
-      <div ref={qrBoxEl} className="qr-box">
+    <div
+      className={
+        "h-50vh relative mx-auto w-full overflow-hidden rounded-md border border-gray-800 shadow-lg"
+      }>
+      <video ref={videoEl} className={"h-full w-full object-cover"}></video>
+      <div ref={qrBoxEl} className={"left-0 w-full"}>
         <Image
           src={"/images/qr-frame.svg"}
           alt="Qr Frame"
           width={256}
           height={256}
-          className="qr-frame"
+          className={
+            "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform fill-none"
+          }
         />
       </div>
     </div>

@@ -39,6 +39,7 @@ export default function Tickets() {
       const title =
         error instanceof Error ? error.message : "Ticket create failed"
       toast.error(title)
+      toast("test")
     }
     await refetch()
     setLoading(false)

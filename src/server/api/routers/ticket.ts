@@ -14,12 +14,20 @@ import { and, eq } from "drizzle-orm"
 import shortUuid from "short-uuid"
 import { z } from "zod"
 
+const GetTicketInput = z.object({
+  ticketId: z.string(),
+})
+
 const GetTicketListInput = z.object({
   conferenceId: z.string(),
 })
 
 const CreateTicketInput = z.object({
   conferenceId: z.string(),
+})
+
+const CheckInTicketInput = z.object({
+  ticketId: z.string(),
 })
 
 const ArchiveTicketInput = z.object({
@@ -34,9 +42,16 @@ const AcceptTicketTransferInput = z.object({
   transferId: z.string(),
 })
 
+// TODO: Split into separate files
+
 export const ticketRouter = createTRPCRouter({
+  get: protectedProcedure.input(GetTicketInput).query(({ input }) => {
+    return db.query.tickets.findFirst({
+      where: and(eq(tickets.id, input.ticketId)),
+    })
+  }),
   list: protectedProcedure.input(GetTicketListInput).query(({ ctx, input }) => {
-    const userId = ctx.auth.userId
+    const userId = ctx.user.id
     return db
       .select({
         id: tickets.id,
@@ -65,7 +80,7 @@ export const ticketRouter = createTRPCRouter({
     .input(CreateTicketInput)
     .mutation(async ({ ctx, input }) => {
       // TODO: Check if user is allowed to create ticket
-      const userId = ctx.auth.userId
+      const userId = ctx.user.id
       const id = shortUuid.generate()
       await sendTicketCreatedEvent({
         id,
@@ -84,9 +99,27 @@ export const ticketRouter = createTRPCRouter({
       }
       return id
     }),
+  checkIn: protectedProcedure
+    .input(CheckInTicketInput)
+    .mutation(async ({ input }) => {
+      await sendTicketUpdatedEvent({ id: input.ticketId, state: "checked-in" })
+      try {
+        await waitForPredicate(
+          () =>
+            db.query.tickets.findFirst({
+              where: eq(tickets.id, input.ticketId),
+            }),
+          (result) => result?.state === "checked-in",
+        )
+      } catch (error) {
+        await sendTicketUpdatedEvent({ id: input.ticketId, state: "open" })
+        throw new Error("Failed to check in ticket")
+      }
+    }),
   archive: protectedProcedure
     .input(ArchiveTicketInput)
     .mutation(async ({ input }) => {
+      // TODO: Check if user is allowed to archive ticket
       await sendTicketArchivedEvent({ id: input.id })
       try {
         await waitForPredicate(
@@ -102,7 +135,7 @@ export const ticketRouter = createTRPCRouter({
   createTransfer: protectedProcedure
     .input(CreateTicketTransferInput)
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.auth.userId
+      const userId = ctx.user.id
       const ticket = await db.query.tickets.findFirst({
         where: and(eq(tickets.id, input.ticketId), eq(tickets.userId, userId)),
       })
@@ -133,7 +166,7 @@ export const ticketRouter = createTRPCRouter({
   acceptTransfer: protectedProcedure
     .input(AcceptTicketTransferInput)
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.auth.userId
+      const userId = ctx.user.id
       const ticketTransfer = await db.query.ticketTransfers.findFirst({
         where: and(
           eq(ticketTransfers.id, input.transferId),

@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { api } from "@/trpc/react"
-import { Loader, MoreVertical, Share, Trash } from "lucide-react"
+import { MoreVertical, Share, Trash } from "lucide-react"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
@@ -109,7 +109,7 @@ export function Ticket({ ticket, refetch }: TicketProps) {
         onOpenChange={(opened) => setTicketDialogOpened(opened)}>
         <DialogContent>
           <div className={"flex justify-center"}>
-            <img src={"/images/tonik.svg"} width={240} />
+            <img alt={"Tonik"} src={"/images/tonik.svg"} width={240} />
           </div>
           <div className={"flex justify-center"}>
             <Canvas
