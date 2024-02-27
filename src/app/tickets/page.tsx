@@ -9,11 +9,11 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
 import { api } from "@/trpc/react"
 import { useAuth } from "@clerk/nextjs"
 import { Loader } from "lucide-react"
 import { useCallback, useState } from "react"
+import { toast } from "sonner"
 
 const conferenceId = "xxxxxxxxxxxxxxxxxxxxxx"
 
@@ -23,7 +23,6 @@ export default function Tickets() {
   const [ticketRedeemDialogOpened, setTicketRedeemDialogOpened] =
     useState(false)
   const [transferId, setTransferId] = useState("")
-  const { toast } = useToast()
 
   const { data: tickets, refetch } = api.ticket.list.useQuery({ conferenceId })
 
@@ -35,11 +34,11 @@ export default function Tickets() {
     setLoading(true)
     try {
       await apiCreateTicket.mutateAsync({ conferenceId })
-      toast({ title: "Ticket created" })
+      toast.success("Ticket created")
     } catch (error) {
       const title =
         error instanceof Error ? error.message : "Ticket create failed"
-      toast({ title, variant: "destructive" })
+      toast.error(title)
     }
     await refetch()
     setLoading(false)
@@ -55,10 +54,10 @@ export default function Tickets() {
       await apiAcceptTicketTransfer.mutateAsync({
         transferId,
       })
-      toast({ title: "Ticket redeemed" })
+      toast.success("Ticket redeemed")
     } catch (error) {
       const title = error instanceof Error ? error.message : "Redeem failed"
-      toast({ title, variant: "destructive" })
+      toast.error(title)
     }
     await refetch()
     setLoading(false)

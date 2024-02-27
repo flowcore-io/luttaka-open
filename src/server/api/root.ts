@@ -1,8 +1,8 @@
-import { ticketRouter } from "@/server/api/routers/ticket"
-import { createTRPCRouter } from "@/server/api/trpc"
-import { userRouter } from "@/server/api/routers/user"
-import { accountRouter } from "@/server/api/routers/account"
-import { profileRouter } from "@/server/api/routers/profile"
+import {ticketRouter} from "@/server/api/routers/ticket"
+import {createTRPCRouter} from "@/server/api/trpc"
+import {userRouter} from "@/server/api/routers/user"
+import {profileRouter} from "@/server/api/routers/profile"
+import {conferenceRouter} from "@/server/api/routers/conferences";
 
 /**
  * This is the primary router for your server.
@@ -10,10 +10,10 @@ import { profileRouter } from "@/server/api/routers/profile"
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  conference: conferenceRouter,
   user: userRouter,
   profile: profileRouter,
   ticket: ticketRouter,
-  account: accountRouter,
 })
 
 // export type definition of API

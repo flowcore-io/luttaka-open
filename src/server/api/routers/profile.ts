@@ -1,8 +1,7 @@
 import {createTRPCRouter, protectedProcedure} from "@/server/api/trpc";
-import {verifyUserIdMiddleware} from "@/server/api/routers/middlewares/verify-user-id.middleware";
 import {db} from "@/database";
 import {eq} from "drizzle-orm";
-import {profiles, users} from "@/database/schemas";
+import {profiles} from "@/database/schemas";
 import {type UserProfile} from "@/contracts/profile/user-profile";
 import {ProfileByIdInput} from "@/contracts/profile/profile-by-id-input";
 import {getProfileById} from "@/server/api/services/profile/get-profile-by-id";
@@ -23,38 +22,23 @@ export const profileRouter = createTRPCRouter({
     }),
 
   me: protectedProcedure
-    .use(verifyUserIdMiddleware)
     .query(async ({ctx}): Promise<UserProfile> => {
-
-      const externalId = ctx.auth.userId;
-      const user = await db.query.users.findFirst({where: eq(users.externalId, externalId)});
-      if (!user) {
-        throw new Error(`User not found`);
-      }
-
-      return getProfileByUserId(UserByIdInput.parse({userId: user.id}));
+      return getProfileByUserId(UserByIdInput.parse({userId: ctx.user.id}));
     }),
 
   update: protectedProcedure
     .input(UpdateUserProfileInput)
-    .use(verifyUserIdMiddleware)
     .mutation(async ({input, ctx}): Promise<string> => {
 
-      const user = await db.query.users.findFirst(
-        {where: eq(users.externalId, ctx.auth!.userId)}
-      );
-      if (!user) {
-        throw new Error(`User not found`);
-      }
-
-      const profile = await getProfileByUserId(UserByIdInput.parse({userId: user.id}));
+      const userId = ctx.user?.id;
+      const profile = await getProfileByUserId(UserByIdInput.parse({userId}));
       const profileId = profile.id;
 
       await sendWebhook<z.infer<typeof UpdateUserProfileEventPayload>>(
         userEvent.flowType,
         userEvent.eventType.updatedProfile,
         {
-          userId: user.id,
+          userId,
           firstName: input.firstName,
           lastName: input.lastName,
           title: input.title,

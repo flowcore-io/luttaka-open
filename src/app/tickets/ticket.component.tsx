@@ -8,11 +8,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useToast } from "@/components/ui/use-toast"
 import { api } from "@/trpc/react"
 import { Loader, MoreVertical, Share, Trash } from "lucide-react"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useState } from "react"
+import { toast } from "sonner"
 
 export interface TicketProps {
   ticket: {
@@ -28,7 +28,6 @@ export function Ticket({ ticket, refetch }: TicketProps) {
   const [loading, setLoading] = useState(false)
   const [ticketDialogOpened, setTicketDialogOpened] = useState(false)
   const { Canvas } = useQRCode()
-  const { toast } = useToast()
 
   const apiArchiveTicket = api.ticket.archive.useMutation()
   const archiveTicket = useCallback(async () => {
@@ -36,9 +35,9 @@ export function Ticket({ ticket, refetch }: TicketProps) {
     const success = await apiArchiveTicket.mutateAsync({ id: ticket.id })
     if (success) {
       await refetch()
-      toast({ title: "Ticket deleted" })
+      toast.success("Ticket deleted")
     } else {
-      toast({ title: "Delete ticket failed", variant: "destructive" })
+      toast.error("Delete ticket failed")
     }
     setLoading(false)
   }, [ticket.id])
@@ -51,9 +50,9 @@ export function Ticket({ ticket, refetch }: TicketProps) {
     })
     if (id) {
       await refetch()
-      toast({ title: "Ticket transfer created" })
+      toast.success("Ticket transfer created")
     } else {
-      toast({ title: "Ticket transfer create failed", variant: "destructive" })
+      toast.error("Ticket transfer create failed")
     }
     setLoading(false)
   }, [ticket.id])

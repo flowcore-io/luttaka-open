@@ -43,6 +43,23 @@ scenario:
   name: conference-app
   description: "This scenario contains the transformers for the open source conference app"
   transformers:
+    conference:
+      description: "transformer for profiles"
+      dataCore: conference-app
+      flowType: conference.0
+      events:
+        - conference.created.0
+        - conference.updated.0
+        - conference.archived.0
+      parameters:
+        - name: PROXY_ENDPOINT
+          type: manual
+          value: "https://conference.flowcore.app/api/transform/conference.0"
+        - name: PROXY_SECRET_HEADER
+          type: secret
+          value: open-source-conference-app-secret
+      blueprint:
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
     tickets:
       description: "transformer for tickets"
       dataCore: conference-app
@@ -57,7 +74,7 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://flowcore-orgname.loca.lt/api/transform/ticket.0"
+          value: "https://conference.flowcore.app/api/transform/ticket.0"
         - name: PROXY_SECRET_HEADER
           type: secret
           value: open-source-conference-app-secret
@@ -75,10 +92,9 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://flowcore-orgname.loca.lt/api/transform/user/create"
+          value: "https://conference.flowcore.app/api/transform/user/create"
         - name: PROXY_SECRET_HEADER
           type: secret
           value: open-source-conference-app-secret
       blueprint:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
-

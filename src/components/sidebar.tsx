@@ -1,5 +1,5 @@
 import flowcoreLogo from "@/images/flowcore-logo.svg"
-import { BookmarkCheck, Home, Ticket, User, Users } from "lucide-react"
+import { BookmarkCheck, BookOpen, Home, Ticket, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Nav } from "./nav"
@@ -40,11 +40,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             icon: Ticket,
           },
           {
-            href: "/contacts",
-            title: "Contacts",
+            href: "/conferences",
+            title: "Conferences",
             label: "",
             superuserRequired: true,
-            icon: Users,
+            icon: BookOpen,
           },
           {
             href: "/me",

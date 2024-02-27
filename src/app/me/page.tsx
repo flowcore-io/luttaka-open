@@ -5,6 +5,8 @@ import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
 export default async function MyUserRedirectPage() {
 
   const profile = await api.profile.me.query();
@@ -20,7 +22,7 @@ export default async function MyUserRedirectPage() {
         <CardHeader>
           <div className={"flex justify-between"}>
             <h1 className={"text-2xl font-bold"}>Your Profile</h1>
-            <Link className={""} href={`/users/${profile.id}`}>
+            <Link className={""} href={`/profiles/${profile.id}`}>
               <Button>Visit</Button>
             </Link>
           </div>

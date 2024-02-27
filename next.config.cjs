@@ -13,6 +13,8 @@ const withPWA = require("@ducanh2912/next-pwa").default({
     }
 })
 
+const removeImports = require("next-remove-imports")();
+
 const nextConfig = {};
 
-module.exports = withPWA(nextConfig);
+module.exports = withPWA(removeImports(nextConfig));

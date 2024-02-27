@@ -1,5 +1,5 @@
-import { boolean, pgTable, text } from "drizzle-orm/pg-core"
-import { UserRole } from "@/contracts/user/user-role"
+import {boolean, decimal, pgTable, text} from "drizzle-orm/pg-core"
+import {UserRole} from "@/contracts/user/user-role"
 
 export const tickets = pgTable("tickets", {
   id: text("id").primaryKey(),
@@ -34,4 +34,16 @@ export const profiles = pgTable("profiles", {
   avatarUrl: text("avatar_url"),
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
+})
+
+export const conferences = pgTable("conferences", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+  archived: boolean("archived").notNull().default(false),
+  reason: text("reason"),
+  ticketPrice: decimal("ticket_price").notNull().$type<number>(),
+  ticketCurrency: text("ticket_currency").notNull(),
+  startDate: text("start_date").notNull(),
+  endDate: text("end_date").notNull(),
 })

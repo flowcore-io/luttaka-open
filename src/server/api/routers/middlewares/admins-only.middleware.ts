@@ -1,27 +1,24 @@
-import {type MiddlewareInput} from "@/server/api/routers/middlewares/types/middleware-input";
-import {verifyUserIdMiddleware} from "@/server/api/routers/middlewares/verify-user-id.middleware";
-import {clerkClient} from "@clerk/nextjs/server";
+import {UserRole} from "@/contracts/user/user-role";
+import {experimental_standaloneMiddleware} from "@trpc/server";
+import type {SessionContext} from "@/server/api/trpc";
 
 /**
  * A TRPC Middleware to only allow the logged-in user to proceed if they have an admin role
  * @example
  protectedProcedure.use(adminsOnlyMiddleware)
  */
-export const adminsOnlyMiddleware = async <T>
-({
-   ctx,
-   next
- }: MiddlewareInput<T>): Promise<T> => {
+export const adminsOnlyMiddleware =
+  experimental_standaloneMiddleware<{ ctx: SessionContext }>()
+    .create(({ctx, next}) => {
+      const user = ctx.user;
+      if (!user) {
+        throw new Error("User not found");
+      }
 
-  await verifyUserIdMiddleware({ctx, next});
+      const role = user.role as UserRole;
+      if (role !== UserRole.admin) {
+        throw new Error("User does not have permission to perform this action");
+      }
 
-  const user = await clerkClient.users.getUser(ctx.auth!.userId);
-  const privateMetadata = user.privateMetadata;
-
-  const role = privateMetadata.role;
-  if (role !== "admin") {
-    throw new Error("User does not have permission to perform this action");
-  }
-
-  return next();
-}
+      return next();
+    });
