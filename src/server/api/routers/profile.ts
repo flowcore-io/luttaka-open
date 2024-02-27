@@ -1,5 +1,4 @@
 import {createTRPCRouter, protectedProcedure} from "@/server/api/trpc";
-import {verifyUserIdMiddleware} from "@/server/api/routers/middlewares/verify-user-id.middleware";
 import {db} from "@/database";
 import {eq} from "drizzle-orm";
 import {profiles} from "@/database/schemas";
@@ -23,14 +22,12 @@ export const profileRouter = createTRPCRouter({
     }),
 
   me: protectedProcedure
-    .use(verifyUserIdMiddleware)
     .query(async ({ctx}): Promise<UserProfile> => {
       return getProfileByUserId(UserByIdInput.parse({userId: ctx.user.id}));
     }),
 
   update: protectedProcedure
     .input(UpdateUserProfileInput)
-    .use(verifyUserIdMiddleware)
     .mutation(async ({input, ctx}): Promise<string> => {
 
       const userId = ctx.user?.id;
