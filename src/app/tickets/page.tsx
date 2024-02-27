@@ -55,13 +55,14 @@ export default function Tickets() {
       await apiAcceptTicketTransfer.mutateAsync({
         transferId,
       })
-      toast({ title: "Ticket redeemed, it should show in your list shortly" })
+      toast({ title: "Ticket redeemed" })
     } catch (error) {
       const title = error instanceof Error ? error.message : "Redeem failed"
       toast({ title, variant: "destructive" })
     }
     await refetch()
     setLoading(false)
+    setTransferId("")
     setTicketRedeemDialogOpened(false)
   }, [userId, transferId])
 

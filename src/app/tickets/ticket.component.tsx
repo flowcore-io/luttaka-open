@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { useToast } from "@/components/ui/use-toast"
 import { api } from "@/trpc/react"
-import { Loader, Share, Trash } from "lucide-react"
+import { Loader, MoreVertical, Share, Trash } from "lucide-react"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useState } from "react"
 
@@ -55,7 +63,7 @@ export function Ticket({ ticket, refetch }: TicketProps) {
       <div
         key={ticket.id}
         onClick={() => setTicketDialogOpened(true)}
-        className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:scale-101 hover:shadow-lg">
+        className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:shadow-lg">
         <div className={"pr-4"}>
           <img src={"/images/tonik.svg"} width={120} />
         </div>
@@ -69,27 +77,31 @@ export function Ticket({ ticket, refetch }: TicketProps) {
           )}
         </div>
         <div className={"text-right"}>
-          {!ticket.transferId && (
-            <Button
-              className={"mr-2"}
-              size={"sm"}
-              onClick={(e) => {
-                e.stopPropagation()
-                return createTicketTransfer()
-              }}
-              disabled={loading}>
-              {loading ? <Loader className={"animate-spin"} /> : <Share />}
-            </Button>
-          )}
-          <Button
-            size={"sm"}
-            onClick={(e) => {
-              e.stopPropagation()
-              return archiveTicket()
-            }}
-            disabled={loading}>
-            {loading ? <Loader className={"animate-spin"} /> : <Trash />}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant={"ghost"} size={"sm"} disabled={loading}>
+                <MoreVertical />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className={"w-56"}>
+              <DropdownMenuLabel>Ticket</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  return archiveTicket()
+                }}>
+                <Trash size={14} className={"mr-2"} /> Delete ticket
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  return createTicketTransfer()
+                }}>
+                <Share size={14} className={"mr-2"} /> Transfer ticket
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <Dialog
