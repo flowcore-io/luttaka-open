@@ -43,3 +43,4 @@ yarn-error.log*
 
 # ignore the local flowcore config
 flowcore.local.yaml
+certificates
