@@ -59,7 +59,6 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({conference, clo
   const [hasTime, setHasTime] = useState(true);
 
   const onSubmit = useCallback(async (values: UpdateConferenceInput) => {
-    console.log("values", values);
     if (conference.startDate !== values.startDate || conference.endDate !== values.endDate) {
       if (new Date(values.startDate ?? conference.startDate) > new Date(values.endDate ?? conference.endDate)) {
         form.setError("startDate", {
@@ -69,7 +68,6 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({conference, clo
         return;
       }
     }
-    console.log("HELLO");
 
     const valuesToSubmit: UpdateConferenceInput = {
       id: conference.id,
@@ -80,8 +78,6 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({conference, clo
       startDate: conference.startDate !== values.startDate ? values.startDate : undefined,
       endDate: conference.endDate !== values.endDate ? values.endDate : undefined,
     };
-
-    console.log("values to submit", valuesToSubmit);
 
     await updateConference.mutateAsync(valuesToSubmit);
     toast.success("Conference Updated");
@@ -145,13 +141,13 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({conference, clo
             </FormItem>
           )}
         />
-        <FormField render={({ field }) => (
+        <FormField render={({field}) => (
           <FormItem>
             <FormLabel>Currency</FormLabel>
             <FormControl>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger className="w-[280px]">
-                  <SelectValue placeholder="Select currency" />
+                  <SelectValue placeholder="Select currency"/>
                 </SelectTrigger>
                 <SelectContent>
                   {codes.map((code) => (
@@ -162,7 +158,7 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({conference, clo
             </FormControl>
             <FormMessage/>
           </FormItem>
-        )} name={"ticketCurrency"} control={form.control} />
+        )} name={"ticketCurrency"} control={form.control}/>
         <FormField
           control={form.control}
           name={"ticketPrice"}
@@ -219,7 +215,7 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({conference, clo
                   }} value={{
                     date: new Date(field.value ?? conference.endDate),
                     hasTime: hasTime,
-                  }} />
+                  }}/>
                 </div>
               </FormControl>
               <FormMessage/>
@@ -228,7 +224,7 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({conference, clo
         />
         <div className={"flex justify-end"}>
           <Button type={"submit"} disabled={updateConference.isLoading}>
-            { updateConference.isLoading && <Loader className={"animate-spin"} /> }
+            {updateConference.isLoading && <Loader className={"animate-spin"}/>}
             Update Conference
           </Button>
         </div>
