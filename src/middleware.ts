@@ -1,4 +1,4 @@
-import { authMiddleware } from "@clerk/nextjs"
+import {authMiddleware} from "@clerk/nextjs"
 
 export default authMiddleware({
   publicRoutes: [
@@ -7,6 +7,7 @@ export default authMiddleware({
     "/api/transform/ticket.0",
     "/api/transform/user.0",
     "/api/transform/profile.0",
+    "/api/transform/conference.0",
   ],
 })
 

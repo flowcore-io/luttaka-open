@@ -1,14 +1,14 @@
 import "@/styles/globals.css";
 
-import { Inter } from "next/font/google";
-import { cookies } from "next/headers";
+import {Inter} from "next/font/google";
+import {cookies} from "next/headers";
 
-import { TRPCReactProvider } from "@/trpc/react";
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
+import {TRPCReactProvider} from "@/trpc/react";
+import {ClerkProvider, SignedIn, SignedOut} from "@clerk/nextjs";
 import PublicPage from "./public-page";
 import ProtectedPage from "./protected-page";
-import { Toaster } from "@/components/ui/toaster";
-import { Viewport } from "next";
+import {type Viewport} from "next";
+import {Toaster} from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],

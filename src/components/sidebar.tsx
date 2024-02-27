@@ -1,8 +1,8 @@
 import flowcoreLogo from "@/images/flowcore-logo.svg"
-import { Home, Ticket, User, Users } from "lucide-react"
+import {BookOpen, Home, Ticket, User} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Nav } from "./nav"
+import {Nav} from "./nav"
 
 interface SidebarProps {
   isSidebarOpen?: boolean
@@ -40,11 +40,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             icon: Ticket,
           },
           {
-            href: "/contacts",
-            title: "Contacts",
+            href: "/conferences",
+            title: "Conferences",
             label: "",
             superuserRequired: true,
-            icon: Users,
+            icon: BookOpen,
           },
           {
             href: "/me",
