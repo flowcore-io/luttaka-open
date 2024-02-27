@@ -8,10 +8,18 @@
  */
 import {initTRPC, TRPCError} from "@trpc/server";
 import superjson from "superjson";
-import {ZodError} from "zod";
-import type {SignedInAuthObject, SignedOutAuthObject,} from "@clerk/nextjs/server";
+import {type z, ZodError} from "zod";
+import {clerkClient, type SignedInAuthObject, type SignedOutAuthObject,} from "@clerk/nextjs/server";
 
 import {db} from "@/database";
+import {eq} from "drizzle-orm";
+import {profiles, users} from "@/database/schemas";
+import {type User} from "@/contracts/user/user";
+import {UserRole} from "@/contracts/user/user-role";
+import {sendWebhook} from "@/lib/webhook";
+import {type UserCreatedEventPayload, userEvent} from "@/contracts/events/user";
+import {waitFor} from "@/server/lib/delay/wait-for";
+import shortUUID from "short-uuid";
 
 /**
  * 1. CONTEXT
@@ -25,10 +33,69 @@ import {db} from "@/database";
  *
  * @see https://trpc.io/docs/server/context
  */
+
 type AuthContext = SignedInAuthObject | SignedOutAuthObject;
-export const createTRPCContext = async (opts: { auth: AuthContext }) => {
+
+export type SessionContext = {
+  db: typeof db;
+  user: User | undefined;
+  auth: AuthContext;
+}
+
+export const createTRPCContext = async (opts: { auth: AuthContext }): Promise<SessionContext> => {
+
+  const externalId = opts.auth.userId;
+  if (!externalId) {
+    return {
+      db,
+      user: undefined,
+      ...opts,
+    };
+  }
+
+  const externalUser = await clerkClient.users.getUser(externalId);
+
+  // todo: move this into a service to reduce code scan
+  const user = await db.query.users.findFirst(
+    {where: eq(users.externalId, externalId)}
+  );
+  if (user) {
+    return {
+      db,
+      user: {...user, role: user.role as UserRole},
+      ...opts,
+    };
+  }
+
+  const userId = shortUUID.generate();
+  await sendWebhook<z.infer<typeof UserCreatedEventPayload>>(
+    userEvent.flowType, userEvent.eventType.created, {
+      userId: userId,
+      role: UserRole.user,
+      externalId,
+      firstName: externalUser.firstName ?? "",
+      lastName: externalUser.lastName ?? "",
+      title: "",
+      description: "",
+      socials: "",
+      company: "",
+      avatarUrl: externalUser.imageUrl ?? "",
+    }
+  );
+
+  const result = await waitFor(
+    async () =>
+      db.query.profiles.findFirst({where: eq(profiles.userId, userId)}),
+    (result) => !!result
+  );
+
+  if (!result) {
+    throw new Error("Failed to generate internal user");
+  }
+
   return {
     db,
+    user,
     ...opts,
   };
 };
@@ -42,7 +109,7 @@ export const createTRPCContext = async (opts: { auth: AuthContext }) => {
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
-  errorFormatter({ shape, error }) {
+  errorFormatter({shape, error}) {
     return {
       ...shape,
       data: {
@@ -81,13 +148,19 @@ export const publicProcedure = t.procedure;
  * Reusable middleware that enforces users are logged in before running the
  * procedure
  */
-const enforceUserIsAuthed = t.middleware(({ next, ctx }) => {
+const enforceUserIsAuthed = t.middleware(async ({next, ctx}) => {
   if (!ctx.auth.userId) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({code: "UNAUTHORIZED"});
   }
+
+  if (!ctx.user) {
+    throw new TRPCError({code: "UNAUTHORIZED"});
+  }
+
   return next({
     ctx: {
       auth: ctx.auth,
+      user: ctx.user,
     },
   });
 });

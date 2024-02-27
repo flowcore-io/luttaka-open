@@ -20,7 +20,7 @@ export default async function MyUserRedirectPage() {
         <CardHeader>
           <div className={"flex justify-between"}>
             <h1 className={"text-2xl font-bold"}>Your Profile</h1>
-            <Link className={""} href={`/users/${profile.id}`}>
+            <Link className={""} href={`/profiles/${profile.id}`}>
               <Button>Visit</Button>
             </Link>
           </div>
