@@ -12,6 +12,7 @@ import {sendWebhook} from "@/lib/webhook";
 import {type z} from "zod";
 import {waitFor} from "@/server/lib/delay/wait-for";
 import {type UpdateUserProfileEventPayload, userEvent} from "@/contracts/events/user";
+import {getProfiles} from "@/server/api/services/profile/get-profiles";
 
 export const profileRouter = createTRPCRouter({
 
@@ -24,6 +25,11 @@ export const profileRouter = createTRPCRouter({
   me: protectedProcedure
     .query(async ({ctx}): Promise<UserProfile> => {
       return getProfileByUserId(UserByIdInput.parse({userId: ctx.user.id}));
+    }),
+
+  page: protectedProcedure
+    .query(async (): Promise<UserProfile[]> => {
+      return await getProfiles();
     }),
 
   update: protectedProcedure
