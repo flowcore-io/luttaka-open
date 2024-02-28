@@ -1,4 +1,5 @@
 import { MoreVertical, Share, Trash } from "lucide-react"
+import Image from "next/image"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
@@ -82,7 +83,12 @@ export function Ticket({ ticket, refetch }: TicketProps) {
         onClick={() => setTicketDialogOpened(true)}
         className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:shadow-lg">
         <div className={"pr-4"}>
-          <Image alt={"Tonik"} src={"/images/tonik.svg"} width={120} />
+          <Image
+            alt={"Tonik"}
+            src={"/images/tonik.svg"}
+            width={120}
+            height={120}
+          />
         </div>
         <div className={"flex-1 self-stretch"}>
           <div className={"font-bold"}>Tonik 2024</div>
@@ -140,7 +146,12 @@ export function Ticket({ ticket, refetch }: TicketProps) {
         onOpenChange={(opened) => setTicketDialogOpened(opened)}>
         <DialogContent>
           <div className={"flex justify-center"}>
-            <Image alt={"Tonik"} src={"/images/tonik.svg"} width={240} />
+            <Image
+              alt={"Tonik"}
+              src={"/images/tonik.svg"}
+              width={240}
+              height={240}
+            />
           </div>
           <div className={"flex justify-center"}>
             <Canvas

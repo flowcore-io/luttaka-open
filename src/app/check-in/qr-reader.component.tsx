@@ -1,6 +1,6 @@
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
 import QrScanner from "qr-scanner"
+import { useEffect, useRef, useState } from "react"
 
 interface QrReaderProps {
   onScanSuccess: (result: string) => void
@@ -52,7 +52,7 @@ const QrReader = (props: QrReaderProps) => {
   return (
     <div
       className={
-        "h-50vh relative mx-auto w-full overflow-hidden rounded-md border border-gray-800 shadow-lg"
+        "relative mx-auto h-50vh w-full overflow-hidden rounded-md border border-gray-800 shadow-lg"
       }>
       <video ref={videoEl} className={"h-full w-full object-cover"}></video>
       <div ref={qrBoxEl} className={"left-0 w-full"}>
