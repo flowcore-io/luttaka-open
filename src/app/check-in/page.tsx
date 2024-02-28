@@ -1,5 +1,9 @@
 "use client"
 
+import { AlertCircle } from "lucide-react"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
+
 import QrReader from "@/app/check-in/qr-reader.component"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -19,9 +23,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { api } from "@/trpc/react"
-import { AlertCircle } from "lucide-react"
-import { useEffect, useState } from "react"
-import { toast } from "sonner"
 
 export default function CheckInPage() {
   const [pristine, setPristine] = useState(true)
