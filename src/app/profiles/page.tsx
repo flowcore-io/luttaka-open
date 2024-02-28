@@ -3,6 +3,7 @@
 import {api} from "@/trpc/react";
 import React, {useMemo} from "react";
 import {ProfileList} from "@/app/profiles/profile-list.component";
+import {PageTitle} from "@/components/ui/page-title";
 
 export default function ProfilePage() {
 
@@ -16,11 +17,10 @@ export default function ProfilePage() {
   }, [profilesRequest.data]);
 
   return (<div>
-    <div className={"mt-2 mb-4"}>
-      <h1 className={"font-bold text-4xl"}>Participants</h1>
-      <p>A list of all the people who are partaking in this conference</p>
-    </div>
-
+    <PageTitle
+      title={"Participants"}
+      subtitle={"A list of all the people who are partaking in this conference"}
+    />
     <ProfileList profiles={profiles}/>
   </div>);
 }
