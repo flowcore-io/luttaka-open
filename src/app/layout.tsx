@@ -12,7 +12,7 @@ import {Toaster} from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
 });
 
 export const metadata = {
@@ -33,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`min-h-screen font-sans ${inter.variable}`}>
+      <body className={`min-h-screen ${inter.variable} font-inter`}>
         <ClerkProvider>
           <SignedOut>
             <PublicPage children={children} />

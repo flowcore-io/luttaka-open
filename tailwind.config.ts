@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        inter: ['var(--font-inter)']
+      },
       scale: {
         "101": "1.01",
       },
