@@ -1,14 +1,20 @@
 "use client"
 
-import {Ticket} from "@/app/tickets/ticket.component"
-import {Button} from "@/components/ui/button"
-import {Dialog, DialogContent, DialogFooter, DialogHeader,} from "@/components/ui/dialog"
-import {Input} from "@/components/ui/input"
-import {api} from "@/trpc/react"
-import {useAuth} from "@clerk/nextjs"
-import {Loader} from "lucide-react"
-import {useCallback, useState} from "react"
-import {toast} from "sonner"
+import { useAuth } from "@clerk/nextjs"
+import { Loader } from "lucide-react"
+import { useCallback, useState } from "react"
+import { toast } from "sonner"
+
+import { Ticket } from "@/app/tickets/ticket.component"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { api } from "@/trpc/react"
 
 const conferenceId = "xxxxxxxxxxxxxxxxxxxxxx"
 
@@ -29,11 +35,11 @@ export default function Tickets() {
     setLoading(true)
     try {
       await apiCreateTicket.mutateAsync({ conferenceId })
-      toast.success("Ticket created");
+      toast.success("Ticket created")
     } catch (error) {
       const title =
         error instanceof Error ? error.message : "Ticket create failed"
-      toast.error(title);
+      toast.error(title)
     }
     await refetch()
     setLoading(false)
@@ -49,7 +55,7 @@ export default function Tickets() {
       await apiAcceptTicketTransfer.mutateAsync({
         transferId,
       })
-      toast.success("Ticket redeemed, it should show in your list shortly");
+      toast.success("Ticket redeemed, it should show in your list shortly")
     } catch (error) {
       const title = error instanceof Error ? error.message : "Redeem failed"
       toast.error(title)

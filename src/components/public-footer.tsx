@@ -1,4 +1,4 @@
-import { SignInButton } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs"
 
 const PublicFooter = () => {
   return (
@@ -11,7 +11,7 @@ const PublicFooter = () => {
         </SignInButton>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default PublicFooter;
+export default PublicFooter

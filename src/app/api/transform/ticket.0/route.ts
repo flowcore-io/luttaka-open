@@ -1,3 +1,5 @@
+import { eq } from "drizzle-orm"
+
 import {
   ticket,
   TicketEventArchivedPayload,
@@ -7,10 +9,9 @@ import {
   TicketEventTransferCreatedPayload,
   TicketEventUpdatedPayload,
 } from "@/contracts/events/ticket"
-import EventTransformer from "@/lib/event-transformer"
-import { eq } from "drizzle-orm"
 import { db } from "@/database"
 import { tickets, ticketTransfers } from "@/database/schemas"
+import EventTransformer from "@/lib/event-transformer"
 
 const eventTransformer = new EventTransformer(ticket, {
   created: async (payload: unknown) => {

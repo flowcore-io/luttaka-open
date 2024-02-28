@@ -1,26 +1,34 @@
 "use client"
 
-import {type FC, useCallback} from "react";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {useForm} from "react-hook-form";
-import {Input} from "@/components/ui/input";
-import {type z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Button} from "@/components/ui/button";
-import {UpdateUserProfileInput} from "@/contracts/profile/update-profile-input";
-import {type UserProfile} from "@/contracts/profile/user-profile";
-import {Textarea} from "@/components/ui/textarea";
-import {api} from "@/trpc/react";
-import {useRouter} from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { type FC, useCallback } from "react"
+import { useForm } from "react-hook-form"
+import { type z } from "zod"
+
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
+import { type UserProfile } from "@/contracts/profile/user-profile"
+import { api } from "@/trpc/react"
 
 export type UserProfileProps = {
-  user: UserProfile;
+  user: UserProfile
 }
 
-export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
-
-  const updateProfile = api.profile.update.useMutation();
-  const router = useRouter();
+export const UserProfileForm: FC<UserProfileProps> = ({ user }) => {
+  const updateProfile = api.profile.update.useMutation()
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof UpdateUserProfileInput>>({
     resolver: zodResolver(UpdateUserProfileInput),
@@ -31,14 +39,17 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
       company: user.company,
       description: user.description,
       socials: user.socials,
-      avatarUrl: user.avatarUrl
-    }
-  });
+      avatarUrl: user.avatarUrl,
+    },
+  })
 
-  const onSubmit = useCallback(async (values: z.infer<typeof UpdateUserProfileInput>) => {
-    await updateProfile.mutateAsync(values);
-    router.refresh();
-  }, []);
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof UpdateUserProfileInput>) => {
+      await updateProfile.mutateAsync(values)
+      router.refresh()
+    },
+    [],
+  )
 
   return (
     <Form {...form}>
@@ -46,81 +57,79 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
         <FormField
           control={form.control}
           name={"firstName"}
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>First Name</FormLabel>
               <FormControl>
                 <Input placeholder={"first name"} {...field} />
               </FormControl>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name={"lastName"}
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Last Name</FormLabel>
               <FormControl>
                 <Input placeholder={"last name"} {...field} />
               </FormControl>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name={"title"}
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder={"your job title"} {...field} />
               </FormControl>
-              <FormDescription>
-                What do you work as?
-              </FormDescription>
-              <FormMessage/>
+              <FormDescription>What do you work as?</FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name={"description"}
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea placeholder={"description"} {...field} />
               </FormControl>
-              <FormDescription>
-                A brief description of yourself
-              </FormDescription>
-              <FormMessage/>
+              <FormDescription>A brief description of yourself</FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name={"company"}
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Company</FormLabel>
               <FormControl>
-                <Input placeholder={"company name"} {...field} disabled={true}/>
+                <Input
+                  placeholder={"company name"}
+                  {...field}
+                  disabled={true}
+                />
               </FormControl>
-              <FormDescription>
-                Currently not available.
-              </FormDescription>
-              <FormMessage/>
+              <FormDescription>Currently not available.</FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name={"socials"}
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Socials</FormLabel>
               <FormControl>
@@ -129,7 +138,7 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
               <FormDescription>
                 Your preferred social media presence
               </FormDescription>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -138,6 +147,5 @@ export const UserProfileForm: FC<UserProfileProps> = ({user}) => {
         </div>
       </form>
     </Form>
-  );
+  )
 }
-

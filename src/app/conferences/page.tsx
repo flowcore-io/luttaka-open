@@ -1,21 +1,22 @@
 "use client"
 
-import {Button} from "@/components/ui/button"
-import {Dialog, DialogContent, DialogHeader,} from "@/components/ui/dialog"
-import {api} from "@/trpc/react"
-import {useAuth} from "@clerk/nextjs"
-import {Loader} from "lucide-react"
-import {useState} from "react"
-import {Conference} from "@/app/conferences/conference.component";
-import {CreateConferenceForm} from "@/app/conferences/create-conference.form";
+import { useAuth } from "@clerk/nextjs"
+import { Loader } from "lucide-react"
+import { useState } from "react"
+
+import { Conference } from "@/app/conferences/conference.component"
+import { CreateConferenceForm } from "@/app/conferences/create-conference.form"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
+import { api } from "@/trpc/react"
 
 export default function Conferences() {
-  const { isLoaded, userId } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { isLoaded, userId } = useAuth()
+  const [loading, setLoading] = useState(false)
   const [createConferenceDialogOpened, setCreateConferenceDialogOpened] =
-    useState(false);
+    useState(false)
 
-  const { data: conferences, refetch } = api.conference.list.useQuery();
+  const { data: conferences, refetch } = api.conference.list.useQuery()
 
   if (!isLoaded || !userId) {
     return null
@@ -31,7 +32,11 @@ export default function Conferences() {
           <Button
             onClick={() => setCreateConferenceDialogOpened(true)}
             disabled={loading}>
-            {loading ? <Loader className={"animate-spin"} /> : "Create Conference"}
+            {loading ? (
+              <Loader className={"animate-spin"} />
+            ) : (
+              "Create Conference"
+            )}
           </Button>
         </div>
       </div>
@@ -41,7 +46,9 @@ export default function Conferences() {
           key={conference.id}
           conference={{
             ...conference,
-            ...(typeof conference.ticketPrice === "string" && { ticketPrice: parseFloat(conference.ticketPrice) }),
+            ...(typeof conference.ticketPrice === "string" && {
+              ticketPrice: parseFloat(conference.ticketPrice),
+            }),
           }}
           refetch={async () => {
             await refetch()
@@ -56,7 +63,10 @@ export default function Conferences() {
         }}>
         <DialogContent className={"max-w-4xl"}>
           <DialogHeader>Create new conference</DialogHeader>
-          <CreateConferenceForm close={() => setCreateConferenceDialogOpened(false)} refetch={() => refetch()}/>
+          <CreateConferenceForm
+            close={() => setCreateConferenceDialogOpened(false)}
+            refetch={() => refetch()}
+          />
         </DialogContent>
       </Dialog>
     </main>

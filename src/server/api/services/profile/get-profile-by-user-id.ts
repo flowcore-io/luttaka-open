@@ -1,22 +1,25 @@
-import type {z} from "zod";
-import {db} from "@/database";
-import {eq} from "drizzle-orm";
-import {profiles} from "@/database/schemas";
-import {getInitialsFromString} from "@/server/lib/format/get-initials-from-string";
-import {type UserByIdInput} from "@/contracts/user/user-by-id-input";
-import {type UserProfile} from "@/contracts/profile/user-profile";
+import { eq } from "drizzle-orm"
+import type { z } from "zod"
 
-export const getProfileByUserId = async (input: z.infer<typeof UserByIdInput>): Promise<UserProfile> => {
-  const profile = await db.query.profiles.findFirst(
-    {where: eq(profiles.userId, input.userId)}
-  );
+import { type UserProfile } from "@/contracts/profile/user-profile"
+import { type UserByIdInput } from "@/contracts/user/user-by-id-input"
+import { db } from "@/database"
+import { profiles } from "@/database/schemas"
+import { getInitialsFromString } from "@/server/lib/format/get-initials-from-string"
+
+export const getProfileByUserId = async (
+  input: z.infer<typeof UserByIdInput>,
+): Promise<UserProfile> => {
+  const profile = await db.query.profiles.findFirst({
+    where: eq(profiles.userId, input.userId),
+  })
 
   if (!profile) {
-    throw new Error(`Profile not found`);
+    throw new Error(`Profile not found`)
   }
 
-  const displayName = `${profile.firstName} ${profile.lastName}`;
-  const initials = getInitialsFromString(displayName);
+  const displayName = `${profile.firstName} ${profile.lastName}`
+  const initials = getInitialsFromString(displayName)
   return {
     id: profile.id,
     userId: profile.userId,
@@ -29,5 +32,5 @@ export const getProfileByUserId = async (input: z.infer<typeof UserByIdInput>): 
     company: profile.company ?? "",
     avatarUrl: profile.avatarUrl ?? "",
     initials,
-  };
+  }
 }

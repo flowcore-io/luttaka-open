@@ -8,6 +8,7 @@
     "db:push": "env-cmd -x drizzle-kit push:pg --schema=src/database/schemas.ts --driver pg --connectionString=\\$POSTGRES_URL",
     "dev": "next dev",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "start": "next start",
     "docker:db": "docker compose up -d postgres",
     "docker:app": "docker compose --env-file .container.env up",

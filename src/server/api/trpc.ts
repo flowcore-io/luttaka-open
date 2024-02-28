@@ -6,20 +6,27 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import {initTRPC, TRPCError} from "@trpc/server";
-import superjson from "superjson";
-import {type z, ZodError} from "zod";
-import {clerkClient, type SignedInAuthObject, type SignedOutAuthObject,} from "@clerk/nextjs/server";
+import {
+  clerkClient,
+  type SignedInAuthObject,
+  type SignedOutAuthObject,
+} from "@clerk/nextjs/server"
+import { initTRPC, TRPCError } from "@trpc/server"
+import { eq } from "drizzle-orm"
+import shortUUID from "short-uuid"
+import superjson from "superjson"
+import { type z, ZodError } from "zod"
 
-import {db} from "@/database";
-import {eq} from "drizzle-orm";
-import {profiles, users} from "@/database/schemas";
-import {type User} from "@/contracts/user/user";
-import {UserRole} from "@/contracts/user/user-role";
-import {sendWebhook} from "@/lib/webhook";
-import {type UserCreatedEventPayload, userEvent} from "@/contracts/events/user";
-import {waitFor} from "@/server/lib/delay/wait-for";
-import shortUUID from "short-uuid";
+import {
+  type UserCreatedEventPayload,
+  userEvent,
+} from "@/contracts/events/user"
+import { type User } from "@/contracts/user/user"
+import { UserRole } from "@/contracts/user/user-role"
+import { db } from "@/database"
+import { profiles, users } from "@/database/schemas"
+import { sendWebhook } from "@/lib/webhook"
+import { waitFor } from "@/server/lib/delay/wait-for"
 
 /**
  * 1. CONTEXT
@@ -34,42 +41,45 @@ import shortUUID from "short-uuid";
  * @see https://trpc.io/docs/server/context
  */
 
-type AuthContext = SignedInAuthObject | SignedOutAuthObject;
+type AuthContext = SignedInAuthObject | SignedOutAuthObject
 
 export type SessionContext = {
-  db: typeof db;
-  user: User | undefined;
-  auth: AuthContext;
+  db: typeof db
+  user: User | undefined
+  auth: AuthContext
 }
 
-export const createTRPCContext = async (opts: { auth: AuthContext }): Promise<SessionContext> => {
-
-  const externalId = opts.auth.userId;
+export const createTRPCContext = async (opts: {
+  auth: AuthContext
+}): Promise<SessionContext> => {
+  const externalId = opts.auth.userId
   if (!externalId) {
     return {
       db,
       user: undefined,
       ...opts,
-    };
+    }
   }
 
-  const externalUser = await clerkClient.users.getUser(externalId);
+  const externalUser = await clerkClient.users.getUser(externalId)
 
   // todo: move this into a service to reduce code scan
-  const user = await db.query.users.findFirst(
-    {where: eq(users.externalId, externalId)}
-  );
+  const user = await db.query.users.findFirst({
+    where: eq(users.externalId, externalId),
+  })
   if (user) {
     return {
       db,
-      user: {...user, role: user.role as UserRole},
+      user: { ...user, role: user.role as UserRole },
       ...opts,
-    };
+    }
   }
 
-  const userId = shortUUID.generate();
+  const userId = shortUUID.generate()
   await sendWebhook<z.infer<typeof UserCreatedEventPayload>>(
-    userEvent.flowType, userEvent.eventType.created, {
+    userEvent.flowType,
+    userEvent.eventType.created,
+    {
       userId: userId,
       role: UserRole.user,
       externalId,
@@ -80,25 +90,25 @@ export const createTRPCContext = async (opts: { auth: AuthContext }): Promise<Se
       socials: "",
       company: "",
       avatarUrl: externalUser.imageUrl ?? "",
-    }
-  );
+    },
+  )
 
   const result = await waitFor(
     async () =>
-      db.query.profiles.findFirst({where: eq(profiles.userId, userId)}),
-    (result) => !!result
-  );
+      db.query.profiles.findFirst({ where: eq(profiles.userId, userId) }),
+    (result) => !!result,
+  )
 
   if (!result) {
-    throw new Error("Failed to generate internal user");
+    throw new Error("Failed to generate internal user")
   }
 
   return {
     db,
     user,
     ...opts,
-  };
-};
+  }
+}
 
 /**
  * 2. INITIALIZATION
@@ -109,7 +119,7 @@ export const createTRPCContext = async (opts: { auth: AuthContext }): Promise<Se
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
-  errorFormatter({shape, error}) {
+  errorFormatter({ shape, error }) {
     return {
       ...shape,
       data: {
@@ -117,9 +127,9 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
         zodError:
           error.cause instanceof ZodError ? error.cause.flatten() : null,
       },
-    };
+    }
   },
-});
+})
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
@@ -133,7 +143,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  *
  * @see https://trpc.io/docs/router
  */
-export const createTRPCRouter = t.router;
+export const createTRPCRouter = t.router
 
 /**
  * Public (unauthenticated) procedure
@@ -142,19 +152,19 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure;
+export const publicProcedure = t.procedure
 
 /**
  * Reusable middleware that enforces users are logged in before running the
  * procedure
  */
-const enforceUserIsAuthed = t.middleware(async ({next, ctx}) => {
+const enforceUserIsAuthed = t.middleware(async ({ next, ctx }) => {
   if (!ctx.auth.userId) {
-    throw new TRPCError({code: "UNAUTHORIZED"});
+    throw new TRPCError({ code: "UNAUTHORIZED" })
   }
 
   if (!ctx.user) {
-    throw new TRPCError({code: "UNAUTHORIZED"});
+    throw new TRPCError({ code: "UNAUTHORIZED" })
   }
 
   return next({
@@ -162,8 +172,8 @@ const enforceUserIsAuthed = t.middleware(async ({next, ctx}) => {
       auth: ctx.auth,
       user: ctx.user,
     },
-  });
-});
+  })
+})
 
 // export this procedure to be used anywhere in your application
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedProcedure = t.procedure.use(enforceUserIsAuthed)

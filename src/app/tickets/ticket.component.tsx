@@ -1,10 +1,11 @@
-import {Button} from "@/components/ui/button"
-import {Dialog, DialogContent} from "@/components/ui/dialog"
-import {api} from "@/trpc/react"
-import {Loader, Share, Trash} from "lucide-react"
-import {useQRCode} from "next-qrcode"
-import {useCallback, useState} from "react"
-import {toast} from "sonner";
+import { Loader, Share, Trash } from "lucide-react"
+import { useQRCode } from "next-qrcode"
+import { useCallback, useState } from "react"
+import { toast } from "sonner"
+
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { api } from "@/trpc/react"
 
 export interface TicketProps {
   ticket: {
@@ -27,9 +28,9 @@ export function Ticket({ ticket, refetch }: TicketProps) {
     const success = await apiArchiveTicket.mutateAsync({ id: ticket.id })
     if (success) {
       await refetch()
-      toast.success("Ticket deleted");
+      toast.success("Ticket deleted")
     } else {
-      toast.error("Delete ticket failed");
+      toast.error("Delete ticket failed")
     }
     setLoading(false)
   }, [ticket.id])
@@ -42,9 +43,9 @@ export function Ticket({ ticket, refetch }: TicketProps) {
     })
     if (id) {
       await refetch()
-      toast.success("Ticket transfer created");
+      toast.success("Ticket transfer created")
     } else {
-      toast.error("Ticket transfer create failed");
+      toast.error("Ticket transfer create failed")
     }
     setLoading(false)
   }, [ticket.id])

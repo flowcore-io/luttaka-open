@@ -1,18 +1,19 @@
+import { and, eq } from "drizzle-orm"
+import shortUuid from "short-uuid"
+import { z } from "zod"
+
 import {
   sendTicketArchivedEvent,
   sendTicketCreatedEvent,
+  sendTicketTransferAcceptedEvent,
   sendTicketTransferCancelledEvent,
   sendTicketTransferCreatedEvent,
-  sendTicketTransferAcceptedEvent,
   sendTicketUpdatedEvent,
 } from "@/contracts/events/ticket"
 import { db } from "@/database"
 import { tickets, ticketTransfers } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
-import { and, eq } from "drizzle-orm"
-import shortUuid from "short-uuid"
-import { z } from "zod"
 
 const GetTicketListInput = z.object({
   conferenceId: z.string(),

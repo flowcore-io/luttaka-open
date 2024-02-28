@@ -1,8 +1,10 @@
-import flowcoreLogo from "@/images/flowcore-logo.svg"
-import {BookOpen, Home, Ticket, User} from "lucide-react"
+import { BookOpen, Home, Ticket, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import {Nav} from "./nav"
+
+import flowcoreLogo from "@/images/flowcore-logo.svg"
+
+import { Nav } from "./nav"
 
 interface SidebarProps {
   isSidebarOpen?: boolean

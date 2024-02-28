@@ -1,6 +1,7 @@
-import Image from "next/image";
-import flowcoreLogo from "@/images/flowcore-logo.svg";
-import { SignInButton } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs"
+import Image from "next/image"
+
+import flowcoreLogo from "@/images/flowcore-logo.svg"
 
 const PublicHeader = () => {
   return (
@@ -19,7 +20,7 @@ const PublicHeader = () => {
         </SignInButton>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default PublicHeader;
+export default PublicHeader

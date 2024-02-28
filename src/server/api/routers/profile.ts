@@ -1,38 +1,39 @@
-import {createTRPCRouter, protectedProcedure} from "@/server/api/trpc";
-import {db} from "@/database";
-import {eq} from "drizzle-orm";
-import {profiles} from "@/database/schemas";
-import {type UserProfile} from "@/contracts/profile/user-profile";
-import {ProfileByIdInput} from "@/contracts/profile/profile-by-id-input";
-import {getProfileById} from "@/server/api/services/profile/get-profile-by-id";
-import {getProfileByUserId} from "@/server/api/services/profile/get-profile-by-user-id";
-import {UserByIdInput} from "@/contracts/user/user-by-id-input";
-import {UpdateUserProfileInput} from "@/contracts/profile/update-profile-input";
-import {sendWebhook} from "@/lib/webhook";
-import {type z} from "zod";
-import {waitFor} from "@/server/lib/delay/wait-for";
-import {type UpdateUserProfileEventPayload, userEvent} from "@/contracts/events/user";
+import { eq } from "drizzle-orm"
+import { type z } from "zod"
+
+import {
+  type UpdateUserProfileEventPayload,
+  userEvent,
+} from "@/contracts/events/user"
+import { ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
+import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
+import { type UserProfile } from "@/contracts/profile/user-profile"
+import { UserByIdInput } from "@/contracts/user/user-by-id-input"
+import { db } from "@/database"
+import { profiles } from "@/database/schemas"
+import { sendWebhook } from "@/lib/webhook"
+import { getProfileById } from "@/server/api/services/profile/get-profile-by-id"
+import { getProfileByUserId } from "@/server/api/services/profile/get-profile-by-user-id"
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
+import { waitFor } from "@/server/lib/delay/wait-for"
 
 export const profileRouter = createTRPCRouter({
-
   get: protectedProcedure
     .input(ProfileByIdInput)
-    .query(async ({input}): Promise<UserProfile> => {
-      return getProfileById(input);
+    .query(async ({ input }): Promise<UserProfile> => {
+      return getProfileById(input)
     }),
 
-  me: protectedProcedure
-    .query(async ({ctx}): Promise<UserProfile> => {
-      return getProfileByUserId(UserByIdInput.parse({userId: ctx.user.id}));
-    }),
+  me: protectedProcedure.query(async ({ ctx }): Promise<UserProfile> => {
+    return getProfileByUserId(UserByIdInput.parse({ userId: ctx.user.id }))
+  }),
 
   update: protectedProcedure
     .input(UpdateUserProfileInput)
-    .mutation(async ({input, ctx}): Promise<string> => {
-
-      const userId = ctx.user?.id;
-      const profile = await getProfileByUserId(UserByIdInput.parse({userId}));
-      const profileId = profile.id;
+    .mutation(async ({ input, ctx }): Promise<string> => {
+      const userId = ctx.user?.id
+      const profile = await getProfileByUserId(UserByIdInput.parse({ userId }))
+      const profileId = profile.id
 
       await sendWebhook<z.infer<typeof UpdateUserProfileEventPayload>>(
         userEvent.flowType,
@@ -46,31 +47,33 @@ export const profileRouter = createTRPCRouter({
           socials: input.socials,
           company: input.company,
           avatarUrl: input.avatarUrl,
-        });
+        },
+      )
 
       const result = await waitFor(
-        () => db.query.profiles.findFirst({where: eq(profiles.id, profileId)}),
+        () =>
+          db.query.profiles.findFirst({ where: eq(profiles.id, profileId) }),
         (profile) => {
-
           if (!profile) {
-            return false;
+            return false
           }
 
-          return profile.firstName === input.firstName
-            && profile.lastName === input.lastName
-            && profile.title === input.title
-            && profile.description === input.description
-            && profile.socials === input.socials
-            && profile.company === input.company
-            && profile.avatarUrl === input.avatarUrl;
-        }
-      );
+          return (
+            profile.firstName === input.firstName &&
+            profile.lastName === input.lastName &&
+            profile.title === input.title &&
+            profile.description === input.description &&
+            profile.socials === input.socials &&
+            profile.company === input.company &&
+            profile.avatarUrl === input.avatarUrl
+          )
+        },
+      )
 
       if (!result) {
-        throw new Error(`Profile not found`);
+        throw new Error(`Profile not found`)
       }
 
-      return result.id;
-    })
-
-});
+      return result.id
+    }),
+})
