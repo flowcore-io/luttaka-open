@@ -1,5 +1,5 @@
 import ConferenceLogo from '../../public/images/conference_logo.png'
-import {BookOpen, Home, Ticket, User} from "lucide-react"
+import {BookmarkCheck, BookOpen, Home, Ticket, User} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Nav } from "./nav"
