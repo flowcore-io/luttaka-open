@@ -45,17 +45,34 @@ export function Ticket({ ticket, refetch }: TicketProps) {
   const apiCreateTicketTransfer = api.ticket.createTransfer.useMutation()
   const createTicketTransfer = useCallback(async () => {
     setLoading(true)
-    const id = await apiCreateTicketTransfer.mutateAsync({
-      ticketId: ticket.id,
-    })
-    if (id) {
+    try {
+      await apiCreateTicketTransfer.mutateAsync({
+        ticketId: ticket.id,
+      })
       await refetch()
       toast.success("Ticket transfer created")
-    } else {
-      toast.error("Ticket transfer create failed")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Transfer failed"
+      toast.error(message)
     }
     setLoading(false)
   }, [ticket.id])
+
+  const apiCancelTicketTransfer = api.ticket.cancelTransfer.useMutation()
+  const cancelTicketTransfer = useCallback(async () => {
+    setLoading(true)
+    try {
+      await apiCancelTicketTransfer.mutateAsync({
+        transferId: ticket.transferId!,
+      })
+      await refetch()
+      toast.success("Ticket transfer cancelled")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Cancel failed"
+      toast.error(message)
+    }
+    setLoading(false)
+  }, [ticket.transferId])
 
   return (
     <>
@@ -67,8 +84,10 @@ export function Ticket({ ticket, refetch }: TicketProps) {
           <img src={"/images/tonik.svg"} width={120} />
         </div>
         <div className={"flex-1 self-stretch"}>
-          <div className={"pb-2 font-bold"}>Tonik 2024</div>
-          <div className={"text-sm text-gray-500"}>Ticket ID: {ticket.id}</div>
+          <div className={"font-bold"}>Tonik 2024</div>
+          <div className={"text-sm text-gray-500"}>
+            Ticket State: {ticket.state}
+          </div>
           {ticket.transferId && (
             <div className={"text-sm text-gray-500"}>
               Redeem Code: {ticket.transferId}
@@ -78,9 +97,11 @@ export function Ticket({ ticket, refetch }: TicketProps) {
         <div className={"text-right"}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant={"ghost"} size={"sm"} disabled={loading}>
-                <MoreVertical />
-              </Button>
+              {ticket.state === "open" && (
+                <Button variant={"ghost"} size={"sm"} disabled={loading}>
+                  <MoreVertical />
+                </Button>
+              )}
             </DropdownMenuTrigger>
             <DropdownMenuContent className={"w-56"}>
               <DropdownMenuLabel>Ticket</DropdownMenuLabel>
@@ -92,13 +113,23 @@ export function Ticket({ ticket, refetch }: TicketProps) {
                 }}>
                 <Trash size={14} className={"mr-2"} /> Delete ticket
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation()
-                  return createTicketTransfer()
-                }}>
-                <Share size={14} className={"mr-2"} /> Transfer ticket
-              </DropdownMenuItem>
+              {ticket.transferId ? (
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    return cancelTicketTransfer()
+                  }}>
+                  <Share size={14} className={"mr-2"} /> Cancel ticket transfer
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    return createTicketTransfer()
+                  }}>
+                  <Share size={14} className={"mr-2"} /> Transfer ticket
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

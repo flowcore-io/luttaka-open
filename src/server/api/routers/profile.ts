@@ -24,7 +24,7 @@ export const profileRouter = createTRPCRouter({
       return getProfileById(input)
     }),
 
-  getByProfileId: protectedProcedure
+  getByUserId: protectedProcedure
     .input(ProfileByUserIdInput)
     .query(async ({ input }): Promise<UserProfile> => {
       return getProfileByUserId(UserByIdInput.parse({ userId: input.userId }))

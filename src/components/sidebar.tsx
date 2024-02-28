@@ -57,7 +57,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             href: "/check-in",
             title: "Check In",
             label: "",
-            superuserRequired: false,
+            superuserRequired: true,
             icon: BookmarkCheck,
           },
         ]}

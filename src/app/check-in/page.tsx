@@ -24,17 +24,18 @@ import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
 export default function CheckInPage() {
+  const [pristine, setPristine] = useState(true)
   const [ticketId, setTicketId] = useState<string>()
   const [userId, setUserId] = useState<string>()
   const [showQrReader, setShowQrReader] = useState(false)
   const [warning, setWarning] = useState<string>()
   const { data: ticket, refetch: refetchTicket } = api.ticket.get.useQuery(
-    { ticketId: ticketId! },
+    { id: ticketId! },
     {
       enabled: !!ticketId,
     },
   )
-  const { data: profile } = api.profile.getByProfileId.useQuery(
+  const { data: profile } = api.profile.getByUserId.useQuery(
     { userId: userId! },
     { enabled: !!userId },
   )
@@ -69,7 +70,9 @@ export default function CheckInPage() {
     } else if (ticket.state === "checked-in") {
       setWarning("Ticket already checked in")
     } else if (ticket.state !== "open") {
-      setWarning("Ticket not eligible for check in")
+      setWarning("Ticket has an invalid state")
+    } else if (ticket.transferId) {
+      setWarning("Ticket is part of a transfer")
     } else {
       setWarning(undefined)
     }
@@ -81,8 +84,9 @@ export default function CheckInPage() {
       return
     }
     try {
-      await apiCheckInTicket.mutateAsync({ ticketId: ticket.id })
-      toast.success("Ticket Checked In")
+      await apiCheckInTicket.mutateAsync({ id: ticket.id })
+      toast.success("Ticket Checked In", {})
+      setPristine(false)
       await refetchTicket()
     } catch (error) {
       const title = error instanceof Error ? error.message : "Check In failed"
@@ -96,6 +100,7 @@ export default function CheckInPage() {
         <div className={"mb-4 flex justify-center"}>
           <Button
             onClick={() => {
+              setPristine(true)
               setTicketId(undefined)
               setUserId(undefined)
               setShowQrReader(true)
@@ -104,10 +109,10 @@ export default function CheckInPage() {
           </Button>
         </div>
       )}
-      {warning && (
+      {warning && pristine && (
         <Alert variant={"destructive"} className={"mb-4"}>
           <AlertCircle />
-          <AlertTitle>Invalid Ticket</AlertTitle>
+          <AlertTitle>Ticket not eligible for check in</AlertTitle>
           <AlertDescription>{warning}</AlertDescription>
         </Alert>
       )}
