@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 export const PaginationDto = z.object({
-  page: z.number().int().positive(),
+  page: z.number().int().gt(0),
   pageSize: z.number().int().positive(),
 });
 
