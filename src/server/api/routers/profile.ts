@@ -12,7 +12,9 @@ import {sendWebhook} from "@/lib/webhook";
 import {type z} from "zod";
 import {waitFor} from "@/server/lib/delay/wait-for";
 import {type UpdateUserProfileEventPayload, userEvent} from "@/contracts/events/user";
-import {getProfiles} from "@/server/api/services/profile/get-profiles";
+import {getTotalNumberOfProfiles, pageProfiles} from "@/server/api/services/profile/page-profiles";
+import {PaginationInput} from "@/contracts/pagination/pagination";
+import {type PagedProfileResult} from "@/contracts/profile/paged-profiles";
 
 export const profileRouter = createTRPCRouter({
 
@@ -28,8 +30,14 @@ export const profileRouter = createTRPCRouter({
     }),
 
   page: protectedProcedure
-    .query(async (): Promise<UserProfile[]> => {
-      return await getProfiles();
+    .input(PaginationInput)
+    .query(async ({input}): Promise<PagedProfileResult> => {
+      return pageProfiles(input);
+    }),
+
+  count: protectedProcedure
+    .query(async (): Promise<number> => {
+      return getTotalNumberOfProfiles();
     }),
 
   update: protectedProcedure
