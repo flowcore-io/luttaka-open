@@ -1,13 +1,14 @@
-import EventTransformer from "@/lib/event-transformer"
-import {eq} from "drizzle-orm"
-import {db} from "@/database"
-import {conferences} from "@/database/schemas"
+import { eq } from "drizzle-orm"
+
 import {
   conference,
   ConferenceEventArchivedPayload,
   ConferenceEventCreatedPayload,
-  ConferenceEventUpdatedPayload
-} from "@/contracts/events/conference";
+  ConferenceEventUpdatedPayload,
+} from "@/contracts/events/conference"
+import { db } from "@/database"
+import { conferences } from "@/database/schemas"
+import EventTransformer from "@/lib/event-transformer"
 
 const eventTransformer = new EventTransformer(conference, {
   created: async (payload: unknown) => {
@@ -44,9 +45,12 @@ const eventTransformer = new EventTransformer(conference, {
     if (!exists) {
       return
     }
-    await db.update(conferences).set({
-      archived: true,
-    }).where(eq(conferences.id, parsedPayload.id));
+    await db
+      .update(conferences)
+      .set({
+        archived: true,
+      })
+      .where(eq(conferences.id, parsedPayload.id))
   },
 })
 

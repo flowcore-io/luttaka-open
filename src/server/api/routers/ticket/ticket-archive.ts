@@ -1,10 +1,11 @@
+import { eq } from "drizzle-orm"
+import { z } from "zod"
+
 import { sendTicketArchivedEvent } from "@/contracts/events/ticket"
 import { db } from "@/database"
 import { tickets } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { protectedProcedure } from "@/server/api/trpc"
-import { eq } from "drizzle-orm"
-import { z } from "zod"
 
 const ArchiveTicketInput = z.object({
   id: z.string(),

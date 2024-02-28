@@ -1,4 +1,4 @@
-import { UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs"
 
 const Header = () => {
   return (
@@ -8,7 +8,7 @@ const Header = () => {
         <UserButton afterSignOutUrl="/" showName />
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

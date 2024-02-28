@@ -1,5 +1,5 @@
-import PublicHeader from "@/components/public-header";
-import PublicFooter from "@/components/public-footer";
+import PublicFooter from "@/components/public-footer"
+import PublicHeader from "@/components/public-header"
 
 const PublicPage = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -14,7 +14,7 @@ const PublicPage = ({ children }: { children: React.ReactNode }) => {
         <PublicFooter />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PublicPage;
+export default PublicPage

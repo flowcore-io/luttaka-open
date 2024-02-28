@@ -1,3 +1,9 @@
+import { MoreVertical, Share, Trash } from "lucide-react"
+import Image from "next/image"
+import { useQRCode } from "next-qrcode"
+import { useCallback, useState } from "react"
+import { toast } from "sonner"
+
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import {
@@ -9,10 +15,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { api } from "@/trpc/react"
-import { MoreVertical, Share, Trash } from "lucide-react"
-import { useQRCode } from "next-qrcode"
-import { useCallback, useState } from "react"
-import { toast } from "sonner"
 
 export interface TicketProps {
   ticket: {
@@ -81,7 +83,12 @@ export function Ticket({ ticket, refetch }: TicketProps) {
         onClick={() => setTicketDialogOpened(true)}
         className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:shadow-lg">
         <div className={"pr-4"}>
-          <img src={"/images/tonik.svg"} width={120} />
+          <Image
+            alt={"Tonik"}
+            src={"/images/tonik.svg"}
+            width={120}
+            height={120}
+          />
         </div>
         <div className={"flex-1 self-stretch"}>
           <div className={"font-bold"}>Tonik 2024</div>
@@ -139,7 +146,12 @@ export function Ticket({ ticket, refetch }: TicketProps) {
         onOpenChange={(opened) => setTicketDialogOpened(opened)}>
         <DialogContent>
           <div className={"flex justify-center"}>
-            <img alt={"Tonik"} src={"/images/tonik.svg"} width={240} />
+            <Image
+              alt={"Tonik"}
+              src={"/images/tonik.svg"}
+              width={240}
+              height={240}
+            />
           </div>
           <div className={"flex justify-center"}>
             <Canvas

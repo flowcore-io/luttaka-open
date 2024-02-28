@@ -6,27 +6,28 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC, TRPCError } from "@trpc/server"
-import superjson from "superjson"
-import { type z, ZodError } from "zod"
+
 import {
   clerkClient,
   type SignedInAuthObject,
   type SignedOutAuthObject,
 } from "@clerk/nextjs/server"
-
-import { db } from "@/database"
+import { initTRPC, TRPCError } from "@trpc/server"
 import { eq } from "drizzle-orm"
-import { profiles, users } from "@/database/schemas"
-import { type User } from "@/contracts/user/user"
-import { UserRole } from "@/contracts/user/user-role"
-import { sendWebhook } from "@/lib/webhook"
+import shortUUID from "short-uuid"
+import superjson from "superjson"
+import { type z, ZodError } from "zod"
+
 import {
   type UserCreatedEventPayload,
   userEvent,
 } from "@/contracts/events/user"
+import { type User } from "@/contracts/user/user"
+import { UserRole } from "@/contracts/user/user-role"
+import { db } from "@/database"
+import { profiles, users } from "@/database/schemas"
+import { sendWebhook } from "@/lib/webhook"
 import { waitFor } from "@/server/lib/delay/wait-for"
-import shortUUID from "short-uuid"
 
 /**
  * 1. CONTEXT
@@ -52,7 +53,7 @@ export type SessionContext = {
 export const createTRPCContext = async (opts: {
   auth: AuthContext
 }): Promise<SessionContext> => {
-  const externalId = process.env.IMPERSONATE_USER ?? opts.auth.userId
+  const externalId = opts.auth.userId
   if (!externalId) {
     return {
       db,
@@ -75,7 +76,6 @@ export const createTRPCContext = async (opts: {
   }
 
   const externalUser = await clerkClient.users.getUser(externalId)
-
   const userId = shortUUID.generate()
   await sendWebhook<z.infer<typeof UserCreatedEventPayload>>(
     userEvent.flowType,

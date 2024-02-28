@@ -1,7 +1,8 @@
+import { eq } from "drizzle-orm"
+
 import { TicketEventCreatedPayload } from "@/contracts/events/ticket"
 import { db } from "@/database"
 import { tickets } from "@/database/schemas"
-import { eq } from "drizzle-orm"
 
 export default async function ticketCreated(payload: unknown) {
   const parsedPayload = TicketEventCreatedPayload.parse(payload)

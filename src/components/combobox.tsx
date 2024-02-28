@@ -1,33 +1,33 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 
 interface ComboOption {
-  value: string;
-  label: string;
+  value: string
+  label: string
 }
 
 interface ComboboxProps {
-  combooptions: ComboOption[];
-  comboname: string;
-  comboplaceholder: string;
-  comboempty: string;
+  combooptions: ComboOption[]
+  comboname: string
+  comboplaceholder: string
+  comboempty: string
 }
 
 export function Combobox({
@@ -36,8 +36,8 @@ export function Combobox({
   comboplaceholder,
   comboempty,
 }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [open, setOpen] = React.useState(false)
+  const [value, setValue] = React.useState("")
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -45,8 +45,7 @@ export function Combobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
-        >
+          className="w-full justify-between">
           {value
             ? combooptions.find((o) => o.value === value)?.label
             : comboname}
@@ -63,10 +62,9 @@ export function Combobox({
                 value={combooption.label}
                 key={combooption.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
-                  setOpen(false);
-                }}
-              >
+                  setValue(currentValue === value ? "" : currentValue)
+                  setOpen(false)
+                }}>
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
@@ -80,5 +78,5 @@ export function Combobox({
         </Command>
       </PopoverContent>
     </Popover>
-  );
+  )
 }
