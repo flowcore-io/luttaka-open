@@ -19,7 +19,6 @@ const conferenceId = "xxxxxxxxxxxxxxxxxxxxxx"
 
 export default function Tickets() {
   const { isLoaded, userId } = useAuth()
-  const [loading, setLoading] = useState(false)
   const [ticketRedeemDialogOpened, setTicketRedeemDialogOpened] =
     useState(false)
   const [transferId, setTransferId] = useState("")
@@ -31,7 +30,6 @@ export default function Tickets() {
     if (!userId) {
       return
     }
-    setLoading(true)
     try {
       await apiCreateTicket.mutateAsync({ conferenceId })
       toast.success("Ticket created")
@@ -41,7 +39,6 @@ export default function Tickets() {
       toast.error(title)
     }
     await refetch()
-    setLoading(false)
   }, [userId])
 
   const apiAcceptTicketTransfer = api.ticket.acceptTransfer.useMutation()
@@ -49,7 +46,6 @@ export default function Tickets() {
     if (!transferId) {
       return
     }
-    setLoading(true)
     try {
       await apiAcceptTicketTransfer.mutateAsync({
         transferId,
@@ -60,7 +56,6 @@ export default function Tickets() {
       toast.error(title)
     }
     await refetch()
-    setLoading(false)
     setTransferId("")
     setTicketRedeemDialogOpened(false)
   }, [userId, transferId])
@@ -79,13 +74,21 @@ export default function Tickets() {
           <Button
             onClick={() => createTicket()}
             className="mr-2"
-            disabled={loading}>
-            {loading ? <Loader className={"animate-spin"} /> : "Create ticket"}
+            disabled={apiCreateTicket.isLoading}>
+            {apiCreateTicket.isLoading ? (
+              <Loader className={"animate-spin"} />
+            ) : (
+              "Create ticket"
+            )}
           </Button>
           <Button
             onClick={() => setTicketRedeemDialogOpened(true)}
-            disabled={loading}>
-            {loading ? <Loader className={"animate-spin"} /> : "Redeem ticket"}
+            disabled={apiAcceptTicketTransfer.isLoading}>
+            {apiAcceptTicketTransfer.isLoading ? (
+              <Loader className={"animate-spin"} />
+            ) : (
+              "Redeem ticket"
+            )}
           </Button>
         </div>
       </div>
@@ -115,7 +118,9 @@ export default function Tickets() {
             />
           </div>
           <DialogFooter>
-            <Button onClick={acceptTicketTransfer} disabled={loading}>
+            <Button
+              onClick={acceptTicketTransfer}
+              disabled={apiAcceptTicketTransfer.isLoading}>
               Redeem
             </Button>
           </DialogFooter>

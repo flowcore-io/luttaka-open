@@ -97,11 +97,9 @@ export function Ticket({ ticket, refetch }: TicketProps) {
         <div className={"text-right"}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              {ticket.state === "open" && (
-                <Button variant={"ghost"} size={"sm"} disabled={loading}>
-                  <MoreVertical />
-                </Button>
-              )}
+              <Button variant={"ghost"} size={"sm"} disabled={loading}>
+                <MoreVertical />
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className={"w-56"}>
               <DropdownMenuLabel>Ticket</DropdownMenuLabel>
@@ -113,7 +111,7 @@ export function Ticket({ ticket, refetch }: TicketProps) {
                 }}>
                 <Trash size={14} className={"mr-2"} /> Delete ticket
               </DropdownMenuItem>
-              {ticket.transferId ? (
+              {ticket.state === "open" && ticket.transferId && (
                 <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation()
@@ -121,7 +119,8 @@ export function Ticket({ ticket, refetch }: TicketProps) {
                   }}>
                   <Share size={14} className={"mr-2"} /> Cancel ticket transfer
                 </DropdownMenuItem>
-              ) : (
+              )}
+              {ticket.state === "open" && !ticket.transferId && (
                 <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation()
