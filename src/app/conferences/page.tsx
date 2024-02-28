@@ -1,7 +1,6 @@
 "use client"
 
 import { useAuth } from "@clerk/nextjs"
-import { Loader } from "lucide-react"
 import { useState } from "react"
 
 import { Conference } from "@/app/conferences/conference.component"
@@ -12,7 +11,6 @@ import { api } from "@/trpc/react"
 
 export default function Conferences() {
   const { isLoaded, userId } = useAuth()
-  const [loading, setLoading] = useState(false)
   const [createConferenceDialogOpened, setCreateConferenceDialogOpened] =
     useState(false)
 
@@ -29,14 +27,8 @@ export default function Conferences() {
           Conferences
         </div>
         <div className="flex-1 text-right">
-          <Button
-            onClick={() => setCreateConferenceDialogOpened(true)}
-            disabled={loading}>
-            {loading ? (
-              <Loader className={"animate-spin"} />
-            ) : (
-              "Create Conference"
-            )}
+          <Button onClick={() => setCreateConferenceDialogOpened(true)}>
+            Create Conference
           </Button>
         </div>
       </div>

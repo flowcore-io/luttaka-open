@@ -109,7 +109,7 @@ function TimeField({
 
 const dateToCalendarDateTime = (date: Date): CalendarDateTime => {
   const year = date.getFullYear()
-  const month = date.getMonth() + 1 // JavaScript months are 0-based
+  const month = date.getMonth() + 1 // JavaScript month(s) are 0-based
   const day = date.getDate()
   const hour = date.getHours()
   const minute = date.getMinutes()
@@ -157,7 +157,7 @@ const DateTimePicker = (props: DatePickerProps) => {
   const state = useDatePickerState(datePickerProps)
   useInteractOutside({
     ref: contentRef,
-    onInteractOutside: (e) => {
+    onInteractOutside: (_e) => {
       setOpen(false)
     },
   })

@@ -21,7 +21,7 @@ const ArchiveTicketInput = z.object({
 })
 
 export const conferenceRouter = createTRPCRouter({
-  list: protectedProcedure.query(async ({ ctx, input }) => {
+  list: protectedProcedure.query(async () => {
     return (
       (await db
         .select({
@@ -40,7 +40,7 @@ export const conferenceRouter = createTRPCRouter({
   }),
   create: protectedProcedure
     .input(CreateConferenceInputDto)
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       // TODO: make sure user has correct permissions
 
       if (
@@ -80,7 +80,7 @@ export const conferenceRouter = createTRPCRouter({
     }),
   update: protectedProcedure
     .input(UpdateConferenceInputDto)
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       if (
         !(await db.query.conferences.findFirst({
           where: and(
