@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm"
-import { type z } from "zod"
+import { z } from "zod"
 
 import { SetUserRoleInput } from "@/contracts/authorization/set-user-role-input"
 import {
@@ -15,7 +15,14 @@ import { getUserById } from "@/server/api/services/user/get-user-by-id"
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
 import { waitFor } from "@/server/lib/delay/wait-for"
 
+const UserByIdInput = z.object({
+  userId: z.string(),
+})
+
 export const userRouter = createTRPCRouter({
+  get: protectedProcedure.input(UserByIdInput).query(({ input }) => {
+    return db.query.users.findFirst({ where: eq(users.id, input.userId) })
+  }),
   role: protectedProcedure.query(async ({ ctx }): Promise<UserRole> => {
     return (ctx.user.role as UserRole) ?? UserRole.user
   }),

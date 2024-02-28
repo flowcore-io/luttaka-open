@@ -42,7 +42,7 @@ export default function RootLayout({
           <SignedIn>
             <TRPCReactProvider cookies={cookies().toString()}>
               <ProtectedPage children={children} />
-              <Toaster />
+              <Toaster richColors />
             </TRPCReactProvider>
           </SignedIn>
         </ClerkProvider>

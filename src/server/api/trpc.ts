@@ -6,6 +6,7 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
+
 import {
   clerkClient,
   type SignedInAuthObject,
@@ -61,13 +62,12 @@ export const createTRPCContext = async (opts: {
     }
   }
 
-  const externalUser = await clerkClient.users.getUser(externalId)
-
   // todo: move this into a service to reduce code scan
   const user = await db.query.users.findFirst({
     where: eq(users.externalId, externalId),
   })
   if (user) {
+    console.log("user", user)
     return {
       db,
       user: { ...user, role: user.role as UserRole },
@@ -75,6 +75,7 @@ export const createTRPCContext = async (opts: {
     }
   }
 
+  const externalUser = await clerkClient.users.getUser(externalId)
   const userId = shortUUID.generate()
   await sendWebhook<z.infer<typeof UserCreatedEventPayload>>(
     userEvent.flowType,

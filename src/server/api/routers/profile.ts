@@ -6,6 +6,7 @@ import {
   userEvent,
 } from "@/contracts/events/user"
 import { ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
+import { ProfileByUserIdInput } from "@/contracts/profile/profile-by-user-id-input"
 import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
 import { type UserProfile } from "@/contracts/profile/user-profile"
 import { UserByIdInput } from "@/contracts/user/user-by-id-input"
@@ -22,6 +23,12 @@ export const profileRouter = createTRPCRouter({
     .input(ProfileByIdInput)
     .query(async ({ input }): Promise<UserProfile> => {
       return getProfileById(input)
+    }),
+
+  getByUserId: protectedProcedure
+    .input(ProfileByUserIdInput)
+    .query(async ({ input }): Promise<UserProfile> => {
+      return getProfileByUserId(UserByIdInput.parse({ userId: input.userId }))
     }),
 
   me: protectedProcedure.query(async ({ ctx }): Promise<UserProfile> => {

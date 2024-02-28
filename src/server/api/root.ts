@@ -1,6 +1,6 @@
 import { conferenceRouter } from "@/server/api/routers/conferences"
 import { profileRouter } from "@/server/api/routers/profile"
-import { ticketRouter } from "@/server/api/routers/ticket"
+import ticketRouter from "@/server/api/routers/ticket/ticket.router"
 import { userRouter } from "@/server/api/routers/user"
 import { createTRPCRouter } from "@/server/api/trpc"
 
