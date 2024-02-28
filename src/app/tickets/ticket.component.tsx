@@ -1,10 +1,18 @@
-import {Button} from "@/components/ui/button"
-import {Dialog, DialogContent} from "@/components/ui/dialog"
-import {api} from "@/trpc/react"
-import {Loader, Share, Trash} from "lucide-react"
-import {useQRCode} from "next-qrcode"
-import {useCallback, useState} from "react"
-import {toast} from "sonner";
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { api } from "@/trpc/react"
+import { MoreVertical, Share, Trash } from "lucide-react"
+import { useQRCode } from "next-qrcode"
+import { useCallback, useState } from "react"
+import { toast } from "sonner"
 
 export interface TicketProps {
   ticket: {
@@ -27,9 +35,9 @@ export function Ticket({ ticket, refetch }: TicketProps) {
     const success = await apiArchiveTicket.mutateAsync({ id: ticket.id })
     if (success) {
       await refetch()
-      toast.success("Ticket deleted");
+      toast.success("Ticket deleted")
     } else {
-      toast.error("Delete ticket failed");
+      toast.error("Delete ticket failed")
     }
     setLoading(false)
   }, [ticket.id])
@@ -37,30 +45,49 @@ export function Ticket({ ticket, refetch }: TicketProps) {
   const apiCreateTicketTransfer = api.ticket.createTransfer.useMutation()
   const createTicketTransfer = useCallback(async () => {
     setLoading(true)
-    const id = await apiCreateTicketTransfer.mutateAsync({
-      ticketId: ticket.id,
-    })
-    if (id) {
+    try {
+      await apiCreateTicketTransfer.mutateAsync({
+        ticketId: ticket.id,
+      })
       await refetch()
-      toast.success("Ticket transfer created");
-    } else {
-      toast.error("Ticket transfer create failed");
+      toast.success("Ticket transfer created")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Transfer failed"
+      toast.error(message)
     }
     setLoading(false)
   }, [ticket.id])
+
+  const apiCancelTicketTransfer = api.ticket.cancelTransfer.useMutation()
+  const cancelTicketTransfer = useCallback(async () => {
+    setLoading(true)
+    try {
+      await apiCancelTicketTransfer.mutateAsync({
+        transferId: ticket.transferId!,
+      })
+      await refetch()
+      toast.success("Ticket transfer cancelled")
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Cancel failed"
+      toast.error(message)
+    }
+    setLoading(false)
+  }, [ticket.transferId])
 
   return (
     <>
       <div
         key={ticket.id}
         onClick={() => setTicketDialogOpened(true)}
-        className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:scale-101 hover:shadow-lg">
+        className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:shadow-lg">
         <div className={"pr-4"}>
           <img src={"/images/tonik.svg"} width={120} />
         </div>
         <div className={"flex-1 self-stretch"}>
-          <div className={"pb-2 font-bold"}>Tonik 2024</div>
-          <div className={"text-sm text-gray-500"}>Ticket ID: {ticket.id}</div>
+          <div className={"font-bold"}>Tonik 2024</div>
+          <div className={"text-sm text-gray-500"}>
+            Ticket State: {ticket.state}
+          </div>
           {ticket.transferId && (
             <div className={"text-sm text-gray-500"}>
               Redeem Code: {ticket.transferId}
@@ -68,27 +95,42 @@ export function Ticket({ ticket, refetch }: TicketProps) {
           )}
         </div>
         <div className={"text-right"}>
-          {!ticket.transferId && (
-            <Button
-              className={"mr-2"}
-              size={"sm"}
-              onClick={(e) => {
-                e.stopPropagation()
-                return createTicketTransfer()
-              }}
-              disabled={loading}>
-              {loading ? <Loader className={"animate-spin"} /> : <Share />}
-            </Button>
-          )}
-          <Button
-            size={"sm"}
-            onClick={(e) => {
-              e.stopPropagation()
-              return archiveTicket()
-            }}
-            disabled={loading}>
-            {loading ? <Loader className={"animate-spin"} /> : <Trash />}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant={"ghost"} size={"sm"} disabled={loading}>
+                <MoreVertical />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className={"w-56"}>
+              <DropdownMenuLabel>Ticket</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  return archiveTicket()
+                }}>
+                <Trash size={14} className={"mr-2"} /> Delete ticket
+              </DropdownMenuItem>
+              {ticket.state === "open" && ticket.transferId && (
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    return cancelTicketTransfer()
+                  }}>
+                  <Share size={14} className={"mr-2"} /> Cancel ticket transfer
+                </DropdownMenuItem>
+              )}
+              {ticket.state === "open" && !ticket.transferId && (
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    return createTicketTransfer()
+                  }}>
+                  <Share size={14} className={"mr-2"} /> Transfer ticket
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <Dialog
@@ -97,7 +139,7 @@ export function Ticket({ ticket, refetch }: TicketProps) {
         onOpenChange={(opened) => setTicketDialogOpened(opened)}>
         <DialogContent>
           <div className={"flex justify-center"}>
-            <img src={"/images/tonik.svg"} width={240} />
+            <img alt={"Tonik"} src={"/images/tonik.svg"} width={240} />
           </div>
           <div className={"flex justify-center"}>
             <Canvas

@@ -24,6 +24,10 @@ const config = {
       scale: {
         "101": "1.01",
       },
+      height: {
+        "50vh": "50vh",
+        "75vh": "75vh",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

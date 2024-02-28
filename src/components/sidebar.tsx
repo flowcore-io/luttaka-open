@@ -2,7 +2,7 @@ import ConferenceLogo from '../../public/images/conference_logo.png'
 import {BookOpen, Home, Ticket, User} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import {Nav} from "./nav"
+import { Nav } from "./nav"
 
 interface SidebarProps {
   isSidebarOpen?: boolean
@@ -55,6 +55,13 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             label: "",
             superuserRequired: false,
             icon: User,
+          },
+          {
+            href: "/check-in",
+            title: "Check In",
+            label: "",
+            superuserRequired: true,
+            icon: BookmarkCheck,
           },
         ]}
         isSidebarOpen={isSidebarOpen}
