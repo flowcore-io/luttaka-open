@@ -7,7 +7,6 @@
     "build:image": "chmod +x ./scripts/build-image.sh && ./scripts/build-image.sh",
     "db:push": "env-cmd -x drizzle-kit push:pg --schema=src/database/schemas.ts --driver pg --connectionString=\\$POSTGRES_URL",
     "dev": "next dev",
-    "dev:ssl": "next dev --experimental-https",
     "lint": "next lint",
     "start": "next start",
     "docker:db": "docker compose up -d postgres",
