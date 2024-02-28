@@ -2,6 +2,7 @@ import React, {type FC} from "react";
 import {type UserProfile} from "@/contracts/profile/user-profile";
 import Link from "next/link";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {MissingText} from "@/components/ui/messages/missing-text";
 
 export type ProfileListProps = {
   profiles: UserProfile[];
@@ -11,11 +12,7 @@ export type ProfileListProps = {
 export const ProfileList: FC<ProfileListProps> = ({profiles}) => {
 
   if (profiles.length < 1) {
-    return (
-      <div>
-        <p className={"text-center font-light"}>No profiles found 😔</p>
-      </div>
-    );
+    return <MissingText text={"No profiles found"}/>;
   }
 
   return (
