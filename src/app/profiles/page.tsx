@@ -6,8 +6,9 @@ import {ProfileList} from "@/app/profiles/profile-list.component";
 import {PageTitle} from "@/components/ui/page-title";
 import {Pagination, PaginationContent, PaginationItem, PaginationLink} from "@/components/ui/pagination";
 import {usePagination} from "@/hooks/use-pagination";
+import {SkeletonList} from "@/components/molecules/skeletons/skeleton-list";
 
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 8;
 
 export default function ProfilePage() {
 
@@ -43,7 +44,11 @@ export default function ProfilePage() {
       title={"Participants"}
       subtitle={"A list of all the people who are partaking in this conference"}
     />
-    <ProfileList profiles={profiles}/>
+    {
+      profilesRequest.isLoading
+        ? <SkeletonList count={PAGE_SIZE}/>
+        : <ProfileList profiles={profiles}/>
+    }
     <Pagination className={"absolute bottom-6 left-0 right-0 "}>
       <PaginationContent>
         {pageNumbers.map((pageNumber) =>
