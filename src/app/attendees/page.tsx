@@ -21,9 +21,10 @@ export default function AttendeesPage() {
 
   const profileCountRequest = api.profile.count.useQuery()
 
-  const profilesRequest = api.profile.page.useQuery({
+  const profilesRequest = api.attendance.page.useQuery({
     page: pager.page,
     pageSize: PAGE_SIZE,
+    conferenceId: "xxxxxxxxxxxxxxxxxxxxxx",
   })
 
   const pageNumbers = useMemo(() => {
