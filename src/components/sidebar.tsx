@@ -1,4 +1,11 @@
-import { BookmarkCheck, BookOpen, Home, Ticket, User } from "lucide-react"
+import {
+  BookmarkCheck,
+  BookOpen,
+  Home,
+  Ticket,
+  User,
+  Users,
+} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -49,6 +56,13 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             label: "",
             superuserRequired: false,
             icon: Ticket,
+          },
+          {
+            href: "/attendees",
+            title: "Attendees",
+            label: "",
+            superuserRequired: false,
+            icon: Users,
           },
           {
             href: "/conferences",
