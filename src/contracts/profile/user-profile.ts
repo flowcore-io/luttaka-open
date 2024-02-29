@@ -11,6 +11,7 @@ export const UserProfileDto = z.object({
   description: z.string().default(""),
   socials: z.string().default(""),
   company: z.string().default(""),
+  companyId: z.string().default(""),
   avatarUrl: z.string().default(""),
   initials: z.string().default(""),
 })
