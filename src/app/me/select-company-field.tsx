@@ -1,5 +1,5 @@
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-import { Loader } from "lucide-react"
+import { Loader, XIcon } from "lucide-react"
 import { type FC, useState } from "react"
 import { toast } from "sonner"
 import { useDebouncedCallback } from "use-debounce"
@@ -74,6 +74,15 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
               !value && "text-muted-foreground",
             )}>
             {currentLabel || "Select Company"}
+            {currentLabel && (
+              <XIcon
+                className="ml-auto h-4 w-4"
+                onClick={() => {
+                  setCurrentLabel("")
+                  setValue("")
+                }}
+              />
+            )}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </FormControl>
