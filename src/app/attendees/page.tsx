@@ -20,10 +20,10 @@ export default function AttendeesPage() {
   const pager = usePagination()
 
   const profileCountRequest = api.profile.count.useQuery()
-
   const profilesRequest = api.attendance.page.useQuery({
     page: pager.page,
     pageSize: PAGE_SIZE,
+    // todo: fetch attending conferences, and present it through a selector, which then is used to fetch the attendees
     conferenceId: "xxxxxxxxxxxxxxxxxxxxxx",
   })
 
@@ -44,9 +44,9 @@ export default function AttendeesPage() {
   return (
     <div>
       <PageTitle
-        title={"Participants"}
+        title={"Attendees"}
         subtitle={
-          "A list of all the people who are partaking in this conference"
+          "A list of all the people who have tickets for the selected conference"
         }
       />
       {
