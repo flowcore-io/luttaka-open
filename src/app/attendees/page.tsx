@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 
-import { ProfileList } from "@/app/profiles/profile-list.component"
+import { ProfileList } from "@/app/attendees/profile-list.component"
 import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
 import { PageTitle } from "@/components/ui/page-title"
 import {
@@ -16,7 +16,7 @@ import { api } from "@/trpc/react"
 
 const PAGE_SIZE = 8
 
-export default function ProfilePage() {
+export default function AttendeesPage() {
   const pager = usePagination()
 
   const profileCountRequest = api.profile.count.useQuery()
