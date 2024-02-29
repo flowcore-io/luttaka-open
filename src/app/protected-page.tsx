@@ -1,12 +1,13 @@
 "use client"
 
 import React, { useState } from "react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import HamburgerMenu from "@/components/ui/hamburger-menu"
+
 import Header from "@/components/header"
 import { RestrictedToRole } from "@/components/restricted-to-role"
-import { UserRole } from "@/contracts/user/user-role"
 import Sidebar from "@/components/sidebar"
+import HamburgerMenu from "@/components/ui/hamburger-menu"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { UserRole } from "@/contracts/user/user-role"
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)

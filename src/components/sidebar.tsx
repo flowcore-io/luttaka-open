@@ -1,10 +1,8 @@
-import ConferenceLogo from '../../public/images/conference_logo.png'
 import { BookmarkCheck, BookOpen, Home, Ticket, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
-import flowcoreLogo from "@/images/flowcore-logo.svg"
-
+import ConferenceLogo from "../../public/images/conference_logo.png"
 import { Nav } from "./nav"
 
 interface SidebarProps {
@@ -13,7 +11,6 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
-
   return (
     <aside className="w-42 flex h-screen flex-col p-4 text-black">
       <div className="mb-8 flex flex-col items-start">
@@ -25,8 +22,16 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
               setIsSidebarOpen(false)
             }
           }}>
-          <Image src={ConferenceLogo} alt="Conference App Logo" height={50} width={50} priority />
-          <div className="text-lg flex flex-col justify-center h-full">Open Conference</div>
+          <Image
+            src={ConferenceLogo}
+            alt="Conference App Logo"
+            height={50}
+            width={50}
+            priority
+          />
+          <div className="flex h-full flex-col justify-center text-lg">
+            Open Conference
+          </div>
         </Link>
       </div>
       <Nav

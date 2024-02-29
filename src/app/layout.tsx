@@ -14,7 +14,7 @@ import PublicPage from "./public-page"
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-});
+})
 
 export const metadata = {
   manifest: "/manifest.json",

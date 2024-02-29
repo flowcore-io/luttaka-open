@@ -1,12 +1,13 @@
 "use client"
 import { useOrganizationList } from "@clerk/nextjs"
-import type {LucideIcon} from "lucide-react"
-import type {Url} from "next/dist/shared/lib/router/router"
+import type { LucideIcon } from "lucide-react"
+import type { Url } from "next/dist/shared/lib/router/router"
 import Link from "next/link"
-import{usePathname} from "next/navigation"
-import {useEffect, useState} from "react"
-import {buttonVariants } from "@/components/ui/button"
-import { cn} from "@/lib/utils"
+import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface NavProps {
   isSidebarOpen?: boolean
@@ -55,15 +56,17 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
                     variant: isCurrent ? "default" : "ghost",
                     size: "sm",
                   }),
-                  isCurrent && "text-black bg-pink-400 hover:bg-pink-400 dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                  "justify-start text-base py-5 font-light"
+                  isCurrent &&
+                    "bg-pink-400 text-black hover:bg-pink-400 dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
+                  "justify-start py-5 text-base font-light",
                 )}
                 onClick={() => {
                   if (isSidebarOpen && setIsSidebarOpen) {
                     setIsSidebarOpen(false)
                   }
                 }}>
-                <link.icon className="mr-3 h-6 w-6 mr-5" /> {/* Increased icon size and right margin */}
+                <link.icon className="mr-3 mr-5 h-6 w-6" />{" "}
+                {/* Increased icon size and right margin */}
                 {link.title}
                 {link.label && (
                   <span
