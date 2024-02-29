@@ -10,7 +10,7 @@ import { users } from "@/database/schemas"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
-export const CheckoutRequest = z.object({
+const CheckoutRequest = z.object({
   conferenceId: z.string(),
   quantity: z.number().min(1).default(1),
 })
