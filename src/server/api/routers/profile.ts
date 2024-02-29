@@ -1,27 +1,28 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
-import { ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
-import { UserProfile } from "@/contracts/profile/user-profile"
-import { getProfileById } from "@/server/api/services/profile/get-profile-by-id"
-import { ProfileByUserIdInput } from "@/contracts/profile/profile-by-user-id-input"
-import { getProfileByUserId } from "@/server/api/services/profile/get-profile-by-user-id"
-import { UserByIdInput } from "@/contracts/user/user-by-id-input"
+import { eq } from "drizzle-orm"
+import { type z } from "zod"
+
+import {
+  type UpdateUserProfileEventPayload,
+  userEvent,
+} from "@/contracts/events/user"
 import { PaginationInput } from "@/contracts/pagination/pagination"
-import { PagedProfileResult } from "@/contracts/profile/paged-profiles"
+import { type PagedProfileResult } from "@/contracts/profile/paged-profiles"
+import { ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
+import { ProfileByUserIdInput } from "@/contracts/profile/profile-by-user-id-input"
+import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
+import { type UserProfile } from "@/contracts/profile/user-profile"
+import { UserByIdInput } from "@/contracts/user/user-by-id-input"
+import { db } from "@/database"
+import { profiles } from "@/database/schemas"
+import { sendWebhook } from "@/lib/webhook"
+import { getProfileById } from "@/server/api/services/profile/get-profile-by-id"
+import { getProfileByUserId } from "@/server/api/services/profile/get-profile-by-user-id"
 import {
   getTotalNumberOfProfiles,
   pageProfiles,
 } from "@/server/api/services/profile/page-profiles"
-import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
-import { sendWebhook } from "@/lib/webhook"
-import { z } from "zod"
-import {
-  UpdateUserProfileEventPayload,
-  userEvent,
-} from "@/contracts/events/user"
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
 import { waitFor } from "@/server/lib/delay/wait-for"
-import { db } from "@/database"
-import { eq } from "drizzle-orm"
-import { profiles } from "@/database/schemas"
 
 export const profileRouter = createTRPCRouter({
   get: protectedProcedure

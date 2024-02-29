@@ -1,8 +1,8 @@
-import {cn} from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 export type MissingTextProps = {
-  text: string;
-  className?: string;
+  text: string
+  className?: string
 }
 
 /**
@@ -10,10 +10,10 @@ export type MissingTextProps = {
  * @param text - The text to display.
  * @param className - An optional class name to apply to the component.
  */
-export const MissingText = ({text, className}: MissingTextProps) => {
+export const MissingText = ({ text, className }: MissingTextProps) => {
   return (
     <div className={cn("text-center font-light", className)}>
       <p>{text} 😔</p>
     </div>
-  );
+  )
 }

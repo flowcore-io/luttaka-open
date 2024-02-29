@@ -1,4 +1,4 @@
-import z from "zod";
+import z from "zod"
 
 export const UserProfileDto = z.object({
   id: z.string().min(1),
@@ -13,6 +13,6 @@ export const UserProfileDto = z.object({
   company: z.string().default(""),
   avatarUrl: z.string().default(""),
   initials: z.string().default(""),
-});
+})
 
-export type UserProfile = z.infer<typeof UserProfileDto>;
+export type UserProfile = z.infer<typeof UserProfileDto>
