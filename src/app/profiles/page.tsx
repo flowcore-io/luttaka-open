@@ -32,27 +32,31 @@ export default function ProfilePage() {
 
   }, [profileCountRequest.data, pager.page])
 
-  return (<div>
-    <PageTitle
-      title={"Participants"}
-      subtitle={"A list of all the people who are partaking in this conference"}
-    />
-    {
-      // todo: create a trpc loading component (with built in error displaying e.t.c)
-      profilesRequest.isLoading
-        ? <SkeletonList count={PAGE_SIZE}/>
-        : <ProfileList profiles={profilesRequest.data ?? []}/>
-    }
-    <Pagination className={"absolute bottom-6 left-0 right-0 "}>
-      <PaginationContent>
-        {pageNumbers.map((pageNumber) =>
-          <PaginationItem key={pageNumber}>
-            <PaginationLink onClick={() => pager.setPage(pageNumber)}>
-              {pageNumber}
-            </PaginationLink>
-          </PaginationItem>
-        )}
-      </PaginationContent>
-    </Pagination>
-  </div>);
+  return (
+    <div>
+      <PageTitle
+        title={"Participants"}
+        subtitle={"A list of all the people who are partaking in this conference"}
+      />
+      {
+        // todo: create a trpc loading component (with built in error displaying e.t.c)
+        profilesRequest.isLoading
+          ? <SkeletonList count={PAGE_SIZE}/>
+          : <ProfileList profiles={profilesRequest.data?.items ?? []}/>
+      }
+      <div className={"absolute bottom-6 left-4 right-4 rounded-full bg-background"}>
+        <Pagination>
+          <PaginationContent>
+            {pageNumbers.map((pageNumber) =>
+              <PaginationItem key={pageNumber}>
+                <PaginationLink onClick={() => pager.setPage(pageNumber)}>
+                  {pageNumber}
+                </PaginationLink>
+              </PaginationItem>
+            )}
+          </PaginationContent>
+        </Pagination>
+      </div>
+    </div>
+  );
 }
