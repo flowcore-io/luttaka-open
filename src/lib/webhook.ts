@@ -15,7 +15,6 @@ export async function sendWebhook<T>(
     event,
   ].join("/")
   try {
-    console.log("send", url, data)
     await axios.post(url, data, { params: { key: process.env.FLOWCORE_KEY } })
   } catch (error) {
     console.error(
