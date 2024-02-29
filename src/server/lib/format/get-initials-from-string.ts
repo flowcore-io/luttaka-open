@@ -6,7 +6,7 @@
  * @example Chandler Murial Bing -> CMB
  */
 export const getInitialsFromString = (str: string) => {
-  const names = str.split(" ");
-  const initials = names.map((name) => name.charAt(0).toUpperCase());
-  return initials.join("");
+  const names = str.split(" ")
+  const initials = names.map((name) => name.charAt(0).toUpperCase())
+  return initials.join("")
 }

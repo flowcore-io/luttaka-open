@@ -1,5 +1,6 @@
-import {boolean, decimal, pgTable, text} from "drizzle-orm/pg-core"
-import {UserRole} from "@/contracts/user/user-role"
+import { boolean, decimal, pgTable, text } from "drizzle-orm/pg-core"
+
+import { UserRole } from "@/contracts/user/user-role"
 
 export const tickets = pgTable("tickets", {
   id: text("id").primaryKey(),

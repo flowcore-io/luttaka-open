@@ -1,8 +1,9 @@
+import { and, eq } from "drizzle-orm"
+import { z } from "zod"
+
 import { db } from "@/database"
 import { tickets, ticketTransfers } from "@/database/schemas"
 import { protectedProcedure } from "@/server/api/trpc"
-import { and, eq } from "drizzle-orm"
-import { z } from "zod"
 
 const GetTicketByIdInput = z.object({
   id: z.string(),

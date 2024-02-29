@@ -1,5 +1,10 @@
 "use client"
 
+import { useAuth } from "@clerk/nextjs"
+import { Loader } from "lucide-react"
+import { useCallback, useState } from "react"
+import { toast } from "sonner"
+
 import { Ticket } from "@/app/tickets/ticket.component"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,10 +15,6 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { api } from "@/trpc/react"
-import { useAuth } from "@clerk/nextjs"
-import { Loader } from "lucide-react"
-import { useCallback, useState } from "react"
-import { toast } from "sonner"
 
 const conferenceId = "xxxxxxxxxxxxxxxxxxxxxx"
 

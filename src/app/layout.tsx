@@ -1,14 +1,15 @@
 import "@/styles/globals.css"
 
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
+import { type Viewport } from "next"
 import { Inter } from "next/font/google"
 import { cookies } from "next/headers"
 
-import { TRPCReactProvider } from "@/trpc/react"
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
-import PublicPage from "./public-page"
-import ProtectedPage from "./protected-page"
-import { type Viewport } from "next"
 import { Toaster } from "@/components/ui/sonner"
+import { TRPCReactProvider } from "@/trpc/react"
+
+import ProtectedPage from "./protected-page"
+import PublicPage from "./public-page"
 
 const inter = Inter({
   subsets: ["latin"],

@@ -1,9 +1,10 @@
-import {type UserRole} from "@/contracts/user/user-role";
-import {type FC, type PropsWithChildren} from "react";
-import {api} from "@/trpc/react";
+import { type FC, type PropsWithChildren } from "react"
+
+import { type UserRole } from "@/contracts/user/user-role"
+import { api } from "@/trpc/react"
 
 export type RestrictedToRoleProps = {
-  role: UserRole;
+  role: UserRole
 }
 
 /**
@@ -15,17 +16,18 @@ export type RestrictedToRoleProps = {
  *   <p>I am an admin</p>
  * </RestrictedToRole>
  */
-export const RestrictedToRole: FC<PropsWithChildren<RestrictedToRoleProps>> = (props) => {
-
-  const userRole = api.user.role.useQuery();
+export const RestrictedToRole: FC<PropsWithChildren<RestrictedToRoleProps>> = (
+  props,
+) => {
+  const userRole = api.user.role.useQuery()
 
   if (!userRole.data) {
-    return null;
+    return null
   }
 
   if (userRole.data !== props.role) {
-    return null;
+    return null
   }
 
-  return props.children;
+  return props.children
 }

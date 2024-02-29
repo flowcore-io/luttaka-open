@@ -1,18 +1,19 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
-import { UserRole } from "@/contracts/user/user-role"
+import { eq } from "drizzle-orm"
+import { z } from "zod"
+
 import { SetUserRoleInput } from "@/contracts/authorization/set-user-role-input"
-import { getUserById } from "@/server/api/services/user/get-user-by-id"
-import { sendWebhook } from "@/lib/webhook"
 import {
   userEvent,
   type UserUpdatedEventPayload,
 } from "@/contracts/events/user"
-import { z } from "zod"
-import { waitFor } from "@/server/lib/delay/wait-for"
+import { UserRole } from "@/contracts/user/user-role"
 import { db } from "@/database"
-import { eq } from "drizzle-orm"
 import { users } from "@/database/schemas"
+import { sendWebhook } from "@/lib/webhook"
 import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
+import { getUserById } from "@/server/api/services/user/get-user-by-id"
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
+import { waitFor } from "@/server/lib/delay/wait-for"
 
 const UserByIdInput = z.object({
   userId: z.string(),

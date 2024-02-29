@@ -1,21 +1,22 @@
-import { ProfileByUserIdInput } from "@/contracts/profile/profile-by-user-id-input"
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
-import { db } from "@/database"
 import { eq } from "drizzle-orm"
-import { profiles } from "@/database/schemas"
-import { type UserProfile } from "@/contracts/profile/user-profile"
-import { ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
-import { getProfileById } from "@/server/api/services/profile/get-profile-by-id"
-import { getProfileByUserId } from "@/server/api/services/profile/get-profile-by-user-id"
-import { UserByIdInput } from "@/contracts/user/user-by-id-input"
-import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
-import { sendWebhook } from "@/lib/webhook"
 import { type z } from "zod"
-import { waitFor } from "@/server/lib/delay/wait-for"
+
 import {
   type UpdateUserProfileEventPayload,
   userEvent,
 } from "@/contracts/events/user"
+import { ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
+import { ProfileByUserIdInput } from "@/contracts/profile/profile-by-user-id-input"
+import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
+import { type UserProfile } from "@/contracts/profile/user-profile"
+import { UserByIdInput } from "@/contracts/user/user-by-id-input"
+import { db } from "@/database"
+import { profiles } from "@/database/schemas"
+import { sendWebhook } from "@/lib/webhook"
+import { getProfileById } from "@/server/api/services/profile/get-profile-by-id"
+import { getProfileByUserId } from "@/server/api/services/profile/get-profile-by-user-id"
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
+import { waitFor } from "@/server/lib/delay/wait-for"
 
 export const profileRouter = createTRPCRouter({
   get: protectedProcedure

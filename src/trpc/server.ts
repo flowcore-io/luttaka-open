@@ -1,19 +1,20 @@
-import "server-only";
+import "server-only"
 
+import { auth } from "@clerk/nextjs"
 import {
   createTRPCProxyClient,
   loggerLink,
   TRPCClientError,
-} from "@trpc/client";
-import { callProcedure } from "@trpc/server";
-import { observable } from "@trpc/server/observable";
-import { type TRPCErrorResponse } from "@trpc/server/rpc";
-import { cache } from "react";
+} from "@trpc/client"
+import { callProcedure } from "@trpc/server"
+import { observable } from "@trpc/server/observable"
+import { type TRPCErrorResponse } from "@trpc/server/rpc"
+import { cache } from "react"
 
-import { appRouter, type AppRouter } from "@/server/api/root";
-import { createTRPCContext } from "@/server/api/trpc";
-import { transformer } from "./shared";
-import { auth } from "@clerk/nextjs";
+import { type AppRouter, appRouter } from "@/server/api/root"
+import { createTRPCContext } from "@/server/api/trpc"
+
+import { transformer } from "./shared"
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -22,8 +23,8 @@ import { auth } from "@clerk/nextjs";
 const createContext = cache(() => {
   return createTRPCContext({
     auth: auth(),
-  });
-});
+  })
+})
 
 export const api = createTRPCProxyClient<AppRouter>({
   transformer,
@@ -48,15 +49,15 @@ export const api = createTRPCProxyClient<AppRouter>({
                 rawInput: op.input,
                 ctx,
                 type: op.type,
-              });
+              })
             })
             .then((data) => {
-              observer.next({ result: { data } });
-              observer.complete();
+              observer.next({ result: { data } })
+              observer.complete()
             })
             .catch((cause: TRPCErrorResponse) => {
-              observer.error(TRPCClientError.from(cause));
-            });
+              observer.error(TRPCClientError.from(cause))
+            })
         }),
   ],
-});
+})

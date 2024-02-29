@@ -1,7 +1,10 @@
 import ConferenceLogo from '../../public/images/conference_logo.png'
-import {BookmarkCheck, BookOpen, Home, Ticket, User} from "lucide-react"
+import { BookmarkCheck, BookOpen, Home, Ticket, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+
+import flowcoreLogo from "@/images/flowcore-logo.svg"
+
 import { Nav } from "./nav"
 
 interface SidebarProps {

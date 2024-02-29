@@ -1,4 +1,4 @@
 #!/bin/bash
 
-npm run db:push
-npm run dev
+yarn db:push
+yarn run dev

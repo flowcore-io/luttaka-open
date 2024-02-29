@@ -1,5 +1,6 @@
-import {z} from "zod";
-import {UserRole} from "@/contracts/user/user-role";
+import { z } from "zod"
+
+import { UserRole } from "@/contracts/user/user-role"
 
 export const userEvent = {
   flowType: "user.0",
@@ -21,20 +22,20 @@ export const UpdateUserProfileEventPayload = z.object({
   description: z.string().optional(),
   socials: z.string().optional(),
   company: z.string().optional(),
-  avatarUrl: z.string().optional()
-});
+  avatarUrl: z.string().optional(),
+})
 
 export const UserCreatedEventPayload = UpdateUserProfileEventPayload.extend({
   externalId: z.string(),
   role: z.nativeEnum(UserRole).optional(),
-});
+})
 
 export const UserUpdatedEventPayload = z.object({
   userId: z.string(),
   role: z.nativeEnum(UserRole).optional(),
-});
+})
 
 export const UserArchivedEventPayload = z.object({
   userId: z.string(),
   reason: z.string().optional(),
-});
+})

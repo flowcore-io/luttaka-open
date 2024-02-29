@@ -1,50 +1,50 @@
-"use client";
-import Link from "next/link";
-import type {LucideIcon} from "lucide-react";
-import {cn} from "@/lib/utils";
-import {buttonVariants} from "@/components/ui/button";
-import type {Url} from "next/dist/shared/lib/router/router";
-import {usePathname} from "next/navigation";
-import {useEffect, useState} from "react";
-import {useOrganizationList} from "@clerk/nextjs";
+"use client"
+import { useOrganizationList } from "@clerk/nextjs"
+import type {LucideIcon} from "lucide-react"
+import type {Url} from "next/dist/shared/lib/router/router"
+import Link from "next/link"
+import{usePathname} from "next/navigation"
+import {useEffect, useState} from "react"
+import {buttonVariants } from "@/components/ui/button"
+import { cn} from "@/lib/utils"
 
 interface NavProps {
-  isSidebarOpen?: boolean;
-  setIsSidebarOpen?: (isOpen: boolean) => void;
+  isSidebarOpen?: boolean
+  setIsSidebarOpen?: (isOpen: boolean) => void
   links: {
-    href?: Url;
-    title: string;
-    label?: string;
-    superuserRequired: boolean;
-    icon: LucideIcon;
-  }[];
+    href?: Url
+    title: string
+    label?: string
+    superuserRequired: boolean
+    icon: LucideIcon
+  }[]
 }
 
 export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
-  const pathname = usePathname();
+  const pathname = usePathname()
   const { isLoaded, userMemberships } = useOrganizationList({
     userMemberships: {
       infinite: true,
     },
-  });
-  const [superuser, setSuperuser] = useState(false);
+  })
+  const [superuser, setSuperuser] = useState(false)
   useEffect(() => {
     if (isLoaded) {
       const isSuperuser =
         userMemberships.data?.filter(
           (mem) => mem.organization.slug === "flowcore",
-        ).length > 0;
-      setSuperuser(!!isSuperuser);
+        ).length > 0
+      setSuperuser(!!isSuperuser)
     }
-  }, [isLoaded, userMemberships]);
+  }, [isLoaded, userMemberships])
   return (
     isLoaded && (
       <div className="group flex flex-col gap-4 py-4 data-[collapsed=true]:py-4">
         <nav className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
           {links.map((link, index) => {
-            const isCurrent = link.href === pathname;
+            const isCurrent = link.href === pathname
             if (link.superuserRequired && !superuser) {
-              return false;
+              return false
             }
             return (
               <Link
@@ -60,10 +60,9 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
                 )}
                 onClick={() => {
                   if (isSidebarOpen && setIsSidebarOpen) {
-                    setIsSidebarOpen(false);
+                    setIsSidebarOpen(false)
                   }
-                }}
-              >
+                }}>
                 <link.icon className="mr-3 h-6 w-6 mr-5" /> {/* Increased icon size and right margin */}
                 {link.title}
                 {link.label && (
@@ -71,16 +70,15 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
                     className={cn(
                       "ml-auto",
                       isCurrent && "text-background dark:text-white",
-                    )}
-                  >
+                    )}>
                     {link.label}
                   </span>
                 )}
               </Link>
-            );
+            )
           })}
         </nav>
       </div>
     )
-  );  
+  )
 }
