@@ -1,22 +1,20 @@
-import {api} from "@/trpc/server";
-import {UserProfileForm} from "@/components/organisms/profile/user-profile-form";
-import {UserProfileView} from "@/components/organisms/profile/user-profile-view";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import Link from "next/link";
-import {Button} from "@/components/ui/button";
+import Link from "next/link"
 
-export const dynamic = "force-dynamic";
+import { UserProfileForm } from "@/components/organisms/profile/user-profile-form"
+import { UserProfileView } from "@/components/organisms/profile/user-profile-view"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { api } from "@/trpc/server"
+
+export const dynamic = "force-dynamic"
 
 export default async function MyUserRedirectPage() {
-
-  const profile = await api.profile.me.query();
+  const profile = await api.profile.me.query()
 
   return (
-    <div className={"md:flex w-[100%] md:space-x-10"}>
+    <div className={"w-[100%] md:flex md:space-x-10"}>
       <div className={"flex-1"}>
-        <UserProfileForm
-          user={profile}
-        />
+        <UserProfileForm user={profile} />
       </div>
       <Card className={"flex-2 mt-8 md:mt-0"}>
         <CardHeader>
@@ -28,10 +26,9 @@ export default async function MyUserRedirectPage() {
           </div>
         </CardHeader>
         <CardContent className={"px-3"}>
-          <UserProfileView profile={profile}/>
+          <UserProfileView profile={profile} />
         </CardContent>
       </Card>
-
     </div>
-  );
+  )
 }

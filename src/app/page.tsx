@@ -5,5 +5,5 @@ export default async function Home() {
         Welcome to the Flowcore Open Source Conference App!
       </div>
     </main>
-  );
+  )
 }

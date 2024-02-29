@@ -1,4 +1,4 @@
-import {retry} from "radash"
+import { retry } from "radash"
 
 export default async function waitForPredicate<T>(
   entry: () => Promise<T>,

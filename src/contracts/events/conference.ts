@@ -1,5 +1,6 @@
-import {webhookFactory} from "@/lib/webhook"
-import {z} from "zod"
+import { z } from "zod"
+
+import { webhookFactory } from "@/lib/webhook"
 
 export const conference = {
   flowType: "conference.0",
@@ -8,7 +9,7 @@ export const conference = {
     updated: "conference.updated.0",
     archived: "conference.archived.0",
   },
-} as const;
+} as const
 
 export const ConferenceEventCreatedPayload = z.object({
   id: z.string(),
@@ -18,24 +19,28 @@ export const ConferenceEventCreatedPayload = z.object({
   ticketCurrency: z.string(),
   startDate: z.string(),
   endDate: z.string(),
-});
+})
 
-export const ConferenceEventUpdatedPayload = ConferenceEventCreatedPayload.pick({
-  id: true,
-  name: true,
-  description: true,
-  ticketPrice: true,
-  ticketCurrency: true,
-  startDate: true,
-  endDate: true,
-}).partial().required({
-  id: true,
-});
+export const ConferenceEventUpdatedPayload = ConferenceEventCreatedPayload.pick(
+  {
+    id: true,
+    name: true,
+    description: true,
+    ticketPrice: true,
+    ticketCurrency: true,
+    startDate: true,
+    endDate: true,
+  },
+)
+  .partial()
+  .required({
+    id: true,
+  })
 
 export const ConferenceEventArchivedPayload = z.object({
   id: z.string(),
   _reason: z.string().optional(),
-});
+})
 
 export const sendConferenceCreatedEvent = webhookFactory<
   z.infer<typeof ConferenceEventCreatedPayload>

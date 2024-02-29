@@ -1,35 +1,36 @@
-import "@/styles/globals.css";
+import "@/styles/globals.css"
 
-import {Inter} from "next/font/google";
-import {cookies} from "next/headers";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
+import { type Viewport } from "next"
+import { Inter } from "next/font/google"
+import { cookies } from "next/headers"
 
-import {TRPCReactProvider} from "@/trpc/react";
-import {ClerkProvider, SignedIn, SignedOut} from "@clerk/nextjs";
-import PublicPage from "./public-page";
-import ProtectedPage from "./protected-page";
-import {type Viewport} from "next";
-import {Toaster} from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/sonner"
+import { TRPCReactProvider } from "@/trpc/react"
+
+import ProtectedPage from "./protected-page"
+import PublicPage from "./public-page"
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-});
+})
 
 export const metadata = {
   manifest: "/manifest.json",
   title: "Flowcore Open Source Conference App",
   description: "The open source Conference App from Flowcore",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
-};
+}
 
 export const viewport: Viewport = {
-  themeColor: "#FFFFFF"
+  themeColor: "#FFFFFF",
 }
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
@@ -41,11 +42,11 @@ export default function RootLayout({
           <SignedIn>
             <TRPCReactProvider cookies={cookies().toString()}>
               <ProtectedPage children={children} />
-              <Toaster />
+              <Toaster richColors />
             </TRPCReactProvider>
           </SignedIn>
         </ClerkProvider>
       </body>
     </html>
-  );
+  )
 }

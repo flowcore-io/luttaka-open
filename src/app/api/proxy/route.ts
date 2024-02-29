@@ -1,6 +1,6 @@
+import axios from "axios"
 import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
-import axios from "axios"
 
 const EventDto = z.object({
   eventId: z.string(),

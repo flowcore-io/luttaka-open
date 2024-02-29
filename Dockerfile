@@ -13,6 +13,6 @@ RUN apt update && \
     apt autoremove && \
     chmod +x scripts/image-startup.sh && \
     mv .container.env .env && \
-    npm install --ignore-scripts && \
+    yarn --ignore-scripts && \
 
 ENTRYPOINT ["/bin/bash", "-c", "scripts/image-startup.sh"]

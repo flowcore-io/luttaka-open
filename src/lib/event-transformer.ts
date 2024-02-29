@@ -1,5 +1,6 @@
-import { EventDto } from "@/contracts/common"
 import type { NextRequest } from "next/server"
+
+import { EventDto } from "@/contracts/common"
 
 interface Domain {
   flowType: string
