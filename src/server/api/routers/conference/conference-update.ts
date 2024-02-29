@@ -1,20 +1,11 @@
 import { and, eq, type SQL } from "drizzle-orm"
-import { type z } from "zod"
 
-import { ConferenceProfileDto } from "@/contracts/conference/conference"
+import { UpdateConferenceInputDto } from "@/contracts/conference/conference"
 import { sendConferenceUpdatedEvent } from "@/contracts/events/conference"
 import { db } from "@/database"
 import { conferences } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { protectedProcedure } from "@/server/api/trpc"
-
-export const UpdateConferenceInputDto = ConferenceProfileDto.partial().required(
-  {
-    id: true,
-  },
-)
-
-export type UpdateConferenceInput = z.infer<typeof UpdateConferenceInputDto>
 
 export const updateConferenceRouter = protectedProcedure
   .input(UpdateConferenceInputDto)

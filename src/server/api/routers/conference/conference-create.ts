@@ -1,8 +1,7 @@
 import { and, eq } from "drizzle-orm"
 import shortUuid from "short-uuid"
-import { type z } from "zod"
 
-import { ConferenceProfileDto } from "@/contracts/conference/conference"
+import { CreateConferenceInputDto } from "@/contracts/conference/conference"
 import {
   sendConferenceArchivedEvent,
   sendConferenceCreatedEvent,
@@ -11,17 +10,6 @@ import { db } from "@/database"
 import { conferences } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { protectedProcedure } from "@/server/api/trpc"
-
-export const CreateConferenceInputDto = ConferenceProfileDto.pick({
-  name: true,
-  description: true,
-  ticketPrice: true,
-  ticketCurrency: true,
-  startDate: true,
-  endDate: true,
-})
-
-export type CreateConferenceInput = z.infer<typeof CreateConferenceInputDto>
 
 export const createConferenceRouter = protectedProcedure
   .input(CreateConferenceInputDto)
