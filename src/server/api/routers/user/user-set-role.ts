@@ -1,15 +1,19 @@
-import { protectedProcedure } from "@/server/api/trpc"
+import { eq } from "drizzle-orm"
+import { type z } from "zod"
+
 import { SetUserRoleInput } from "@/contracts/authorization/set-user-role-input"
+import {
+  userEvent,
+  type UserUpdatedEventPayload,
+} from "@/contracts/events/user"
+import { type UserRole } from "@/contracts/user/user-role"
+import { db } from "@/database"
+import { users } from "@/database/schemas"
+import { sendWebhook } from "@/lib/webhook"
 import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { getUserById } from "@/server/api/services/user/get-user-by-id"
-import { sendWebhook } from "@/lib/webhook"
-import { z } from "zod"
-import { userEvent, UserUpdatedEventPayload } from "@/contracts/events/user"
+import { protectedProcedure } from "@/server/api/trpc"
 import { waitFor } from "@/server/lib/delay/wait-for"
-import { db } from "@/database"
-import { eq } from "drizzle-orm"
-import { users } from "@/database/schemas"
-import { UserRole } from "@/contracts/user/user-role"
 
 export const setUserRoleRouter = protectedProcedure
   .input(SetUserRoleInput)

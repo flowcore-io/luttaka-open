@@ -1,8 +1,8 @@
-import { protectedProcedure } from "@/server/api/trpc"
 import { PaginationInput } from "@/contracts/pagination/pagination"
 import type { PagedProfileResult } from "@/contracts/profile/paged-profiles"
-import { db } from "@/database"
 import type { UserProfile } from "@/contracts/profile/user-profile"
+import { db } from "@/database"
+import { protectedProcedure } from "@/server/api/trpc"
 import { getInitialsFromString } from "@/server/lib/format/get-initials-from-string"
 
 export const pageProfilesRouter = protectedProcedure

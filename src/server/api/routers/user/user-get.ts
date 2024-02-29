@@ -1,8 +1,9 @@
-import { protectedProcedure } from "@/server/api/trpc"
-import { db } from "@/database"
 import { eq } from "drizzle-orm"
-import { users } from "@/database/schemas"
+
 import { UserByIdInput } from "@/contracts/user/user-by-id-input"
+import { db } from "@/database"
+import { users } from "@/database/schemas"
+import { protectedProcedure } from "@/server/api/trpc"
 
 export const getUserRouter = protectedProcedure
   .input(UserByIdInput)

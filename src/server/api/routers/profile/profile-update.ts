@@ -1,17 +1,18 @@
-import { protectedProcedure } from "@/server/api/trpc"
-import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
-import { getProfileByUserId } from "@/server/api/services/profile/get-profile-by-user-id"
-import { UserByIdInput } from "@/contracts/user/user-by-id-input"
-import { sendWebhook } from "@/lib/webhook"
+import { eq } from "drizzle-orm"
 import type { z } from "zod"
+
 import {
-  UpdateUserProfileEventPayload,
+  type UpdateUserProfileEventPayload,
   userEvent,
 } from "@/contracts/events/user"
-import { waitFor } from "@/server/lib/delay/wait-for"
+import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
+import { UserByIdInput } from "@/contracts/user/user-by-id-input"
 import { db } from "@/database"
-import { eq } from "drizzle-orm"
 import { profiles } from "@/database/schemas"
+import { sendWebhook } from "@/lib/webhook"
+import { getProfileByUserId } from "@/server/api/services/profile/get-profile-by-user-id"
+import { protectedProcedure } from "@/server/api/trpc"
+import { waitFor } from "@/server/lib/delay/wait-for"
 
 export const profileUpdateRouter = protectedProcedure
   .input(UpdateUserProfileInput)

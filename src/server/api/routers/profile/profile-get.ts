@@ -1,9 +1,10 @@
-import { protectedProcedure } from "@/server/api/trpc"
+import { eq } from "drizzle-orm"
+
 import { ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
 import type { UserProfile } from "@/contracts/profile/user-profile"
 import { db } from "@/database"
-import { eq } from "drizzle-orm"
 import { profiles } from "@/database/schemas"
+import { protectedProcedure } from "@/server/api/trpc"
 import { getInitialsFromString } from "@/server/lib/format/get-initials-from-string"
 
 export const getProfileRouter = protectedProcedure

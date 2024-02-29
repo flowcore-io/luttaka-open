@@ -1,7 +1,8 @@
-import { protectedProcedure } from "@/server/api/trpc"
-import { db } from "@/database"
 import { count } from "drizzle-orm"
+
+import { db } from "@/database"
 import { profiles } from "@/database/schemas"
+import { protectedProcedure } from "@/server/api/trpc"
 
 export const profileCountRouter = protectedProcedure.query(
   async (): Promise<number> => {

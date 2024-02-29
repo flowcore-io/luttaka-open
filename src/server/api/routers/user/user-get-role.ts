@@ -1,5 +1,5 @@
-import { protectedProcedure } from "@/server/api/trpc"
 import { UserRole } from "@/contracts/user/user-role"
+import { protectedProcedure } from "@/server/api/trpc"
 
 export const getUserRoleRouter = protectedProcedure.query(
   async ({ ctx }): Promise<UserRole> => {
