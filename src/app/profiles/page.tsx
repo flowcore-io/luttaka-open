@@ -21,13 +21,6 @@ export default function ProfilePage() {
     pageSize: PAGE_SIZE
   });
 
-  const profiles = useMemo(() => {
-    if (profilesRequest.data?.items) {
-      return profilesRequest.data.items;
-    }
-    return [];
-  }, [profilesRequest.data]);
-
   const pageNumbers = useMemo(() => {
     if (!profileCountRequest.data) {
       return [];
@@ -48,7 +41,7 @@ export default function ProfilePage() {
       // todo: create a trpc loading component (with built in error displaying e.t.c)
       profilesRequest.isLoading
         ? <SkeletonList count={PAGE_SIZE}/>
-        : <ProfileList profiles={profiles}/>
+        : <ProfileList profiles={profilesRequest.data ?? []}/>
     }
     <Pagination className={"absolute bottom-6 left-0 right-0 "}>
       <PaginationContent>
