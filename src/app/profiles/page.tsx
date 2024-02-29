@@ -4,31 +4,19 @@ import {api} from "@/trpc/react";
 import React, {useMemo} from "react";
 import {ProfileList} from "@/app/profiles/profile-list.component";
 import {PageTitle} from "@/components/ui/page-title";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious
-} from "@/components/ui/pagination";
-import {useSearchParams} from "next/navigation";
+import {Pagination, PaginationContent, PaginationItem, PaginationLink} from "@/components/ui/pagination";
+import {usePagination} from "@/hooks/use-pagination";
 
 const PAGE_SIZE = 1;
 
 export default function ProfilePage() {
 
-  const searchParams = useSearchParams();
-
-  const page = useMemo(() => {
-    const param = searchParams.get("page")
-    return param ? parseInt(param) : 1;
-  }, []);
+  const pager = usePagination();
 
   const profileCountRequest = api.profile.count.useQuery();
 
   const profilesRequest = api.profile.page.useQuery({
-    page,
+    page: pager.page,
     pageSize: PAGE_SIZE
   });
 
@@ -44,11 +32,11 @@ export default function ProfilePage() {
       return [];
     }
 
-    const pages = Math.ceil(profileCountRequest.data / PAGE_SIZE);
+    const previousPages = [pager.page - 2, pager.page - 1].filter((page) => page > 0);
+    const nextPages = [pager.page + 1, pager.page + 2].filter((page) => page <= profileCountRequest.data / PAGE_SIZE);
+    return [...previousPages, pager.page, ...nextPages];
 
-    return Array.from({length: pages}, (_, i) => i + 1);
-
-  }, [profileCountRequest.data])
+  }, [profileCountRequest.data, pager.page])
 
   return (<div>
     <PageTitle
@@ -56,19 +44,15 @@ export default function ProfilePage() {
       subtitle={"A list of all the people who are partaking in this conference"}
     />
     <ProfileList profiles={profiles}/>
-    <Pagination>
+    <Pagination className={"absolute bottom-6 left-0 right-0 "}>
       <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href={`/profiles?page=${page - 1}`}/>
-        </PaginationItem>
         {pageNumbers.map((pageNumber) =>
           <PaginationItem key={pageNumber}>
-            <PaginationLink href={`/profiles?page=${pageNumber}`}>{pageNumber}</PaginationLink>
+            <PaginationLink onClick={() => pager.setPage(pageNumber)}>
+              {pageNumber}
+            </PaginationLink>
           </PaginationItem>
         )}
-        <PaginationItem>
-          <PaginationNext href={`/profiles?page=${page + 1}`}/>
-        </PaginationItem>
       </PaginationContent>
     </Pagination>
   </div>);
