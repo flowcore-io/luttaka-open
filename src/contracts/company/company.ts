@@ -6,11 +6,13 @@ export const CompanyProfileDto = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().optional(),
+  owner: z.string(),
 })
 
 export const CreateCompanyInputDto = CompanyProfileDto.pick({
   name: true,
   description: true,
+  owner: true,
 })
 
 export const UpdateCompanyInputDto = CompanyProfileDto.partial().required({

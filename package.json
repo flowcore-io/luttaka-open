@@ -73,6 +73,7 @@
     "recharts": "^2.10.3",
     "rehype-sanitize": "^6.0.0",
     "server-only": "^0.0.1",
+    "sharp": "^0.33.2",
     "short-uuid": "^4.2.2",
     "sonner": "^1.4.2",
     "superjson": "^2.2.1",

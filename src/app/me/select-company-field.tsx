@@ -1,5 +1,6 @@
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { Loader, XIcon } from "lucide-react"
+import Link from "next/link"
 import { type FC, useState } from "react"
 import { toast } from "sonner"
 import { useDebouncedCallback } from "use-debounce"
@@ -24,12 +25,14 @@ export type SelectCompanyFieldProps = {
   value: string
   label: string
   setValue: (value: string) => void
+  submit: () => void
 }
 
 export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
   value,
   label,
   setValue,
+  submit,
 }) => {
   const [search, setSearch] = useState(label)
   const [currentLabel, setCurrentLabel] = useState<string>(label)
@@ -73,7 +76,13 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
               "w-[300px] justify-between",
               !value && "text-muted-foreground",
             )}>
-            {currentLabel || "Select Company"}
+            {currentLabel ? (
+              <Link href={`/company/${value}`} className={"underline"}>
+                {currentLabel}
+              </Link>
+            ) : (
+              "Select Company"
+            )}
             {currentLabel && (
               <XIcon
                 className="ml-auto h-4 w-4"
@@ -131,6 +140,7 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
                   toast.success("Company created")
                   setCurrentLabel(search)
                   setValue(id)
+                  submit()
                 }}>
                 {isCreating && <Loader className={"animate-spin"} />}
                 Create {search}

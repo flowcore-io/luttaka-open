@@ -7,13 +7,17 @@ import {
   sendCompanyCreatedEvent,
 } from "@/contracts/events/company"
 import { db } from "@/database"
-import { companies, conferences } from "@/database/schemas"
+import { companies } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { protectedProcedure } from "@/server/api/trpc"
 
 export const createCompanyRouter = protectedProcedure
-  .input(CreateCompanyInputDto)
-  .mutation(async ({ input }) => {
+  .input(
+    CreateCompanyInputDto.omit({
+      owner: true,
+    }),
+  )
+  .mutation(async ({ ctx, input }) => {
     if (
       await db.query.companies.findFirst({
         where: and(
@@ -27,8 +31,7 @@ export const createCompanyRouter = protectedProcedure
 
     const id = shortUuid.generate()
 
-    console.log("id", id, input)
-    await sendCompanyCreatedEvent({ id, ...input })
+    await sendCompanyCreatedEvent({ id, ...input, ownerId: ctx.user.id })
     try {
       await waitForPredicate(
         () =>

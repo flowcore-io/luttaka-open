@@ -16,7 +16,7 @@ export default async function companyArchived(payload: unknown) {
   await db
     .update(companies)
     .set({
-      archived: true,
+      archived: parsedPayload.state ?? true,
     })
     .where(eq(companies.id, parsedPayload.id))
 }

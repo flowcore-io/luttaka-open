@@ -5,12 +5,12 @@ import { db } from "@/database"
 import { companies } from "@/database/schemas"
 import { protectedProcedure } from "@/server/api/trpc"
 
-export const GetCompanyInput = z.object({
+export const listCompanyInput = z.object({
   name: z.string(),
 })
 
-export const getCompanyRouter = protectedProcedure
-  .input(GetCompanyInput)
+export const listCompanyRouter = protectedProcedure
+  .input(listCompanyInput)
   .query(async ({ input }) => {
     return (
       (await db

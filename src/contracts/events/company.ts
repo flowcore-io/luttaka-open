@@ -15,12 +15,14 @@ export const CompanyEventCreatedPayload = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().optional(),
+  ownerId: z.string(),
 })
 
 export const CompanyEventUpdatedPayload = CompanyEventCreatedPayload.pick({
   id: true,
   name: true,
   description: true,
+  ownerId: true,
 })
   .partial()
   .required({
@@ -29,6 +31,7 @@ export const CompanyEventUpdatedPayload = CompanyEventCreatedPayload.pick({
 
 export const CompanyEventArchivedPayload = z.object({
   id: z.string(),
+  state: z.boolean().optional(),
   _reason: z.string().optional(),
 })
 

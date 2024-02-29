@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { type FC, useCallback } from "react"
+import { Simulate } from "react-dom/test-utils"
 import { useForm } from "react-hook-form"
 import { type z } from "zod"
 
@@ -121,6 +122,7 @@ export const UserProfileForm: FC<UserProfileProps> = ({ user }) => {
                     value={field.value!}
                     setValue={field.onChange}
                     label={user.company}
+                    submit={() => onSubmit(form.getValues())}
                   />
                 </div>
               </FormControl>
