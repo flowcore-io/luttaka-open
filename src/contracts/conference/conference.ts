@@ -27,12 +27,9 @@ export const UpdateConferenceInputDto = ConferenceProfileDto.partial().required(
   },
 )
 
-export const ArchiveConferenceInputDto = z.object({
-  id: z.string(),
-})
-
 // Types
 export type ConferenceProfile = z.infer<typeof ConferenceProfileDto>
+
 export type CreateConferenceInput = z.infer<typeof CreateConferenceInputDto>
+
 export type UpdateConferenceInput = z.infer<typeof UpdateConferenceInputDto>
-export type ArchiveConferenceInput = z.infer<typeof ArchiveConferenceInputDto>

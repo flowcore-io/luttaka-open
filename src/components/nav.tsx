@@ -40,8 +40,8 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
   }, [isLoaded, userMemberships])
   return (
     isLoaded && (
-      <div className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2">
-        <nav className="grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+      <div className="group flex flex-col gap-4 py-4 data-[collapsed=true]:py-4">
+        <nav className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
           {links.map((link, index) => {
             const isCurrent = link.href === pathname
             if (link.superuserRequired && !superuser) {
@@ -57,15 +57,16 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
                     size: "sm",
                   }),
                   isCurrent &&
-                    "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                  "justify-start",
+                    "bg-pink-400 text-black hover:bg-pink-400 dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
+                  "justify-start py-5 text-base font-light",
                 )}
                 onClick={() => {
                   if (isSidebarOpen && setIsSidebarOpen) {
                     setIsSidebarOpen(false)
                   }
                 }}>
-                <link.icon className="mr-2 h-4 w-4" />
+                <link.icon className="mr-3 mr-5 h-6 w-6" />{" "}
+                {/* Increased icon size and right margin */}
                 {link.title}
                 {link.label && (
                   <span
