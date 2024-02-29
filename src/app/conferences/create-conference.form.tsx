@@ -31,7 +31,7 @@ import {
 import {
   type CreateConferenceInput,
   CreateConferenceInputDto,
-} from "@/contracts/conference/conference"
+} from "@/server/api/routers/conference/conference-create"
 import { api } from "@/trpc/react"
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {

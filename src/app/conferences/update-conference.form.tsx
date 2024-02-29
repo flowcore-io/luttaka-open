@@ -28,11 +28,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { type ConferenceProfile } from "@/contracts/conference/conference"
 import {
-  type ConferenceProfile,
   type UpdateConferenceInput,
   UpdateConferenceInputDto,
-} from "@/contracts/conference/conference"
+} from "@/server/api/routers/conference/conference-update"
 import { api } from "@/trpc/react"
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
