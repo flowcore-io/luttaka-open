@@ -45,6 +45,7 @@ export default function ProfilePage() {
       subtitle={"A list of all the people who are partaking in this conference"}
     />
     {
+      // todo: create a trpc loading component (with built in error displaying e.t.c)
       profilesRequest.isLoading
         ? <SkeletonList count={PAGE_SIZE}/>
         : <ProfileList profiles={profiles}/>
