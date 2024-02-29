@@ -4,8 +4,6 @@ import {useSearchParams} from "next/navigation";
 export type PageControls = {
   page: number;
   setPage: (page: number) => void;
-  next: () => void;
-  previous: () => void;
 }
 
 export const usePagination = (): PageControls => {
@@ -26,15 +24,7 @@ export const usePagination = (): PageControls => {
     setPageInternally(safeValue);
   }, [page]);
 
-  const next = useCallback(() => {
-    setPage(page + 1);
-  }, [page]);
-
-  const previous = useCallback(() => {
-    setPage(page - 1);
-  }, [page]);
-
   return {
-    page, setPage, next, previous
+    page, setPage
   }
 }
