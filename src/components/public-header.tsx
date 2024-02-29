@@ -1,7 +1,7 @@
 import { SignInButton } from "@clerk/nextjs"
 import Image from "next/image"
 
-import flowcoreLogo from "@/images/flowcore-logo.svg"
+import flowcoreLogo from "../../public/images/flowcore-logo.svg"
 
 const PublicHeader = () => {
   return (
