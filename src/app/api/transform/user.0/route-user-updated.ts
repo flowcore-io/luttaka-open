@@ -4,7 +4,7 @@ import { UserUpdatedEventPayload } from "@/contracts/events/user"
 import { db } from "@/database"
 import { users } from "@/database/schemas"
 
-export const updateUserEventAction = async (payload: unknown) => {
+export const routeUserUpdated = async (payload: unknown) => {
   const data = UserUpdatedEventPayload.parse(payload)
 
   const existingUser = await db.query.users.findFirst({

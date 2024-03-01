@@ -6,7 +6,7 @@ import { UserCreatedEventPayload } from "@/contracts/events/user"
 import { db } from "@/database"
 import { profiles, users } from "@/database/schemas"
 
-export const createUserEventAction = async (payload: unknown) => {
+export const routeUserCreated = async (payload: unknown) => {
   const data = UserCreatedEventPayload.parse(payload)
 
   const createdUser = await createUser(data)
