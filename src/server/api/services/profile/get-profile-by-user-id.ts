@@ -4,33 +4,39 @@ import type { z } from "zod"
 import { type UserProfile } from "@/contracts/profile/user-profile"
 import { type UserByIdInput } from "@/contracts/user/user-by-id-input"
 import { db } from "@/database"
-import { profiles } from "@/database/schemas"
+import { companies, profiles } from "@/database/schemas"
 import { getInitialsFromString } from "@/server/lib/format/get-initials-from-string"
 
 export const getProfileByUserId = async (
   input: z.infer<typeof UserByIdInput>,
 ): Promise<UserProfile> => {
-  const profile = await db.query.profiles.findFirst({
-    where: eq(profiles.userId, input.userId),
-  })
+  const result = await db
+    .select()
+    .from(profiles)
+    .where(eq(profiles.userId, input.userId))
+    .leftJoin(companies, eq(profiles.company, companies.id))
+    .execute()
 
-  if (!profile) {
+  if (result.length === 0) {
     throw new Error(`Profile not found`)
   }
 
-  const displayName = `${profile.firstName} ${profile.lastName}`
+  const profileData = result[0]!
+
+  const displayName = `${profileData.profiles.firstName} ${profileData.profiles.lastName}`
   const initials = getInitialsFromString(displayName)
   return {
-    id: profile.id,
-    userId: profile.userId,
-    firstName: profile.firstName ?? "",
-    lastName: profile.lastName ?? "",
-    displayName: `${profile.firstName} ${profile.lastName}`,
-    description: profile.description ?? "",
-    title: profile.title ?? "",
-    socials: profile.socials ?? "",
-    company: profile.company ?? "",
-    avatarUrl: profile.avatarUrl ?? "",
+    id: profileData.profiles.id,
+    userId: profileData.profiles.userId,
+    firstName: profileData.profiles.firstName ?? "",
+    lastName: profileData.profiles.lastName ?? "",
+    displayName: `${profileData.profiles.firstName} ${profileData.profiles.lastName}`,
+    description: profileData.profiles.description ?? "",
+    title: profileData.profiles.title ?? "",
+    socials: profileData.profiles.socials ?? "",
+    company: profileData.companies?.name ?? "",
+    companyId: profileData.profiles.company ?? "",
+    avatarUrl: profileData.profiles.avatarUrl ?? "",
     initials,
   }
 }
