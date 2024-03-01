@@ -1,4 +1,4 @@
-tenant: flowcore
+tenant: conference-app
 dataCore:
   name: conference-app
   deleteProtection: true
@@ -64,7 +64,7 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://conference.flowcore.app/api/transform/company.0"
-        - name: PROXY_SECRET_HEADER
+        - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-conference-app-secret
       blueprint:
@@ -81,7 +81,7 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://conference.flowcore.app/api/transform/conference.0"
-        - name: PROXY_SECRET_HEADER
+        - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-conference-app-secret
       blueprint:
@@ -101,7 +101,7 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://conference.flowcore.app/api/transform/ticket.0"
-        - name: PROXY_SECRET_HEADER
+        - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-conference-app-secret
       blueprint:
@@ -118,8 +118,8 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://conference.flowcore.app/api/transform/user/create"
-        - name: PROXY_SECRET_HEADER
+          value: "https://conference.flowcore.app/api/transform/user.0"
+        - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-conference-app-secret
       blueprint:
