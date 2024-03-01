@@ -6,7 +6,7 @@ import Stripe from "stripe"
 import { z } from "zod"
 
 import { db } from "@/database"
-import { users } from "@/database/schemas"
+import { conferences, users } from "@/database/schemas"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -29,7 +29,18 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = CheckoutRequest.parse(await request.json())
+    const bodyRaw: unknown = await request.json()
+    const body = CheckoutRequest.parse(bodyRaw)
+    const conference = await db.query.conferences.findFirst({
+      where: eq(conferences.id, body.conferenceId),
+    })
+    const prices = await stripe.prices.list({
+      lookup_keys: [`standard_${conference?.stripeId}`],
+    })
+    const price = prices.data[0]
+    if (!price) {
+      return NextResponse.json({ error: "Price not found" }, { status: 400 })
+    }
     const ticketIds = Array.from({ length: body.quantity }, () =>
       shortUuid.generate(),
     )
@@ -37,7 +48,7 @@ export async function POST(request: NextRequest) {
       line_items: [
         {
           quantity: body.quantity,
-          price: "price_1Op6afGQqCJlxllrifLorPJP",
+          price: price.id,
         },
       ],
       client_reference_id: user.id,

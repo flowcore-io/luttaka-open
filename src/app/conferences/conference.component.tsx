@@ -17,6 +17,7 @@ export interface ConferenceProps {
     ticketCurrency: string
     startDate: string
     endDate: string
+    stripeId: string
   }
   refetch: () => Promise<void>
 }
@@ -62,6 +63,9 @@ export function Conference({ conference, refetch }: ConferenceProps) {
           </div>
           <div className={"text-sm text-gray-500"}>
             Conference ID: {conference.id}
+          </div>
+          <div className={"text-sm text-gray-500"}>
+            Stripe ID: {conference.stripeId}
           </div>
           <div className={"text-sm text-gray-500"}>
             Price: {conference.ticketPrice} {conference.ticketCurrency}

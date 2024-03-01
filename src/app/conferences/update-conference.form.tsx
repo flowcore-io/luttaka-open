@@ -92,6 +92,16 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
         }
       }
 
+      let ticketPrice: number | undefined = undefined
+      let ticketCurrency: string | undefined = undefined
+      if (
+        values.ticketPrice !== conference.ticketPrice ||
+        values.ticketCurrency !== conference.ticketCurrency
+      ) {
+        ticketPrice = values.ticketPrice ?? conference.ticketPrice
+        ticketCurrency = values.ticketCurrency ?? conference.ticketCurrency
+      }
+
       const valuesToSubmit: UpdateConferenceInput = {
         id: conference.id,
         name: conference.name !== values.name ? values.name : undefined,
@@ -99,14 +109,8 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
           conference.description !== values.description
             ? values.description
             : undefined,
-        ticketCurrency:
-          conference.ticketCurrency !== values.ticketCurrency
-            ? values.ticketCurrency
-            : undefined,
-        ticketPrice:
-          conference.ticketPrice !== values.ticketPrice
-            ? values.ticketPrice
-            : undefined,
+        ticketPrice: ticketPrice,
+        ticketCurrency: ticketCurrency,
         startDate:
           conference.startDate !== values.startDate
             ? values.startDate
@@ -131,8 +135,6 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
       }
     })
   }, [])
-
-  const currencyCode = form.watch("ticketCurrency")
 
   return (
     <Form {...form}>
@@ -185,58 +187,64 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
             </FormItem>
           )}
         />
-        <FormField
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Currency</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}>
-                  <SelectTrigger className="w-[280px]">
-                    <SelectValue placeholder="Select currency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {codes.map((code) => (
-                      <SelectItem value={code.value} key={code.value}>
-                        {code.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-          name={"ticketCurrency"}
-          control={form.control}
-        />
-        <FormField
-          control={form.control}
-          name={"ticketPrice"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <NumericFormat
-                  placeholder={"price"}
-                  value={field.value}
-                  onValueChange={(value) =>
-                    field.onChange({
-                      target: {
-                        value: value.floatValue,
-                        name: field.name,
-                      },
-                    })
-                  }
-                  suffix={` ${currencyCode}`}
-                  customInput={Input}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className={"flex justify-around space-x-2"}>
+          <div className={"flex-1"}>
+            <FormField
+              control={form.control}
+              name={"ticketPrice"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
+                  <FormControl>
+                    <NumericFormat
+                      placeholder={"price"}
+                      value={field.value}
+                      onValueChange={(value) =>
+                        field.onChange({
+                          target: {
+                            value: value.floatValue,
+                            name: field.name,
+                          },
+                        })
+                      }
+                      customInput={Input}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className={"flex-1"}>
+            <FormField
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Currency</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}>
+                      <SelectTrigger className="w-[280px]">
+                        <SelectValue placeholder="Select currency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {codes.map((code) => (
+                          <SelectItem value={code.value} key={code.value}>
+                            {code.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+              name={"ticketCurrency"}
+              control={form.control}
+            />
+          </div>
+        </div>
+
         <FormField
           control={form.control}
           name={"startDate"}

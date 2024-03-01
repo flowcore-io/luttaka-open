@@ -13,20 +13,30 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { UserRole } from "@/contracts/user/user-role"
 import getStripe from "@/lib/stripe/get"
 import { api } from "@/trpc/react"
 
-const conferenceId = "xxxxxxxxxxxxxxxxxxxxxx"
 const CheckoutResponse = z.object({
   sessionId: z.string(),
 })
 
 export default function Tickets() {
+  const [purchaseLoading, setPurchaseLoading] = useState(false)
+  const [conferenceId, setConferenceId] = useState<string>()
+  const { data: conferences } = api.conference.list.useQuery()
+  const { data: conference } = api.conference.get.useQuery(
+    {
+      id: conferenceId!,
+    },
+    { enabled: !!conferenceId },
+  )
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -37,7 +47,10 @@ export default function Tickets() {
     useState(false)
   const [ticketQuantity, setTicketQuantity] = useState(1)
   const [transferId, setTransferId] = useState("")
-  const { data: tickets, refetch } = api.ticket.list.useQuery({ conferenceId })
+  const { data: tickets, refetch } = api.ticket.list.useQuery(
+    { conferenceId: conferenceId! },
+    { enabled: !!conferenceId },
+  )
 
   useEffect(() => {
     const success = searchParams.get("success")
@@ -49,9 +62,15 @@ export default function Tickets() {
     router.replace(pathname)
   }, [])
 
+  useEffect(() => {
+    if (conferences) {
+      setConferenceId(conferences[0]?.id)
+    }
+  }, [conferences])
+
   const apiCreateTicket = api.ticket.create.useMutation()
   const createTicket = useCallback(async () => {
-    if (!userId) {
+    if (!userId || !conferenceId) {
       return
     }
     try {
@@ -89,6 +108,7 @@ export default function Tickets() {
   }
 
   const purchaseTicket = useCallback(async () => {
+    setPurchaseLoading(true)
     const stripe = await getStripe()
     if (!stripe) {
       toast.error("Failed to redirect to checkout")
@@ -104,9 +124,10 @@ export default function Tickets() {
     })
     if (result.error) {
       toast.error("Failed to redirect to checkout")
+      setPurchaseLoading(false)
       return
     }
-  }, [ticketQuantity])
+  }, [ticketQuantity, conferenceId])
 
   return (
     <main className="mx-auto w-full">
@@ -184,20 +205,24 @@ export default function Tickets() {
           !open && setPurchaseTicketDialogOpened(open)
         }}>
         <DialogContent>
-          <DialogHeader>Purchase ticket(s)</DialogHeader>
+          <DialogHeader>
+            <DialogTitle>Purchase ticket(s) for {conference?.name}</DialogTitle>
+            <DialogDescription>
+              Price: {conference?.ticketPrice} {conference?.ticketCurrency}
+            </DialogDescription>
+          </DialogHeader>
           <div>
             <Input
               type={"number"}
               value={ticketQuantity}
+              disabled={purchaseLoading}
               onChange={(e) =>
                 setTicketQuantity(parseInt(e.currentTarget.value, 10))
               }
             />
           </div>
           <DialogFooter>
-            <Button
-              onClick={() => purchaseTicket()}
-              disabled={apiAcceptTicketTransfer.isLoading}>
+            <Button onClick={() => purchaseTicket()} disabled={purchaseLoading}>
               Purchase {ticketQuantity} ticket{ticketQuantity > 1 ? "s" : ""}
             </Button>
           </DialogFooter>

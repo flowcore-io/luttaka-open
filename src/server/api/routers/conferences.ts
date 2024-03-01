@@ -20,7 +20,16 @@ const ArchiveTicketInput = z.object({
   id: z.string(),
 })
 
+const GetConferenceInput = z.object({
+  id: z.string(),
+})
+
 export const conferenceRouter = createTRPCRouter({
+  get: protectedProcedure.input(GetConferenceInput).query(async ({ input }) => {
+    return db.query.conferences.findFirst({
+      where: and(eq(conferences.id, input.id), eq(conferences.archived, false)),
+    })
+  }),
   list: protectedProcedure.query(async () => {
     return (
       (await db
@@ -32,6 +41,7 @@ export const conferenceRouter = createTRPCRouter({
           ticketCurrency: conferences.ticketCurrency,
           startDate: conferences.startDate,
           endDate: conferences.endDate,
+          stripeId: conferences.stripeId,
         })
         .from(conferences)
         .where(eq(conferences.archived, false))
@@ -55,9 +65,10 @@ export const conferenceRouter = createTRPCRouter({
       }
 
       const id = shortUuid.generate()
+      const stripeId = shortUuid.generate()
 
       console.log("id", id, input)
-      await sendConferenceCreatedEvent({ id, ...input })
+      await sendConferenceCreatedEvent({ id, stripeId, ...input })
       try {
         await waitForPredicate(
           () =>

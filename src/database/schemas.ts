@@ -47,4 +47,5 @@ export const conferences = pgTable("conferences", {
   ticketCurrency: text("ticket_currency").notNull(),
   startDate: text("start_date").notNull(),
   endDate: text("end_date").notNull(),
+  stripeId: text("stripe_id").notNull(),
 })

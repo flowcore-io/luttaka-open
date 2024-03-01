@@ -19,6 +19,7 @@ export const ConferenceEventCreatedPayload = z.object({
   ticketCurrency: z.string(),
   startDate: z.string(),
   endDate: z.string(),
+  stripeId: z.string(),
 })
 
 export const ConferenceEventUpdatedPayload = ConferenceEventCreatedPayload.pick(
