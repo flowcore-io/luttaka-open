@@ -16,7 +16,7 @@ export const ProfileList: FC<ProfileListProps> = ({ profiles }) => {
   return (
     <ul className={"space-y-2"}>
       {profiles.map((profile) => {
-        return <ProfileListItem profile={profile} />
+        return <ProfileListItem key={profile.id} profile={profile} />
       })}
     </ul>
   )
