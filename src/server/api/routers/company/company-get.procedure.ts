@@ -9,7 +9,7 @@ export const GetCompanyInput = z.object({
   companyId: z.string(),
 })
 
-export const getCompanyRouter = protectedProcedure
+export const getCompanyProcedure = protectedProcedure
   .input(GetCompanyInput)
   .query(async ({ ctx, input }) => {
     const company = await db.query.companies.findFirst({
