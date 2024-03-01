@@ -1,4 +1,4 @@
-tenant: flowcore
+tenant: conference-app
 dataCore:
   name: conference-app
   deleteProtection: true
@@ -13,6 +13,15 @@ dataCore:
           description: "a conference has been updated"
         conference.archived.0:
           description: "a conference has been archived"
+    company.0:
+      description: "actions and events related to a company"
+      eventTypes:
+        company.created.0:
+          description: "a new company has been created"
+        company.updated.0:
+          description: "a company has been updated"
+        company.archived.0:
+          description: "a company has been archived"
     user.0:
       description: "actions and events related to a user"
       eventTypes:
@@ -43,8 +52,25 @@ scenario:
   name: conference-app
   description: "This scenario contains the transformers for the open source conference app"
   transformers:
-    conference:
-      description: "transformer for profiles"
+    companies:
+      description: "transformer for company management"
+      dataCore: conference-app
+      flowType: company.0
+      events:
+        - company.created.0
+        - company.updated.0
+        - company.archived.0
+      parameters:
+        - name: PROXY_ENDPOINT
+          type: manual
+          value: "https://conference.flowcore.app/api/transform/company.0"
+        - name: PROXY_HEADER_SECRET
+          type: secret
+          value: open-source-conference-app-secret
+      blueprint:
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
+    conferences:
+      description: "transformer for conference management"
       dataCore: conference-app
       flowType: conference.0
       events:
@@ -55,7 +81,7 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://conference.flowcore.app/api/transform/conference.0"
-        - name: PROXY_SECRET_HEADER
+        - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-conference-app-secret
       blueprint:
@@ -75,7 +101,7 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://conference.flowcore.app/api/transform/ticket.0"
-        - name: PROXY_SECRET_HEADER
+        - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-conference-app-secret
       blueprint:
@@ -92,8 +118,8 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://conference.flowcore.app/api/transform/user/create"
-        - name: PROXY_SECRET_HEADER
+          value: "https://conference.flowcore.app/api/transform/user.0"
+        - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-conference-app-secret
       blueprint:

@@ -1,15 +1,12 @@
-"use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import currencyCodes from "currency-codes"
 import { Loader } from "lucide-react"
-import dynamic from "next/dynamic"
 import { type FC, useCallback, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { NumericFormat } from "react-number-format"
-import rehypeSanitize from "rehype-sanitize"
 import { toast } from "sonner"
 
+import { MarkdownEditor } from "@/components/md-editor"
 import { Button } from "@/components/ui/button"
 import { DateTimePicker } from "@/components/ui/date-time-picker"
 import {
@@ -34,10 +31,6 @@ import {
   UpdateConferenceInputDto,
 } from "@/contracts/conference/conference"
 import { api } from "@/trpc/react"
-
-const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
-  ssr: false,
-})
 
 export type UpdateConferenceProps = {
   conference: ConferenceProfile
@@ -167,19 +160,10 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <div>
-                  <MDEditor
-                    value={field.value}
-                    onChange={(value) =>
-                      field.onChange({
-                        target: {
-                          value: value,
-                          name: field.name,
-                        },
-                      })
-                    }
-                    previewOptions={{
-                      rehypePlugins: [[rehypeSanitize]],
-                    }}
+                  <MarkdownEditor
+                    name={field.name}
+                    value={field.value!}
+                    onChange={field.onChange}
                   />
                 </div>
               </FormControl>

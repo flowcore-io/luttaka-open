@@ -5,7 +5,9 @@ dataCore:
 scenario:
   name: conference-app-dev
   transformers:
-    conference:
+    companies:
+      dataCore: conference-app-dev
+    conferences:
       dataCore: conference-app-dev
     tickets:
       dataCore: conference-app-dev

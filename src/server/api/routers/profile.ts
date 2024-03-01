@@ -5,6 +5,8 @@ import {
   type UpdateUserProfileEventPayload,
   userEvent,
 } from "@/contracts/events/user"
+import { PaginationInput } from "@/contracts/pagination/pagination"
+import { type PagedProfileResult } from "@/contracts/profile/paged-profiles"
 import { ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
 import { ProfileByUserIdInput } from "@/contracts/profile/profile-by-user-id-input"
 import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input"
@@ -15,6 +17,10 @@ import { profiles } from "@/database/schemas"
 import { sendWebhook } from "@/lib/webhook"
 import { getProfileById } from "@/server/api/services/profile/get-profile-by-id"
 import { getProfileByUserId } from "@/server/api/services/profile/get-profile-by-user-id"
+import {
+  getTotalNumberOfProfiles,
+  pageProfiles,
+} from "@/server/api/services/profile/page-profiles"
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
 import { waitFor } from "@/server/lib/delay/wait-for"
 
@@ -33,6 +39,16 @@ export const profileRouter = createTRPCRouter({
 
   me: protectedProcedure.query(async ({ ctx }): Promise<UserProfile> => {
     return getProfileByUserId(UserByIdInput.parse({ userId: ctx.user.id }))
+  }),
+
+  page: protectedProcedure
+    .input(PaginationInput)
+    .query(async ({ input }): Promise<PagedProfileResult> => {
+      return pageProfiles(input)
+    }),
+
+  count: protectedProcedure.query(async (): Promise<number> => {
+    return getTotalNumberOfProfiles()
   }),
 
   update: protectedProcedure

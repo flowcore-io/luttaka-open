@@ -1,6 +1,6 @@
 import { retry } from "radash"
 
-const NUMBER_OF_ATTEMPTS = 6
+const NUMBER_OF_ATTEMPTS = 20
 const DELAY_BETWEEN_ATTEMPTS = 250
 
 /**

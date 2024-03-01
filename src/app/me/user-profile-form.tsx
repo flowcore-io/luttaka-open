@@ -3,9 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { type FC, useCallback } from "react"
+import { Simulate } from "react-dom/test-utils"
 import { useForm } from "react-hook-form"
 import { type z } from "zod"
 
+import { SelectCompanyField } from "@/app/me/select-company-field"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -36,7 +38,7 @@ export const UserProfileForm: FC<UserProfileProps> = ({ user }) => {
       firstName: user.firstName,
       lastName: user.lastName,
       title: user.title,
-      company: user.company,
+      company: user.companyId,
       description: user.description,
       socials: user.socials,
       avatarUrl: user.avatarUrl,
@@ -115,13 +117,16 @@ export const UserProfileForm: FC<UserProfileProps> = ({ user }) => {
             <FormItem>
               <FormLabel>Company</FormLabel>
               <FormControl>
-                <Input
-                  placeholder={"company name"}
-                  {...field}
-                  disabled={true}
-                />
+                <div>
+                  <SelectCompanyField
+                    value={field.value!}
+                    setValue={field.onChange}
+                    label={user.company}
+                    submit={() => onSubmit(form.getValues())}
+                  />
+                </div>
               </FormControl>
-              <FormDescription>Currently not available.</FormDescription>
+              <FormDescription>Company you represent</FormDescription>
               <FormMessage />
             </FormItem>
           )}
