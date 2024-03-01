@@ -1,4 +1,5 @@
 import { CompanyProfileView } from "@/app/company/[companyId]/company-profile-view"
+import { MissingText } from "@/components/ui/messages/missing-text"
 import { type WithUrlParams } from "@/lib/next-app.types"
 import { api } from "@/trpc/server"
 
@@ -14,7 +15,7 @@ export default async function CompanyProfile({
   })
 
   if (!profile) {
-    return <div>Profile not found</div>
+    return <MissingText text={"profile not found"} />
   }
 
   return (
