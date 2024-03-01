@@ -1,11 +1,11 @@
-import { count } from "drizzle-orm"
+import { asc, count, eq } from "drizzle-orm"
 import { type z } from "zod"
 
 import { type PaginationInput } from "@/contracts/pagination/pagination"
 import { type PagedProfileResult } from "@/contracts/profile/paged-profiles"
 import { type UserProfile } from "@/contracts/profile/user-profile"
 import { db } from "@/database"
-import { profiles } from "@/database/schemas"
+import { companies, profiles } from "@/database/schemas"
 import { getInitialsFromString } from "@/server/lib/format/get-initials-from-string"
 
 export const pageProfiles = async (
@@ -13,13 +13,16 @@ export const pageProfiles = async (
 ): Promise<PagedProfileResult> => {
   const safePage = Math.max(input.page - 1, 0)
 
-  const profiles = await db.query.profiles.findMany({
-    offset: safePage * input.pageSize,
-    limit: input.pageSize,
-    orderBy: (profile, { asc }) => [asc(profile.firstName)],
-  })
+  const profileResult = await db
+    .select()
+    .from(profiles)
+    .leftJoin(companies, eq(profiles.company, companies.id))
+    .limit(input.pageSize)
+    .offset(safePage * input.pageSize)
+    .orderBy(asc(profiles.firstName))
+    .execute()
 
-  if (!profiles.length) {
+  if (!profileResult.length) {
     return {
       items: [],
       page: 0,
@@ -29,21 +32,22 @@ export const pageProfiles = async (
 
   return {
     page: input.page,
-    pageSize: profiles.length,
-    items: profiles.map((profile): UserProfile => {
-      const displayName = `${profile.firstName} ${profile.lastName}`
+    pageSize: profileResult.length,
+    items: profileResult.map((row): UserProfile => {
+      const displayName = `${row.profiles.firstName} ${row.profiles.lastName}`
       const initials = getInitialsFromString(displayName)
       return {
-        id: profile.id,
-        userId: profile.userId,
+        id: row.profiles.id,
+        userId: row.profiles.userId,
         displayName: displayName,
-        firstName: profile.firstName ?? "",
-        lastName: profile.lastName ?? "",
-        title: profile.title ?? "",
-        description: profile.description ?? "",
-        socials: profile.socials ?? "",
-        company: profile.company ?? "",
-        avatarUrl: profile.avatarUrl ?? "",
+        firstName: row.profiles.firstName ?? "",
+        lastName: row.profiles.lastName ?? "",
+        title: row.profiles.title ?? "",
+        description: row.profiles.description ?? "",
+        socials: row.profiles.socials ?? "",
+        company: row.companies?.name ?? "",
+        companyId: row.profiles.company ?? "",
+        avatarUrl: row.profiles.avatarUrl ?? "",
         initials,
       }
     }),

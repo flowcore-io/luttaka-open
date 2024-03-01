@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { UserProfileForm } from "@/components/organisms/profile/user-profile-form"
+import { UserProfileForm } from "@/app/me/user-profile-form"
 import { UserProfileView } from "@/components/organisms/profile/user-profile-view"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"

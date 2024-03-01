@@ -48,3 +48,12 @@ export const conferences = pgTable("conferences", {
   startDate: text("start_date").notNull(),
   endDate: text("end_date").notNull(),
 })
+
+export const companies = pgTable("companies", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+  ownerId: text("owner_id").notNull(),
+  archived: boolean("archived").notNull().default(false),
+  reason: text("reason"),
+})

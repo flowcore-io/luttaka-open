@@ -45,7 +45,11 @@ export const UserProfileView: FC<UserProfileProps> = ({ profile }) => {
         <div>
           <h2 className={"text-2xl font-bold"}>Company</h2>
           {profile.company ? (
-            <p>{profile.company}</p>
+            <p>
+              <Link href={`company/${profile.companyId}`}>
+                {profile.company}
+              </Link>
+            </p>
           ) : (
             <p className={"italic"}>Individual</p>
           )}

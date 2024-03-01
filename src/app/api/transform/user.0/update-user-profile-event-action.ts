@@ -1,5 +1,6 @@
-import { eq } from "drizzle-orm"
+import { and, eq, ne } from "drizzle-orm"
 
+import { sendCompanyArchivedEvent } from "@/contracts/events/company"
 import { UpdateUserProfileEventPayload } from "@/contracts/events/user"
 import { db } from "@/database"
 import { profiles } from "@/database/schemas"
@@ -16,6 +17,23 @@ export const updateUserProfileEventAction = async (payload: unknown) => {
       `Unable to update profile for user ${data.userId}. Because profile was not found!`,
     )
     return
+  }
+
+  if (data.company !== undefined && data.company !== existingProfile.company) {
+    const company = await db.query.profiles.findMany({
+      where: and(
+        eq(profiles.company, data.company),
+        eq(profiles.archived, false),
+        ne(profiles.id, data.userId),
+      ),
+    })
+
+    if (company.length === 0) {
+      await sendCompanyArchivedEvent({
+        id: existingProfile.company!,
+        _reason: "last user removed from company",
+      })
+    }
   }
 
   const profileResult = await db
