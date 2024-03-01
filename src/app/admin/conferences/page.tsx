@@ -3,8 +3,8 @@
 import { useAuth } from "@clerk/nextjs"
 import { useState } from "react"
 
-import { Conference } from "@/app/conferences/conference.component"
-import { CreateConferenceForm } from "@/app/conferences/create-conference.form"
+import { Conference } from "@/app/admin/conferences/conference.component"
+import { CreateConferenceForm } from "@/app/admin/conferences/create-conference.form"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { api } from "@/trpc/react"

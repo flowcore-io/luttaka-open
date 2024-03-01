@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
-import { UpdateConferenceForm } from "@/app/conferences/update-conference.form"
+import { UpdateConferenceForm } from "@/app/admin/conferences/update-conference.form"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { api } from "@/trpc/react"

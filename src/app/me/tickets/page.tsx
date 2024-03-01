@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { z } from "zod"
 
-import { Ticket } from "@/app/tickets/ticket.component"
+import { Ticket } from "@/app/me/tickets/ticket.component"
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
 import {
