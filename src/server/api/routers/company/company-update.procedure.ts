@@ -7,7 +7,7 @@ import { companies } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { protectedProcedure } from "@/server/api/trpc"
 
-export const updateCompanyRouter = protectedProcedure
+export const updateCompanyProcedure = protectedProcedure
   .input(UpdateCompanyInputDto)
   .mutation(async ({ input }) => {
     if (

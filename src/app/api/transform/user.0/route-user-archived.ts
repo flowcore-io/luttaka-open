@@ -5,7 +5,7 @@ import { UserArchivedEventPayload } from "@/contracts/events/user"
 import { db } from "@/database"
 import { profiles, users } from "@/database/schemas"
 
-export const archiveUserEventAction = async (payload: unknown) => {
+export const routeUserArchived = async (payload: unknown) => {
   const data = UserArchivedEventPayload.parse(payload)
 
   await Promise.allSettled([archiveUser(data), archiveProfile(data)])

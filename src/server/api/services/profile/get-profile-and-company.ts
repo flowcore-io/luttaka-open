@@ -1,19 +1,27 @@
 import { eq } from "drizzle-orm"
-import { type z } from "zod"
 
-import { type ProfileByIdInput } from "@/contracts/profile/profile-by-id-input"
 import { type UserProfile } from "@/contracts/profile/user-profile"
 import { db } from "@/database"
 import { companies, profiles } from "@/database/schemas"
 import { getInitialsFromString } from "@/server/lib/format/get-initials-from-string"
 
-export const getProfileById = async (
-  input: z.infer<typeof ProfileByIdInput>,
-): Promise<UserProfile> => {
+export const getProfileAndCompany = async ({
+  userId,
+  profileId,
+}: {
+  userId?: string
+  profileId?: string
+}): Promise<UserProfile> => {
+  if (!userId && !profileId) {
+    throw new Error("userId or profileId is required")
+  }
+
   const result = await db
     .select()
     .from(profiles)
-    .where(eq(profiles.id, input.profileId))
+    .where(
+      profileId ? eq(profiles.id, profileId) : eq(profiles.userId, userId!),
+    )
     .leftJoin(companies, eq(profiles.company, companies.id))
     .execute()
 

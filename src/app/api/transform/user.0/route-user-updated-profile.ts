@@ -5,7 +5,7 @@ import { UpdateUserProfileEventPayload } from "@/contracts/events/user"
 import { db } from "@/database"
 import { profiles } from "@/database/schemas"
 
-export const updateUserProfileEventAction = async (payload: unknown) => {
+export const routeUserUpdatedProfile = async (payload: unknown) => {
   const data = UpdateUserProfileEventPayload.parse(payload)
 
   const existingProfile = await db.query.profiles.findFirst({
