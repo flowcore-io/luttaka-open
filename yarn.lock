@@ -1633,11 +1633,6 @@
   dependencies:
     glob "10.3.10"
 
-"@next/font@^14.1.0":
-  version "14.1.0"
-  resolved "https://registry.npmjs.org/@next/font/-/font-14.1.0.tgz"
-  integrity sha512-9hJ7bEYDI7UGQ1a++5zRD3F2VUu9NIaK5Hro/uL9bvFFs6b0Cy1OdLtLQHCIQE7sSMt8Rbu4VtcbnlubsseelA==
-
 "@next/swc-darwin-arm64@14.1.0":
   version "14.1.0"
   resolved "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.1.0.tgz"

@@ -11,7 +11,7 @@ import { companies } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { protectedProcedure } from "@/server/api/trpc"
 
-export const createCompanyRouter = protectedProcedure
+export const createCompanyProcedure = protectedProcedure
   .input(
     CreateCompanyInputDto.omit({
       owner: true,

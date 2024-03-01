@@ -9,7 +9,7 @@ export const listCompanyInput = z.object({
   name: z.string(),
 })
 
-export const listCompanyRouter = protectedProcedure
+export const listCompanyProcedure = protectedProcedure
   .input(listCompanyInput)
   .query(async ({ input }) => {
     return (
