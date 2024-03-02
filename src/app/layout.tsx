@@ -18,8 +18,8 @@ const inter = Inter({
 
 export const metadata = {
   manifest: "/manifest.json",
-  title: "Flowcore Open Source Conference App",
-  description: "The open source Conference App from Flowcore",
+  title: "Luttaka",
+  description: "The open source conference app from Flowcore",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 }
 
