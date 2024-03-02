@@ -1,7 +1,5 @@
-The Flowcore Open Source Conference App is an open source application to manage tickets, networking and content at conferences. You
-can either use the official instance at conference.flowcore.app, or deploy your own instance:
-
-Deploy with Vercel
+Luttaka is an open source application to manage tickets, networking and content at conferences. You
+can either use the official instance at luttaka.com, or deploy your own instance.
 
 # Basic features for conference participants
 

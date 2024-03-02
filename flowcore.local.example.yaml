@@ -1,15 +1,15 @@
 tenant: <some tenant>
 dataCore:
-  name: conference-app-dev
+  name: luttaka-dev
   isPublic: true
 scenario:
-  name: conference-app-dev
+  name: luttaka-dev
   transformers:
     companies:
-      dataCore: conference-app-dev
+      dataCore: luttaka-dev
     conferences:
-      dataCore: conference-app-dev
+      dataCore: luttaka-dev
     tickets:
-      dataCore: conference-app-dev
+      dataCore: luttaka-dev
     users:
-      dataCore: conference-app-dev
+      dataCore: luttaka-dev

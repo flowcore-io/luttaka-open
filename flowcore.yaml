@@ -1,8 +1,8 @@
-tenant: conference-app
+tenant: luttaka
 dataCore:
-  name: conference-app
+  name: luttaka
   deleteProtection: true
-  description: "This Data Core contains the data for the open source conference app"
+  description: "This data core contains the data for Luttaka"
   flowTypes:
     conference.0:
       description: "actions and events related to a conference"
@@ -49,12 +49,12 @@ dataCore:
         ticket.transfer-cancelled.0:
           description: "a ticket transfer has been cancelled"
 scenario:
-  name: conference-app
-  description: "This scenario contains the transformers for the open source conference app"
+  name: luttaka
+  description: "This scenario contains the transformers for Luttaka"
   transformers:
     companies:
       description: "transformer for company management"
-      dataCore: conference-app
+      dataCore: luttaka
       flowType: company.0
       events:
         - company.created.0
@@ -63,15 +63,15 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://conference.flowcore.app/api/transform/company.0"
+          value: "https://luttaka.com/api/transform/company.0"
         - name: PROXY_HEADER_SECRET
           type: secret
-          value: open-source-conference-app-secret
+          value: open-source-luttaka-secret
       blueprint:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
     conferences:
       description: "transformer for conference management"
-      dataCore: conference-app
+      dataCore: luttaka
       flowType: conference.0
       events:
         - conference.created.0
@@ -80,15 +80,15 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://conference.flowcore.app/api/transform/conference.0"
+          value: "https://luttaka.com/api/transform/conference.0"
         - name: PROXY_HEADER_SECRET
           type: secret
-          value: open-source-conference-app-secret
+          value: open-source-luttaka-secret
       blueprint:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
     tickets:
       description: "transformer for tickets"
-      dataCore: conference-app
+      dataCore: luttaka
       flowType: ticket.0
       events:
         - ticket.created.0
@@ -100,15 +100,15 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://conference.flowcore.app/api/transform/ticket.0"
+          value: "https://luttaka.com/api/transform/ticket.0"
         - name: PROXY_HEADER_SECRET
           type: secret
-          value: open-source-conference-app-secret
+          value: open-source-luttaka-secret
       blueprint:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
     users:
       description: "transformer for users"
-      dataCore: conference-app
+      dataCore: luttaka
       flowType: user.0
       events:
         - user.created.0
@@ -118,9 +118,9 @@ scenario:
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://conference.flowcore.app/api/transform/user.0"
+          value: "https://luttaka.com/api/transform/user.0"
         - name: PROXY_HEADER_SECRET
           type: secret
-          value: open-source-conference-app-secret
+          value: open-source-luttaka-secret
       blueprint:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
