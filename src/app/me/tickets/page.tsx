@@ -18,8 +18,6 @@ import { Input } from "@/components/ui/input"
 import { api } from "@/trpc/react"
 
 export default function Tickets() {
-  const [conferenceId, setConferenceId] = useState<string>()
-  const { data: conferences } = api.conference.list.useQuery()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -27,10 +25,7 @@ export default function Tickets() {
   const [ticketRedeemDialogOpened, setTicketRedeemDialogOpened] =
     useState(false)
   const [transferId, setTransferId] = useState("")
-  const { data: tickets, refetch } = api.ticket.list.useQuery(
-    { conferenceId: conferenceId! },
-    { enabled: !!conferenceId },
-  )
+  const { data: tickets, refetch } = api.ticket.list.useQuery()
 
   useEffect(() => {
     const success = searchParams.get("success")
@@ -41,12 +36,6 @@ export default function Tickets() {
     }
     router.replace(pathname)
   }, [])
-
-  useEffect(() => {
-    if (conferences) {
-      setConferenceId(conferences[0]?.id)
-    }
-  }, [conferences])
 
   const apiAcceptTicketTransfer = api.ticket.acceptTransfer.useMutation()
   const acceptTicketTransfer = useCallback(async () => {

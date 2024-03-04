@@ -65,7 +65,7 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
                     setIsSidebarOpen(false)
                   }
                 }}>
-                <link.icon className="mr-3 mr-5 h-6 w-6" />{" "}
+                <link.icon className="mr-5 h-6 w-6" />{" "}
                 {/* Increased icon size and right margin */}
                 {link.title}
                 {link.label && (
