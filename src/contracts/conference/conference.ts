@@ -11,6 +11,7 @@ export const ConferenceProfileDto = z.object({
   ticketCurrency: z.string(),
   startDate: z.string(),
   endDate: z.string(),
+  stripeId: z.string(),
 })
 
 export const CreateConferenceInputDto = ConferenceProfileDto.pick({
@@ -21,13 +22,14 @@ export const CreateConferenceInputDto = ConferenceProfileDto.pick({
   ticketCurrency: true,
   startDate: true,
   endDate: true,
+  stripeId: true,
 })
 
-export const UpdateConferenceInputDto = ConferenceProfileDto.partial().required(
-  {
+export const UpdateConferenceInputDto = ConferenceProfileDto.partial()
+  .omit({ stripeId: true })
+  .required({
     id: true,
-  },
-)
+  })
 
 // Types
 export type ConferenceProfile = z.infer<typeof ConferenceProfileDto>

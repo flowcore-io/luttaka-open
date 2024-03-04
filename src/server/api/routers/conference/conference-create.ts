@@ -29,7 +29,6 @@ export const createConferenceRouter = protectedProcedure
 
     const id = shortUuid.generate()
 
-    console.log("id", id, input)
     await sendConferenceCreatedEvent({ id, ...input })
     try {
       await waitForPredicate(
