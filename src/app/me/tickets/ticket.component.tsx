@@ -32,6 +32,9 @@ export function Ticket({ ticket, refetch }: TicketProps) {
   const [loading, setLoading] = useState(false)
   const [ticketDialogOpened, setTicketDialogOpened] = useState(false)
   const { Canvas } = useQRCode()
+  const { data: conference } = api.conference.get.useQuery({
+    id: ticket.conferenceId,
+  })
 
   const apiArchiveTicket = api.ticket.archive.useMutation()
   const archiveTicket = useCallback(async () => {
@@ -93,7 +96,7 @@ export function Ticket({ ticket, refetch }: TicketProps) {
           />
         </div>
         <div className={"flex-1 self-stretch"}>
-          <div className={"font-bold"}>Tonik 2024</div>
+          <div className={"font-bold"}>{conference?.name}</div>
           <div className={"text-sm text-gray-500"}>
             Ticket State: {ticket.state}
           </div>

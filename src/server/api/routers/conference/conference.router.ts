@@ -1,8 +1,8 @@
-import { archiveConferenceRouter } from "@/server/api/routers/conference/conference-archive"
-import { createConferenceRouter } from "@/server/api/routers/conference/conference-create"
-import { getConferenceRouter } from "@/server/api/routers/conference/conference-get"
-import { getConferencesRouter } from "@/server/api/routers/conference/conference-list"
-import { updateConferenceRouter } from "@/server/api/routers/conference/conference-update"
+import { archiveConferenceRouter } from "@/server/api/routers/conference/conference-archive.procedure"
+import { createConferenceRouter } from "@/server/api/routers/conference/conference-create.procedure"
+import { getConferenceRouter } from "@/server/api/routers/conference/conference-get.procedure"
+import { getConferencesRouter } from "@/server/api/routers/conference/conference-list.procedure"
+import { updateConferenceRouter } from "@/server/api/routers/conference/conference-update.procedure"
 import { createTRPCRouter } from "@/server/api/trpc"
 
 export const conferenceRouter = createTRPCRouter({

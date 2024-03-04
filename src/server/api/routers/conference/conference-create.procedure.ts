@@ -28,8 +28,9 @@ export const createConferenceRouter = protectedProcedure
     }
 
     const id = shortUuid.generate()
+    const stripeId = shortUuid.generate()
 
-    await sendConferenceCreatedEvent({ id, ...input })
+    await sendConferenceCreatedEvent({ ...input, stripeId, id })
     try {
       await waitForPredicate(
         () =>

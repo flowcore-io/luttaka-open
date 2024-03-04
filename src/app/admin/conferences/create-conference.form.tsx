@@ -59,6 +59,7 @@ export const CreateConferenceForm: FC<CreateConferenceProps> = ({
       ticketPrice: 0.0,
       startDate: new Date().toISOString(),
       endDate: new Date().toISOString(),
+      stripeId: "",
     },
   })
 
@@ -165,6 +166,8 @@ export const CreateConferenceForm: FC<CreateConferenceProps> = ({
           </div>
           <div className="flex-1">
             <FormField
+              control={form.control}
+              name={"ticketCurrency"}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Currency</FormLabel>
@@ -187,8 +190,6 @@ export const CreateConferenceForm: FC<CreateConferenceProps> = ({
                   <FormMessage />
                 </FormItem>
               )}
-              name={"ticketCurrency"}
-              control={form.control}
             />
           </div>
         </div>
