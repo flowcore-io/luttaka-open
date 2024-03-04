@@ -51,10 +51,10 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             icon: Ticket,
           },
           {
-            href: "/admin/conferences",
+            href: "/conferences",
             title: "Conferences",
             label: "",
-            superuserRequired: true,
+            superuserRequired: false,
             icon: BookOpen,
           },
           {

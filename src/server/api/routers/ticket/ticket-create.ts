@@ -1,11 +1,8 @@
-import { eq } from "drizzle-orm"
+import { inArray } from "drizzle-orm"
 import shortUuid from "short-uuid"
 import { z } from "zod"
 
-import {
-  sendTicketArchivedEvent,
-  sendTicketCreatedEvent,
-} from "@/contracts/events/ticket"
+import { sendTicketCreatedEvent } from "@/contracts/events/ticket"
 import { db } from "@/database"
 import { tickets } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
@@ -13,6 +10,7 @@ import { protectedProcedure } from "@/server/api/trpc"
 
 const CreateTicketInput = z.object({
   conferenceId: z.string(),
+  quantity: z.number(),
 })
 
 export const createTicketRouter = protectedProcedure
@@ -20,21 +18,24 @@ export const createTicketRouter = protectedProcedure
   .mutation(async ({ ctx, input }) => {
     // TODO: Check if user is allowed to create ticket
     const userId = ctx.user.id
-    const id = shortUuid.generate()
-    await sendTicketCreatedEvent({
-      id,
-      userId,
-      conferenceId: input.conferenceId,
-      state: "open",
-    })
+    const ids: string[] = []
+    for (let i = 0; i < input.quantity; i++) {
+      const id = shortUuid.generate()
+      ids.push(id)
+      await sendTicketCreatedEvent({
+        id,
+        userId,
+        conferenceId: input.conferenceId,
+        state: "open",
+      })
+    }
     try {
       await waitForPredicate(
-        () => db.query.tickets.findFirst({ where: eq(tickets.id, id) }),
-        (result) => !!result,
+        () => db.query.tickets.findMany({ where: inArray(tickets.id, ids) }),
+        (result) => result.length === input.quantity,
       )
     } catch (error) {
-      await sendTicketArchivedEvent({ id, _reason: "rollback" })
-      throw new Error("Failed to create ticket")
+      return false
     }
-    return id
+    return true
   })

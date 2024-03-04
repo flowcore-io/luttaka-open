@@ -58,6 +58,7 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
       id: conference.id,
       name: conference.name,
       description: conference.description,
+      ticketDescription: conference.ticketDescription,
       ticketCurrency: conference.ticketCurrency,
       ticketPrice: conference.ticketPrice,
       startDate: conference.startDate,
@@ -101,6 +102,10 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
         description:
           conference.description !== values.description
             ? values.description
+            : undefined,
+        ticketDescription:
+          conference.ticketDescription !== values.ticketDescription
+            ? values.ticketDescription
             : undefined,
         ticketPrice: ticketPrice,
         ticketCurrency: ticketCurrency,
@@ -171,7 +176,20 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
             </FormItem>
           )}
         />
-        <div className={"flex justify-around space-x-2"}>
+        <FormField
+          control={form.control}
+          name={"ticketDescription"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Ticket Description</FormLabel>
+              <FormControl>
+                <Input placeholder={"ticket description"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className={"flex space-x-2"}>
           <div className={"flex-1"}>
             <FormField
               control={form.control}

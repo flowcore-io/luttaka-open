@@ -11,10 +11,12 @@ export const getConferencesRouter = protectedProcedure.query(async () => {
         id: conferences.id,
         name: conferences.name,
         description: conferences.description,
+        ticketDescription: conferences.ticketDescription,
         ticketPrice: conferences.ticketPrice,
         ticketCurrency: conferences.ticketCurrency,
         startDate: conferences.startDate,
         endDate: conferences.endDate,
+        stripeId: conferences.stripeId,
       })
       .from(conferences)
       .where(eq(conferences.archived, false))
