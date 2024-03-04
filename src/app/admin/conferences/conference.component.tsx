@@ -13,6 +13,7 @@ export interface ConferenceProps {
     id: string
     name: string
     description: string | null
+    ticketDescription: string | null
     ticketPrice: number
     ticketCurrency: string
     startDate: string
@@ -105,6 +106,7 @@ export function Conference({ conference, refetch }: ConferenceProps) {
             <UpdateConferenceForm
               conference={{
                 ...conference,
+                ticketDescription: conference.ticketDescription ?? "",
                 description: conference.description ?? "",
               }}
               close={() => setUpdateConferenceDialogOpened(false)}

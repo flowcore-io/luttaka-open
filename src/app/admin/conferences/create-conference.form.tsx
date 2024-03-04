@@ -87,8 +87,6 @@ export const CreateConferenceForm: FC<CreateConferenceProps> = ({
     })
   }, [])
 
-  const currencyCode = form.watch("ticketCurrency")
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-3"}>
