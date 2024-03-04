@@ -11,7 +11,7 @@ const CheckInTicketInput = z.object({
   id: z.string(),
 })
 
-export const checkInTicketRouter = protectedProcedure
+export const checkInTicketProcedure = protectedProcedure
   .input(CheckInTicketInput)
   .mutation(async ({ input }) => {
     await sendTicketUpdatedEvent({ id: input.id, state: "checked-in" })

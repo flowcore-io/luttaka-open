@@ -9,7 +9,7 @@ const GetTicketByIdInput = z.object({
   id: z.string(),
 })
 
-export const getTicketRouter = protectedProcedure
+export const getTicketProcedure = protectedProcedure
   .input(GetTicketByIdInput)
   .query(async ({ input }) => {
     const results = await db

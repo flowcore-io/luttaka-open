@@ -4,7 +4,7 @@ import { db } from "@/database"
 import { tickets, ticketTransfers } from "@/database/schemas"
 import { protectedProcedure } from "@/server/api/trpc"
 
-export const getTicketsRouter = protectedProcedure.query(({ ctx }) => {
+export const getTicketsProcedure = protectedProcedure.query(({ ctx }) => {
   const userId = ctx.user.id
   return db
     .select({

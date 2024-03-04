@@ -13,7 +13,7 @@ const CreateTicketInput = z.object({
   quantity: z.number(),
 })
 
-export const createTicketRouter = protectedProcedure
+export const createTicketProcedure = protectedProcedure
   .input(CreateTicketInput)
   .mutation(async ({ ctx, input }) => {
     // TODO: Check if user is allowed to create ticket

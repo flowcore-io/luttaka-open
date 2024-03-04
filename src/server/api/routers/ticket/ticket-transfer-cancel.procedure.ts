@@ -11,7 +11,7 @@ const CancelTicketTransferInput = z.object({
   transferId: z.string(),
 })
 
-export const cancelTicketTransferRouter = protectedProcedure
+export const cancelTicketTransferProcedure = protectedProcedure
   .input(CancelTicketTransferInput)
   .mutation(async ({ input }) => {
     const ticketTransfer = await db.query.ticketTransfers.findFirst({

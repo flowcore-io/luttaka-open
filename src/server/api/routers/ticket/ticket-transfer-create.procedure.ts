@@ -15,7 +15,7 @@ const CreateTicketTransferInput = z.object({
   ticketId: z.string(),
 })
 
-export const createTicketTransferRouter = protectedProcedure
+export const createTicketTransferProcedure = protectedProcedure
   .input(CreateTicketTransferInput)
   .mutation(async ({ ctx, input }) => {
     const userId = ctx.user.id

@@ -11,7 +11,7 @@ import { conferences } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { protectedProcedure } from "@/server/api/trpc"
 
-export const createConferenceRouter = protectedProcedure
+export const createConferenceProcedure = protectedProcedure
   .input(CreateConferenceInputDto)
   .mutation(async ({ input }) => {
     // TODO: make sure user has correct permissions
