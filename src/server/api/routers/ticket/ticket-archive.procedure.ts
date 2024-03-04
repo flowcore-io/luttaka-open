@@ -11,7 +11,7 @@ const ArchiveTicketInput = z.object({
   id: z.string(),
 })
 
-export const archiveTicketRouter = protectedProcedure
+export const archiveTicketProcedure = protectedProcedure
   .input(ArchiveTicketInput)
   .mutation(async ({ input }) => {
     // TODO: Check if user is allowed to archive ticket

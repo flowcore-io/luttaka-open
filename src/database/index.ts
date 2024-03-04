@@ -4,7 +4,7 @@ import { Pool } from "pg"
 import * as schemas from "@/database/schemas"
 import { registerService } from "@/lib/register-service"
 
-const client = registerService<Pool>(
+const pool = registerService<Pool>(
   "pgpool",
   () =>
     new Pool({
@@ -12,8 +12,6 @@ const client = registerService<Pool>(
     }),
 )
 
-client.connect().catch((err: unknown) => console.error(err))
-
-export const db = drizzle(client, {
+export const db = drizzle(pool, {
   schema: schemas,
 })

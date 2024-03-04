@@ -37,7 +37,12 @@ export default function ConferencesPage() {
   const { data: conferences, isLoading } = api.conference.list.useQuery()
   return (
     <main className="mx-auto w-full">
-      <div className="mb-6 text-3xl font-bold">Conferences</div>
+      <div className="mb-6 text-3xl font-bold">
+        Conferences
+        <Link href="/admin/conferences" className="float-right text-sm">
+          Admin
+        </Link>
+      </div>
       {isLoading || !conferences ? (
         <Skeleton />
       ) : (
@@ -53,7 +58,9 @@ interface ConferencesListProps {
   conferences: RouterOutput["conference"]["list"]
 }
 function ConferencesList({ conferences }: ConferencesListProps) {
-  return conferences.map((conference) => <Conference conference={conference} />)
+  return conferences.map((conference) => (
+    <Conference conference={conference} key={conference.id} />
+  ))
 }
 
 const CheckoutResponse = z.object({
@@ -120,13 +127,8 @@ function Conference({ conference }: ConferenceProps) {
   }, [ticketQuantity, conference.id])
 
   return (
-    <div key={conference.id}>
-      <div className="mb-4 text-xl font-bold">
-        {conference.name}
-        <Link href="/admin/conferences" className="float-right">
-          Admin
-        </Link>
-      </div>
+    <div key={conference.id} className="mb-6">
+      <div className="mb-4 text-xl font-bold">{conference.name}</div>
       <div className="mb-2">{conference.description}</div>
       <div className="mb-2 text-sm italic">
         {dayjs(conference.startDate).format("MMMM D, YYYY")}

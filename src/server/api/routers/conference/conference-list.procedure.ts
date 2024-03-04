@@ -4,7 +4,7 @@ import { db } from "@/database"
 import { conferences } from "@/database/schemas"
 import { protectedProcedure } from "@/server/api/trpc"
 
-export const getConferencesRouter = protectedProcedure.query(async () => {
+export const getConferencesProcedure = protectedProcedure.query(async () => {
   return (
     (await db
       .select({

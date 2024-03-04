@@ -9,7 +9,7 @@ const GetConferenceInput = z.object({
   id: z.string(),
 })
 
-export const getConferenceRouter = protectedProcedure
+export const getConferenceProcedure = protectedProcedure
   .input(GetConferenceInput)
   .query(({ input }) => {
     return db.query.conferences.findFirst({

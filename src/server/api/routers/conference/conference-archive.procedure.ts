@@ -13,7 +13,7 @@ const ArchiveConferenceInputDto = z.object({
 
 export type ArchiveConferenceInput = z.infer<typeof ArchiveConferenceInputDto>
 
-export const archiveConferenceRouter = protectedProcedure
+export const archiveConferenceProcedure = protectedProcedure
   .input(ArchiveConferenceInputDto)
   .mutation(async ({ input }) => {
     await sendConferenceArchivedEvent({ id: input.id })

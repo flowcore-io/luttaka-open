@@ -5,15 +5,14 @@ import { db } from "@/database"
 import { tickets, ticketTransfers } from "@/database/schemas"
 import { protectedProcedure } from "@/server/api/trpc"
 
-const GetTicketListInput = z.object({
-  conferenceId: z.string(),
+const GetTicketByIdInput = z.object({
+  id: z.string(),
 })
 
-export const getTicketsRouter = protectedProcedure
-  .input(GetTicketListInput)
-  .query(({ ctx, input }) => {
-    const userId = ctx.user.id
-    return db
+export const getTicketProcedure = protectedProcedure
+  .input(GetTicketByIdInput)
+  .query(async ({ input }) => {
+    const results = await db
       .select({
         id: tickets.id,
         userId: tickets.userId,
@@ -29,11 +28,8 @@ export const getTicketsRouter = protectedProcedure
           eq(ticketTransfers.state, "open"),
         ),
       )
-      .where(
-        and(
-          eq(tickets.userId, userId),
-          eq(tickets.conferenceId, input.conferenceId),
-        ),
-      )
+      .where(eq(tickets.id, input.id))
+      .limit(1)
       .execute()
+    return results[0]
   })

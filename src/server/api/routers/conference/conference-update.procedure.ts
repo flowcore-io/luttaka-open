@@ -7,7 +7,7 @@ import { conferences } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { protectedProcedure } from "@/server/api/trpc"
 
-export const updateConferenceRouter = protectedProcedure
+export const updateConferenceProcedure = protectedProcedure
   .input(UpdateConferenceInputDto)
   .mutation(async ({ input }) => {
     if (
