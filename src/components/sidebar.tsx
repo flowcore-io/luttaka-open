@@ -44,7 +44,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             icon: Home,
           },
           {
-            href: "/tickets",
+            href: "/me/tickets",
             title: "Tickets",
             label: "",
             superuserRequired: false,
@@ -54,7 +54,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             href: "/conferences",
             title: "Conferences",
             label: "",
-            superuserRequired: true,
+            superuserRequired: false,
             icon: BookOpen,
           },
           {
@@ -65,7 +65,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             icon: User,
           },
           {
-            href: "/check-in",
+            href: "/admin/check-in",
             title: "Check In",
             label: "",
             superuserRequired: true,

@@ -2,10 +2,11 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Loader } from "lucide-react"
-import { useCallback, useState } from "react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
 
-import { Ticket } from "@/app/tickets/ticket.component"
+import { Ticket } from "@/app/me/tickets/ticket.component"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -16,31 +17,36 @@ import {
 import { Input } from "@/components/ui/input"
 import { api } from "@/trpc/react"
 
-const conferenceId = "xxxxxxxxxxxxxxxxxxxxxx"
-
 export default function Tickets() {
+  const [conferenceId, setConferenceId] = useState<string>()
+  const { data: conferences } = api.conference.list.useQuery()
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const { isLoaded, userId } = useAuth()
   const [ticketRedeemDialogOpened, setTicketRedeemDialogOpened] =
     useState(false)
   const [transferId, setTransferId] = useState("")
+  const { data: tickets, refetch } = api.ticket.list.useQuery(
+    { conferenceId: conferenceId! },
+    { enabled: !!conferenceId },
+  )
 
-  const { data: tickets, refetch } = api.ticket.list.useQuery({ conferenceId })
+  useEffect(() => {
+    const success = searchParams.get("success")
+    if (success === "true") {
+      toast.success("Ticket purchased")
+    } else if (success === "false") {
+      toast.info("Ticket purchase cancelled")
+    }
+    router.replace(pathname)
+  }, [])
 
-  const apiCreateTicket = api.ticket.create.useMutation()
-  const createTicket = useCallback(async () => {
-    if (!userId) {
-      return
+  useEffect(() => {
+    if (conferences) {
+      setConferenceId(conferences[0]?.id)
     }
-    try {
-      await apiCreateTicket.mutateAsync({ conferenceId })
-      toast.success("Ticket created")
-    } catch (error) {
-      const title =
-        error instanceof Error ? error.message : "Ticket create failed"
-      toast.error(title)
-    }
-    await refetch()
-  }, [userId])
+  }, [conferences])
 
   const apiAcceptTicketTransfer = api.ticket.acceptTransfer.useMutation()
   const acceptTicketTransfer = useCallback(async () => {
@@ -72,16 +78,6 @@ export default function Tickets() {
           My tickets
         </div>
         <div className="flex-1 text-right">
-          <Button
-            onClick={() => createTicket()}
-            className="mr-2"
-            disabled={apiCreateTicket.isLoading}>
-            {apiCreateTicket.isLoading ? (
-              <Loader className={"animate-spin"} />
-            ) : (
-              "Create ticket"
-            )}
-          </Button>
           <Button
             onClick={() => setTicketRedeemDialogOpened(true)}
             disabled={apiAcceptTicketTransfer.isLoading}>

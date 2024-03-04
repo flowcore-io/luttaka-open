@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
-import { UpdateConferenceForm } from "@/app/conferences/update-conference.form"
+import { UpdateConferenceForm } from "@/app/admin/conferences/update-conference.form"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { api } from "@/trpc/react"
@@ -13,10 +13,12 @@ export interface ConferenceProps {
     id: string
     name: string
     description: string | null
+    ticketDescription: string | null
     ticketPrice: number
     ticketCurrency: string
     startDate: string
     endDate: string
+    stripeId: string
   }
   refetch: () => Promise<void>
 }
@@ -64,6 +66,9 @@ export function Conference({ conference, refetch }: ConferenceProps) {
             Conference ID: {conference.id}
           </div>
           <div className={"text-sm text-gray-500"}>
+            Stripe ID: {conference.stripeId}
+          </div>
+          <div className={"text-sm text-gray-500"}>
             Price: {conference.ticketPrice} {conference.ticketCurrency}
           </div>
           <div className={"text-sm text-gray-500"}>
@@ -101,6 +106,7 @@ export function Conference({ conference, refetch }: ConferenceProps) {
             <UpdateConferenceForm
               conference={{
                 ...conference,
+                ticketDescription: conference.ticketDescription ?? "",
                 description: conference.description ?? "",
               }}
               close={() => setUpdateConferenceDialogOpened(false)}

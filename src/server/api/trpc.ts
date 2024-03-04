@@ -67,7 +67,6 @@ export const createTRPCContext = async (opts: {
     where: eq(users.externalId, externalId),
   })
   if (user) {
-    console.log("user", user)
     return {
       db,
       user: { ...user, role: user.role as UserRole },

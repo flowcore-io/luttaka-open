@@ -4,6 +4,7 @@ import { useQRCode } from "next-qrcode"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
+import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import {
@@ -14,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { UserRole } from "@/contracts/user/user-role"
 import { api } from "@/trpc/react"
 
 export interface TicketProps {
@@ -111,13 +113,15 @@ export function Ticket({ ticket, refetch }: TicketProps) {
             <DropdownMenuContent className={"w-56"}>
               <DropdownMenuLabel>Ticket</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation()
-                  return archiveTicket()
-                }}>
-                <Trash size={14} className={"mr-2"} /> Delete ticket
-              </DropdownMenuItem>
+              <RestrictedToRole role={UserRole.admin}>
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    return archiveTicket()
+                  }}>
+                  <Trash size={14} className={"mr-2"} /> Delete ticket
+                </DropdownMenuItem>
+              </RestrictedToRole>
               {ticket.state === "open" && ticket.transferId && (
                 <DropdownMenuItem
                   onClick={(e) => {
