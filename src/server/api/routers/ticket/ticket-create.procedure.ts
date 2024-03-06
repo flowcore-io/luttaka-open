@@ -6,6 +6,7 @@ import { sendTicketCreatedEvent } from "@/contracts/events/ticket"
 import { db } from "@/database"
 import { tickets } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 const CreateTicketInput = z.object({
@@ -15,8 +16,8 @@ const CreateTicketInput = z.object({
 
 export const createTicketProcedure = protectedProcedure
   .input(CreateTicketInput)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ ctx, input }) => {
-    // TODO: Check if user is allowed to create ticket
     const userId = ctx.user.id
     const ids: string[] = []
     for (let i = 0; i < input.quantity; i++) {

@@ -5,6 +5,7 @@ import { sendTicketUpdatedEvent } from "@/contracts/events/ticket"
 import { db } from "@/database"
 import { tickets } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 const CheckInTicketInput = z.object({
@@ -13,6 +14,7 @@ const CheckInTicketInput = z.object({
 
 export const checkInTicketProcedure = protectedProcedure
   .input(CheckInTicketInput)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
     await sendTicketUpdatedEvent({ id: input.id, state: "checked-in" })
     try {
