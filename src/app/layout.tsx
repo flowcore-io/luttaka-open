@@ -1,10 +1,10 @@
 import "@/styles/globals.css"
 
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
-import { type Viewport } from "next"
 import { Inter } from "next/font/google"
 import { cookies } from "next/headers"
 
+import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TRPCReactProvider } from "@/trpc/react"
 
@@ -23,10 +23,6 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 }
 
-export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
-}
-
 export default function RootLayout({
   children,
 }: {
@@ -35,17 +31,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`min-h-screen ${inter.variable} font-inter`}>
-        <ClerkProvider>
-          <SignedOut>
-            <PublicPage children={children} />
-          </SignedOut>
-          <SignedIn>
-            <TRPCReactProvider cookies={cookies().toString()}>
-              <ProtectedPage children={children} />
-              <Toaster richColors />
-            </TRPCReactProvider>
-          </SignedIn>
-        </ClerkProvider>
+        <ThemeProvider
+          attribute={"class"}
+          defaultTheme={"light"}
+          disableTransitionOnChange
+          enableSystem={false}>
+          <ClerkProvider>
+            <SignedOut>
+              <PublicPage children={children} />
+            </SignedOut>
+            <SignedIn>
+              <TRPCReactProvider cookies={cookies().toString()}>
+                <ProtectedPage children={children} />
+                <Toaster richColors />
+              </TRPCReactProvider>
+            </SignedIn>
+          </ClerkProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
