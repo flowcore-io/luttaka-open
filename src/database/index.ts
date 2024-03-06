@@ -1,7 +1,7 @@
-import * as schemas from "@/database/schemas"
-
-import { Pool } from "pg"
 import { drizzle } from "drizzle-orm/node-postgres"
+import { Pool } from "pg"
+
+import * as schemas from "@/database/schemas"
 import { registerService } from "@/lib/register-service"
 
 const pool = registerService<Pool>(
