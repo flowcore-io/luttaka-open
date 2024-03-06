@@ -2,7 +2,7 @@
 name: "Documentation Improvements \U0001F4DA"
 about: Suggest improvements or additions to the project documentation
 title: ''
-labels: 'documentation'
+labels: ['documentation']
 assignees: ''
 
 ---

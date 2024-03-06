@@ -2,7 +2,7 @@
 name: "Feature request \U0001F389"
 about: Suggest an idea for this project
 title: ''
-labels: ''
+labels: ['enhancement']
 assignees: ''
 
 ---
