@@ -2,7 +2,7 @@
 name: "Improvements \U0001F527"
 about: Suggest improvements or refactors to the project
 title: ''
-labels: 'enhance'
+labels: ['improvement']
 assignees: ''
 
 ---
