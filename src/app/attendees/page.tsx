@@ -21,7 +21,7 @@ export default function AttendeesPage() {
           "A list of all the people who have tickets for the selected conference"
         }
       />
-      <div className={"mb-4"}>
+      <div className={"mb-5"}>
         <ConferenceSelection
           conferences={apiFetchAttendingConferences.data ?? []}
           onSelect={setSelectedConferenceId}
