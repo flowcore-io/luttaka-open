@@ -2,7 +2,7 @@
 
 import { ArrowBigRightDash, TicketIcon } from "lucide-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
 
 import RedeemTicketsDialog from "@/app/me/tickets/redeem-ticket.dialog"
@@ -29,14 +29,17 @@ export default function Tickets() {
     }
   }, [])
 
-  const onSelect = (ticketId: string) => (selected: boolean) => {
-    const selectedTicketIds = selectedTickets.filter((id) => id !== ticketId)
-    if (selected) {
-      setSelectedTickets([...selectedTicketIds, ticketId])
-    } else {
-      setSelectedTickets(selectedTicketIds)
-    }
-  }
+  const onSelect = useCallback(
+    (ticketId: string) => (selected: boolean) => {
+      const selectedTicketIds = selectedTickets.filter((id) => id !== ticketId)
+      if (selected) {
+        setSelectedTickets([...selectedTicketIds, ticketId])
+      } else {
+        setSelectedTickets(selectedTicketIds)
+      }
+    },
+    [selectedTickets],
+  )
 
   return (
     <main className="mx-auto w-full">
