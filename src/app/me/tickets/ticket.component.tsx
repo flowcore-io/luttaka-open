@@ -102,62 +102,119 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
             height={120}
           />
         </div>
-        <div className={"flex-1 self-stretch"}>
-          <div className={"font-bold"}>{conference?.name}</div>
-          <div className={"text-sm text-gray-500"}>
-            Ticket State: {ticket.state}
+        <div className={"flex flex-1 flex-col justify-end"}>
+          <div className={"overflow-hidden whitespace-nowrap"}>
+            <span className={"font-bold"}>{conference?.name}</span>
           </div>
-          {ticket.transferId && (
-            <div className={"text-sm text-gray-500"}>
-              Redeem Code: {ticket.transferId}
-            </div>
-          )}
-        </div>
-        <div className={"text-right"}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant={"ghost"} size={"sm"} disabled={loading}>
-                <MoreVertical />
+          <div className={"text-sm text-gray-500"}>
+            {conference?.ticketDescription}
+          </div>
+          <div className={"flex flex-1 items-end justify-end"}>
+            {!ticket.transferId && ticket.state === "open" && (
+              <>
+                <ConfirmDialog
+                  title={"Do you want to transfer this ticket?"}
+                  description={
+                    "This will create a code on the ticket that can be used to redeem the ticket. While the ticket is in transfer it cannot be used to check in"
+                  }
+                  onConfirm={async () => {
+                    await createTicketTransfer()
+                    await refetch()
+                  }}>
+                  <Button
+                    size={"sm"}
+                    className={"mr-2"}
+                    variant={"ghost"}
+                    disabled={loading}>
+                    <ArrowBigRightDash className={"mr-2"} />
+                    Transfer ticket
+                  </Button>
+                </ConfirmDialog>
+
+                <Button
+                  size={"sm"}
+                  disabled={loading}
+                  onClick={() => setTicketDialogOpened(true)}>
+                  <TicketIcon className={"mr-2"} />
+                  Check in
+                </Button>
+              </>
+            )}
+            {ticket.state === "open" && ticket.transferId && (
+              <>
+                <ConfirmDialog
+                  title={"Cancel ticket transfer"}
+                  description={
+                    "Are you sure you want to cancel the ticket transfer? The redeem code will be removed and the ticket will be available for check in again"
+                  }
+                  onConfirm={async () => {
+                    await cancelTicketTransfer()
+                    await refetch()
+                  }}>
+                  <Button
+                    size={"sm"}
+                    className={"mr-2"}
+                    variant={"secondary"}
+                    disabled={loading}>
+                    <ArrowBigLeftDash className={"mr-2"} />
+                    Cancel transfer
+                  </Button>
+                </ConfirmDialog>
+
+                <Button
+                  size={"sm"}
+                  variant={"ghost"}
+                  disabled={loading}
+                  onClick={() => {
+                    copy(
+                      `${window.location.origin}/me/tickets?redeemCode=${ticket.transferId}`,
+                    )
+                    toast.success("Share link copied to clipboard")
+                  }}>
+                  <Clipboard className={"mr-2"} />
+                  Share link
+                </Button>
+              </>
+            )}
+            {ticket.state === "checked-in" && (
+              <Button
+                size={"sm"}
+                variant={"link"}
+                onClick={() => setTicketDialogOpened(true)}>
+                <TicketIcon className={"mr-2"} />
+                Ticket is checked in. Click here to view ticket
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className={"w-56"}>
-              <DropdownMenuLabel>Ticket</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <RestrictedToRole role={UserRole.admin}>
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    return archiveTicket()
-                  }}>
-                  <Trash size={14} className={"mr-2"} /> Delete ticket
-                </DropdownMenuItem>
-              </RestrictedToRole>
-              {ticket.state === "open" && ticket.transferId && (
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    return cancelTicketTransfer()
-                  }}>
-                  <Share size={14} className={"mr-2"} /> Cancel ticket transfer
-                </DropdownMenuItem>
-              )}
-              {ticket.state === "open" && !ticket.transferId && (
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    return createTicketTransfer()
-                  }}>
-                  <Share size={14} className={"mr-2"} /> Transfer ticket
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            )}
+            <RestrictedToRole role={UserRole.admin}>
+              <ConfirmDialog
+                title={"Archive ticket"}
+                description={
+                  "Are you sure you want to archive this ticket? this action cannot be undone"
+                }
+                onConfirm={async () => {
+                  await archiveTicket()
+                  await refetch()
+                }}>
+                <Button
+                  size={"icon"}
+                  variant={"destructive"}
+                  className={
+                    "invisible absolute right-1 top-1 ml-2 opacity-25 hover:opacity-100 group-hover:visible"
+                  }>
+                  <Trash size={"14"} />
+                </Button>
+              </ConfirmDialog>
+            </RestrictedToRole>
+          </div>
         </div>
       </div>
       <Dialog
         open={ticketDialogOpened}
         modal
-        onOpenChange={(opened) => setTicketDialogOpened(opened)}>
+        onOpenChange={(opened) => {
+          !opened && setForceView(false)
+          setTicketDialogOpened(opened)
+        }}>
         <DialogContent>
           <div className={"flex justify-center"}>
             <Image
