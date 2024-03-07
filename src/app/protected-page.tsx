@@ -1,11 +1,11 @@
 "use client"
 
+import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import React, { useState } from "react"
 
 import Header from "@/components/header"
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import Sidebar from "@/components/sidebar"
-import HamburgerMenu from "@/components/ui/hamburger-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { UserRole } from "@/contracts/user/user-role"
 
@@ -19,7 +19,7 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
       <div className="fixed left-2 top-2 z-50 sm:hidden">
         <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
           <SheetTrigger>
-            <HamburgerMenu />
+            <HamburgerMenuIcon className="h-8 w-8" />
           </SheetTrigger>
           <SheetContent side="left" className="border-0 p-0">
             <Sidebar isSidebarOpen setIsSidebarOpen={setIsSidebarOpen} />

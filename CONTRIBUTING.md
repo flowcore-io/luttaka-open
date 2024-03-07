@@ -1,8 +1,8 @@
 # Contribution
 
-# Contributing to Flowcore Open Source Conference App
+# Contributing to Luttaka
 
-Thank you for considering contributing to the Flowcore Open Source Conference App! We appreciate your interest and support. This
+Thank you for considering contributing to Luttaka! We appreciate your interest and support. This
 document outlines the guidelines and instructions for contributing to our project. Please read them carefully to ensure
 a smooth and collaborative contribution process.
 

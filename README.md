@@ -1,7 +1,5 @@
-The Flowcore Open Source Conference App is an open source application to manage tickets, networking and content at conferences. You
-can either use the official instance at conference.flowcore.app, or deploy your own instance:
-
-Deploy with Vercel
+Luttaka is an open source application to manage tickets, networking and content at conferences. You
+can either use the official instance at luttaka.com, or deploy your own instance.
 
 # Basic features for conference participants
 
@@ -113,6 +111,19 @@ this will create the required resources in the Flowcore Platform, inside your te
 > Requires the Flowcore CLI version 2.5.0 or higher.
 > Production can be created with `yarn flowcore:prod`
 > The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
+
+---
+
+## Node Version Requirement
+
+When running `yarn install`, you may get an error saying your Node.js version is outdated and you need to upgrade.
+
+To run this app, you need Node.js version `20.11.0` or higher.
+
+If you need to install a different Node.js version, you can use a version manager like [nvm](https://github.com/nvm-sh/nvm) to switch between versions easily.
+
+---
+
 
 # Tenants
 

@@ -1,9 +1,9 @@
 import { attendanceRouter } from "@/server/api/routers/attendance/attendance.router"
 import { companyRouter } from "@/server/api/routers/company/company.router"
 import { conferenceRouter } from "@/server/api/routers/conference/conference.router"
-import { profileRouter } from "@/server/api/routers/profile"
+import { profileRouter } from "@/server/api/routers/profile/profile.router"
 import ticketRouter from "@/server/api/routers/ticket/ticket.router"
-import { userRouter } from "@/server/api/routers/user"
+import { userRouter } from "@/server/api/routers/user/user.router"
 import { createTRPCRouter } from "@/server/api/trpc"
 
 /**
