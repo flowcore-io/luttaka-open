@@ -1,20 +1,21 @@
-import { MoreVertical, Share, Trash } from "lucide-react"
+import copy from "copy-to-clipboard"
+import {
+  ArrowBigLeftDash,
+  ArrowBigRightDash,
+  Clipboard,
+  TicketIcon,
+  Trash,
+} from "lucide-react"
 import Image from "next/image"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
+import ConfirmDialog from "@/components/confirm.dialog"
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { UserRole } from "@/contracts/user/user-role"
 import { api } from "@/trpc/react"
 
@@ -26,28 +27,18 @@ export interface TicketProps {
     state: string
     transferId: string | null
   }
+  selected?: boolean
+  onSelect: (selected: boolean) => void
   refetch: () => Promise<void>
 }
-export function Ticket({ ticket, refetch }: TicketProps) {
+export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
+  const [forceView, setForceView] = useState(false)
   const [loading, setLoading] = useState(false)
   const [ticketDialogOpened, setTicketDialogOpened] = useState(false)
   const { Canvas } = useQRCode()
   const { data: conference } = api.conference.get.useQuery({
     id: ticket.conferenceId,
   })
-
-  const apiArchiveTicket = api.ticket.archive.useMutation()
-  const archiveTicket = useCallback(async () => {
-    setLoading(true)
-    const success = await apiArchiveTicket.mutateAsync({ id: ticket.id })
-    if (success) {
-      await refetch()
-      toast.success("Ticket deleted")
-    } else {
-      toast.error("Delete ticket failed")
-    }
-    setLoading(false)
-  }, [ticket.id])
 
   const apiCreateTicketTransfer = api.ticket.createTransfer.useMutation()
   const createTicketTransfer = useCallback(async () => {
@@ -81,13 +72,29 @@ export function Ticket({ ticket, refetch }: TicketProps) {
     setLoading(false)
   }, [ticket.transferId])
 
+  const apiArchiveTicket = api.ticket.archive.useMutation()
+  const archiveTicket = useCallback(async () => {
+    setLoading(true)
+    const success = await apiArchiveTicket.mutateAsync({ id: ticket.id })
+    if (success) {
+      toast.success("Ticket archived")
+    } else {
+      toast.error("Archive ticket failed")
+    }
+    setLoading(false)
+    await refetch()
+  }, [ticket.id])
+
   return (
     <>
-      <div
-        key={ticket.id}
-        onClick={() => setTicketDialogOpened(true)}
-        className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:shadow-lg">
-        <div className={"pr-4"}>
+      <div className="group relative mb-2 flex h-28 space-x-4 rounded-lg border p-2 shadow transition hover:shadow-lg">
+        {ticket.state === "open" && (
+          <div
+            className={`${!selected && "invisible"} absolute left-2 top-2 group-hover:visible`}>
+            <Checkbox checked={selected} onClick={() => onSelect(!selected)} />
+          </div>
+        )}
+        <div className="flex w-32 items-center justify-center self-stretch">
           <Image
             alt={"Tonik"}
             src={"/images/tonik.svg"}
@@ -95,62 +102,119 @@ export function Ticket({ ticket, refetch }: TicketProps) {
             height={120}
           />
         </div>
-        <div className={"flex-1 self-stretch"}>
-          <div className={"font-bold"}>{conference?.name}</div>
-          <div className={"text-sm text-gray-500"}>
-            Ticket State: {ticket.state}
+        <div className={"flex flex-1 flex-col justify-end"}>
+          <div className={"overflow-hidden whitespace-nowrap"}>
+            <span className={"font-bold"}>{conference?.name}</span>
           </div>
-          {ticket.transferId && (
-            <div className={"text-sm text-gray-500"}>
-              Redeem Code: {ticket.transferId}
-            </div>
-          )}
-        </div>
-        <div className={"text-right"}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant={"ghost"} size={"sm"} disabled={loading}>
-                <MoreVertical />
+          <div className={"text-sm text-gray-500"}>
+            {conference?.ticketDescription}
+          </div>
+          <div className={"flex flex-1 items-end justify-end"}>
+            {!ticket.transferId && ticket.state === "open" && (
+              <>
+                <ConfirmDialog
+                  title={"Do you want to transfer this ticket?"}
+                  description={
+                    "This will create a code on the ticket that can be used to redeem the ticket. While the ticket is in transfer it cannot be used to check in"
+                  }
+                  onConfirm={async () => {
+                    await createTicketTransfer()
+                    await refetch()
+                  }}>
+                  <Button
+                    size={"sm"}
+                    className={"mr-2"}
+                    variant={"ghost"}
+                    disabled={loading}>
+                    <ArrowBigRightDash className={"mr-2"} />
+                    Transfer ticket
+                  </Button>
+                </ConfirmDialog>
+
+                <Button
+                  size={"sm"}
+                  disabled={loading}
+                  onClick={() => setTicketDialogOpened(true)}>
+                  <TicketIcon className={"mr-2"} />
+                  Check in
+                </Button>
+              </>
+            )}
+            {ticket.state === "open" && ticket.transferId && (
+              <>
+                <ConfirmDialog
+                  title={"Cancel ticket transfer"}
+                  description={
+                    "Are you sure you want to cancel the ticket transfer? The redeem code will be removed and the ticket will be available for check in again"
+                  }
+                  onConfirm={async () => {
+                    await cancelTicketTransfer()
+                    await refetch()
+                  }}>
+                  <Button
+                    size={"sm"}
+                    className={"mr-2"}
+                    variant={"secondary"}
+                    disabled={loading}>
+                    <ArrowBigLeftDash className={"mr-2"} />
+                    Cancel transfer
+                  </Button>
+                </ConfirmDialog>
+
+                <Button
+                  size={"sm"}
+                  variant={"ghost"}
+                  disabled={loading}
+                  onClick={() => {
+                    copy(
+                      `${window.location.origin}/me/tickets?redeemCode=${ticket.transferId}`,
+                    )
+                    toast.success("Share link copied to clipboard")
+                  }}>
+                  <Clipboard className={"mr-2"} />
+                  Share link
+                </Button>
+              </>
+            )}
+            {ticket.state === "checked-in" && (
+              <Button
+                size={"sm"}
+                variant={"link"}
+                onClick={() => setTicketDialogOpened(true)}>
+                <TicketIcon className={"mr-2"} />
+                Ticket is checked in. Click here to view ticket
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className={"w-56"}>
-              <DropdownMenuLabel>Ticket</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <RestrictedToRole role={UserRole.admin}>
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    return archiveTicket()
-                  }}>
-                  <Trash size={14} className={"mr-2"} /> Delete ticket
-                </DropdownMenuItem>
-              </RestrictedToRole>
-              {ticket.state === "open" && ticket.transferId && (
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    return cancelTicketTransfer()
-                  }}>
-                  <Share size={14} className={"mr-2"} /> Cancel ticket transfer
-                </DropdownMenuItem>
-              )}
-              {ticket.state === "open" && !ticket.transferId && (
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    return createTicketTransfer()
-                  }}>
-                  <Share size={14} className={"mr-2"} /> Transfer ticket
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            )}
+            <RestrictedToRole role={UserRole.admin}>
+              <ConfirmDialog
+                title={"Archive ticket"}
+                description={
+                  "Are you sure you want to archive this ticket? this action cannot be undone"
+                }
+                onConfirm={async () => {
+                  await archiveTicket()
+                  await refetch()
+                }}>
+                <Button
+                  size={"icon"}
+                  variant={"destructive"}
+                  className={
+                    "invisible absolute right-1 top-1 ml-2 opacity-25 hover:opacity-100 group-hover:visible"
+                  }>
+                  <Trash size={"14"} />
+                </Button>
+              </ConfirmDialog>
+            </RestrictedToRole>
+          </div>
         </div>
       </div>
       <Dialog
         open={ticketDialogOpened}
         modal
-        onOpenChange={(opened) => setTicketDialogOpened(opened)}>
+        onOpenChange={(opened) => {
+          !opened && setForceView(false)
+          setTicketDialogOpened(opened)
+        }}>
         <DialogContent>
           <div className={"flex justify-center"}>
             <Image
@@ -160,7 +224,15 @@ export function Ticket({ ticket, refetch }: TicketProps) {
               height={240}
             />
           </div>
-          <div className={"flex justify-center"}>
+          <div className={"relative flex justify-center"}>
+            {ticket.state === "checked-in" && !forceView && (
+              <div
+                className={
+                  "text- absolute left-32 top-28 rotate-12 rounded border-2 border-red-800 bg-white p-4 text-3xl font-bold text-red-800 opacity-75"
+                }>
+                Checked in
+              </div>
+            )}
             <Canvas
               text={`ticket:${ticket.id},user:${ticket.userId}`}
               options={{
@@ -169,11 +241,16 @@ export function Ticket({ ticket, refetch }: TicketProps) {
                 scale: 4,
                 width: 300,
                 color: {
-                  dark: "#31112d",
+                  dark: ticket.state === "open" || forceView ? "#111" : "#BBB",
                 },
               }}
             />
           </div>
+          {ticket.state === "checked-in" && !forceView && (
+            <Button variant={"link"} onClick={() => setForceView(true)}>
+              View ticket QR
+            </Button>
+          )}
           <code className={"text-center"}>
             <div>Ticket ID: {ticket.id}</div>
             <div>User ID: {ticket.userId}</div>

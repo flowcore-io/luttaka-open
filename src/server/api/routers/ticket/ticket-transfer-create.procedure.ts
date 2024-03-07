@@ -27,6 +27,17 @@ export const createTicketTransferProcedure = protectedProcedure
     } else if (ticket.state !== "open") {
       throw new Error("Ticket not eligible for transfer")
     }
+
+    const transfer = await db.query.ticketTransfers.findFirst({
+      where: and(
+        eq(ticketTransfers.ticketId, input.ticketId),
+        eq(ticketTransfers.state, "open"),
+      ),
+    })
+    if (transfer) {
+      return transfer.id
+    }
+
     const id: string = shortUuid.generate()
     await sendTicketTransferCreatedEvent({ id, state: "open", ...input })
     try {
