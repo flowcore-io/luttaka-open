@@ -9,8 +9,6 @@ import { PageTitle } from "@/components/ui/page-title"
 import { api } from "@/trpc/react"
 
 export default function AttendeesPage() {
-  // todo: needs to be tested with the ticketing system to make sure that a user is connected to a specific event
-  // to make sure that the query indeed works :)
   const apiFetchAttendingConferences = api.attendance.myConferences.useQuery()
 
   const [selectedConferenceId, setSelectedConferenceId] = useState<string>("")
