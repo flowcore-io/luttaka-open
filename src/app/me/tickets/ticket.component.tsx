@@ -11,7 +11,7 @@ import { useQRCode } from "next-qrcode"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
-import ConfirmDialog from "@/components/confirm.dialog"
+import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
