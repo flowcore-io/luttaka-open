@@ -8,6 +8,7 @@ import {
   Clipboard,
   Loader,
   SendHorizontal,
+  TicketIcon,
 } from "lucide-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { type ReactNode, useCallback, useEffect, useState } from "react"
@@ -107,35 +108,27 @@ export default function Tickets() {
 
   return (
     <main className="mx-auto w-full">
-      <div className="flex pb-8">
-        <div className="flex-1 text-3xl font-bold text-slate-900">
-          My tickets
-        </div>
-        <div className="flex-1 text-right">
+      <div className="pb-8 md:flex">
+        <div className="mb-4 text-3xl font-bold text-slate-900">My tickets</div>
+        <div className="whitespace-nowrap md:mt-4 md:flex-1 md:text-right">
           <Button
-            variant={"ghost"}
+            variant={"secondary"}
             onClick={() => setTicketRedeemDialogOpened(true)}
             disabled={apiAcceptTicketTransfer.isLoading}>
-            {apiAcceptTicketTransfer.isLoading ? (
-              <Loader className={"animate-spin"} />
-            ) : (
-              "Redeem ticket"
-            )}
+            <TicketIcon className={"mr-2"} /> Redeem ticket
           </Button>
+          {selectedTickets.length > 0 && (
+            <TransferTicketsDialog
+              ticketIds={selectedTickets}
+              onDone={() => refetch()}>
+              <Button className={"ml-2"} disabled={apiTransferTicket.isLoading}>
+                <ArrowBigRightDash className={"mr-2"} />
+                Transfer tickets
+              </Button>
+            </TransferTicketsDialog>
+          )}
         </div>
       </div>
-      {selectedTickets.length > 0 && (
-        <div className={"mb-4 text-center"}>
-          <TransferTicketsDialog
-            ticketIds={selectedTickets}
-            onDone={() => refetch()}>
-            <Button className={"mr-2"} disabled={apiTransferTicket.isLoading}>
-              <ArrowBigRightDash className={"mr-2"} />
-              Transfer tickets
-            </Button>
-          </TransferTicketsDialog>
-        </div>
-      )}
 
       {tickets?.map((ticket) => (
         <Ticket
