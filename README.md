@@ -112,6 +112,10 @@ this will create the required resources in the Flowcore Platform, inside your te
 > Production can be created with `yarn flowcore:prod`
 > The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
 
+## Setup Stripe CLI
+
+Follow this [Link](https://docs.stripe.com/stripe-cli), To setup Stripe CLI on your machine. So you can easily interact with Stripe Webhooks
+
 ---
 
 ## Node Version Requirement
@@ -124,6 +128,20 @@ If you need to install a different Node.js version, you can use a version manage
 
 ---
 
+## Setting up Stripe Account
+
+To setup a test stripe account without providing bank information
+
+1. Go to [Stripe](https://stripe.com) and create an account
+2. Go to [Dashboard](https://dashboard.stripe.com/test/dashboard) and click on `Developers`
+3. Click on `API keys` and copy the `Secret key` and `Publishable key`
+4. Create `.env` file in your root folder
+5. Copy the content inside the `.env.example` and paste it inside newly created `.env` file
+6. Paste the `Secret key` as `STRIPE_SECRET_KEY`
+7. Paste the `Publishable Key` as `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in the `.env` file
+8. Run `yarn stripe:listen` in your terminal and then fill the ` WEBHOOK_SECRET ` directly from the terminal
+
+---
 
 # Tenants
 
@@ -143,13 +161,14 @@ You need to create an account with [Clerk](https://clerk.com) and create a new a
 5. Copy the file `.env.example` as `.env` and fill in the missing information
 6. `yarn dev`
 7. `yarn local:stream`
+8. Run `yarn stripe:listen` in your terminal to listen webhooks events
 
 # Run in a container
 
 1. Run `yarn build-image` to build the docker image from the Dockerfile
 2. Copy the file `.env.example` as `.container.env` and adjust the values to match the container environment
 3. Run `yarn docker:app` to start the postgres and the app containers
-4. You can access the app by browsing to http://localhost:3000
+4. You can access the app by browsing to [http://localhost:3000]([https://](http://localhost:3000))
 
 # License
 
