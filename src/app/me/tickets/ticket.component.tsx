@@ -92,7 +92,7 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
           className={`${!selected && "invisible"} absolute left-2 top-2 ${ticket.state === "open" ? "group-hover:visible" : ""}`}>
           <Checkbox checked={selected} onClick={() => onSelect(!selected)} />
         </div>
-        <div className="hidden w-32 items-center justify-center self-stretch sm:flex">
+        <div className="hidden w-32 items-center justify-center self-stretch md:flex">
           <Image
             alt={"Tonik"}
             src={"/images/tonik.svg"}
