@@ -24,7 +24,7 @@ export default function ConfirmDialog(props: ConfirmDialogProps) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>{props.children}</AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{props.title}</AlertDialogTitle>
