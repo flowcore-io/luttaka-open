@@ -43,21 +43,21 @@ export default function Tickets() {
       <div className="pb-8 md:flex">
         <div className="mb-4 text-3xl font-bold text-slate-900">My tickets</div>
         <div className="whitespace-nowrap md:mt-4 md:flex-1 md:text-right">
-          <RedeemTicketsDialog onDone={() => refetch()}>
-            <Button variant={"secondary"}>
-              <TicketIcon className={"mr-2"} /> Redeem ticket
-            </Button>
-          </RedeemTicketsDialog>
           {selectedTickets.length > 0 && (
             <TransferTicketsDialog
               ticketIds={selectedTickets}
               onDone={() => refetch()}>
-              <Button className={"ml-2"}>
+              <Button className={"mr-2"}>
                 <ArrowBigRightDash className={"mr-2"} />
                 Transfer tickets
               </Button>
             </TransferTicketsDialog>
           )}
+          <RedeemTicketsDialog onDone={() => refetch()}>
+            <Button variant={"secondary"}>
+              <TicketIcon className={"mr-2"} /> Redeem ticket
+            </Button>
+          </RedeemTicketsDialog>
         </div>
       </div>
 
