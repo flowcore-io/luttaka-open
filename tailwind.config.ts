@@ -9,6 +9,11 @@ const config = {
     "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  variants: {
+    extend: {
+      visibility: ["group-hover"],
+    },
+  },
   theme: {
     container: {
       center: true,
@@ -19,7 +24,7 @@ const config = {
     },
     extend: {
       fontFamily: {
-        inter: ['var(--font-inter)']
+        inter: ["var(--font-inter)"],
       },
       scale: {
         "101": "1.01",
