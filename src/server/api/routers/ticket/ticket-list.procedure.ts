@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm"
+import { and, desc, eq } from "drizzle-orm"
 
 import { db } from "@/database"
 import { tickets, ticketTransfers } from "@/database/schemas"
@@ -22,6 +22,7 @@ export const getTicketsProcedure = protectedProcedure.query(({ ctx }) => {
         eq(ticketTransfers.state, "open"),
       ),
     )
+    .orderBy(desc(tickets.state), desc(ticketTransfers.id))
     .where(eq(tickets.userId, userId))
     .execute()
 })
