@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { type ConferencePreview } from "@/contracts/conference/conference"
+import { preventDefaultOnReference } from "@/lib/events/prevent-default-on-reference"
 
 export type ConferenceSelectionProps = {
   conferences: ConferencePreview[]
@@ -20,7 +21,7 @@ export const ConferenceSelection: FC<ConferenceSelectionProps> = (props) => {
       <SelectTrigger>
         <SelectValue placeholder={"Conferences you have tickets for"} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent ref={preventDefaultOnReference}>
         {props.conferences.map((conference) => (
           <SelectItem key={conference.id} value={conference.id}>
             {conference.name}
