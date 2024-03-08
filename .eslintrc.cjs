@@ -4,7 +4,7 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: ["@typescript-eslint", "simple-import-sort", "prettier"],
+  plugins: ["@typescript-eslint", "simple-import-sort"],
   extends: [
     "plugin:@next/next/recommended",
     "plugin:@typescript-eslint/recommended-type-checked",
@@ -12,7 +12,6 @@ const config = {
     "prettier",
   ],
   rules: {
-    "prettier/prettier": "error",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     // These opinionated rules are enabled in stylistic-type-checked above.
@@ -36,6 +35,6 @@ const config = {
       },
     ],
   },
-};
+}
 
-module.exports = config;
+module.exports = config
