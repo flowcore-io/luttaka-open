@@ -9,6 +9,7 @@ import RedeemTicketsDialog from "@/app/me/tickets/redeem-ticket.dialog"
 import { Ticket } from "@/app/me/tickets/ticket.component"
 import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
 import { Button } from "@/components/ui/button"
+import { PageTitle } from "@/components/ui/page-title"
 import { api } from "@/trpc/react"
 
 export default function Tickets() {
@@ -44,7 +45,7 @@ export default function Tickets() {
   return (
     <main className="mx-auto w-full">
       <div className="pb-8 md:flex">
-        <div className="mb-4 text-3xl font-bold text-slate-900">My tickets</div>
+        <PageTitle title={"My tickets"} />
         <div className="whitespace-nowrap md:mt-4 md:flex-1 md:text-right">
           {selectedTickets.length > 0 && (
             <TransferTicketsDialog

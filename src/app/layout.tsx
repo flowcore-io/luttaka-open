@@ -33,9 +33,9 @@ export default function RootLayout({
       <body className={`min-h-screen ${inter.variable} font-inter`}>
         <ThemeProvider
           attribute={"class"}
-          defaultTheme={"light"}
+          defaultTheme={"system"}
           disableTransitionOnChange
-          enableSystem={false}>
+          enableSystem>
           <ClerkProvider>
             <SignedOut>
               <PublicPage children={children} />

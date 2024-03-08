@@ -1,12 +1,13 @@
 "use client"
+
 import { useOrganizationList } from "@clerk/nextjs"
 import type { LucideIcon } from "lucide-react"
 import type { Url } from "next/dist/shared/lib/router/router"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
-import { buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 interface NavProps {
@@ -38,6 +39,13 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
       setSuperuser(!!isSuperuser)
     }
   }, [isLoaded, userMemberships])
+
+  const onLinkClick = useCallback(() => {
+    if (isSidebarOpen && setIsSidebarOpen) {
+      setIsSidebarOpen(false)
+    }
+  }, [isSidebarOpen, setIsSidebarOpen])
+
   return (
     isLoaded && (
       <div className="group flex flex-col gap-4 py-4 data-[collapsed=true]:py-4">
@@ -48,36 +56,25 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
               return false
             }
             return (
-              <Link
+              <Button
                 key={index}
-                href={link.href ?? "/"}
-                className={cn(
-                  buttonVariants({
-                    variant: isCurrent ? "default" : "ghost",
-                    size: "sm",
-                  }),
-                  isCurrent &&
-                    "bg-pink-400 text-black hover:bg-pink-400 dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                  "justify-start py-5 text-base font-light",
-                )}
-                onClick={() => {
-                  if (isSidebarOpen && setIsSidebarOpen) {
-                    setIsSidebarOpen(false)
-                  }
-                }}>
-                <link.icon className="mr-5 h-6 w-6" />{" "}
-                {/* Increased icon size and right margin */}
-                {link.title}
-                {link.label && (
-                  <span
-                    className={cn(
-                      "ml-auto",
-                      isCurrent && "text-background dark:text-white",
-                    )}>
-                    {link.label}
-                  </span>
-                )}
-              </Link>
+                className="items-start justify-start"
+                asChild
+                variant={isCurrent ? "default" : "ghost"}>
+                <Link href={link.href ?? "/"} onClick={onLinkClick}>
+                  <link.icon className="mr-2 h-5 w-5" />
+                  {link.title}
+                  {link.label && (
+                    <span
+                      className={cn(
+                        "ml-auto",
+                        isCurrent && "text-background dark:text-white",
+                      )}>
+                      {link.label}
+                    </span>
+                  )}
+                </Link>
+              </Button>
             )
           })}
         </nav>
