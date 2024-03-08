@@ -19,7 +19,7 @@ interface SidebarProps {
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
   return (
-    <aside className="w-42 flex h-screen flex-col p-4 text-black">
+    <aside className="w-42 flex h-screen flex-col bg-card p-4">
       <div className="mb-8 flex flex-col items-start">
         <Link
           href="/"

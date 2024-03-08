@@ -14,6 +14,7 @@ import { toast } from "sonner"
 import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { UserRole } from "@/contracts/user/user-role"
@@ -87,125 +88,129 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
 
   return (
     <>
-      <div className="group relative mb-2 flex h-28 space-x-4 rounded-lg border p-2 shadow transition hover:shadow-lg">
-        <div
-          className={`${!selected && "invisible"} absolute left-2 top-2 ${ticket.state === "open" ? "group-hover:visible" : ""}`}>
-          <Checkbox checked={selected} onClick={() => onSelect(!selected)} />
-        </div>
-        <div className="hidden w-32 items-center justify-center self-stretch md:flex">
-          <Image
-            alt={"Tonik"}
-            src={"/images/tonik.svg"}
-            width={120}
-            height={120}
-          />
-        </div>
-        <div className={"flex flex-1 flex-col justify-end"}>
-          <div className={"overflow-hidden whitespace-nowrap"}>
-            <span className={"font-bold"}>{conference?.name}</span>
+      <Card className="mb-4">
+        <CardContent className="group relative flex h-28 space-x-4 p-4">
+          <div
+            className={`${!selected && "invisible"} absolute left-2 top-2 ${ticket.state === "open" ? "group-hover:visible" : ""}`}>
+            <Checkbox checked={selected} onClick={() => onSelect(!selected)} />
           </div>
-          <div className={"text-sm text-gray-500"}>
-            {conference?.ticketDescription}
+          <div className="hidden w-32 items-center justify-center self-stretch md:flex">
+            <Image
+              className={"bg-current text-primary"}
+              alt={"Tonik"}
+              src={"/images/tonik.svg"}
+              width={120}
+              height={120}
+            />
           </div>
-          <div className={"flex flex-1 items-end justify-end"}>
-            {!ticket.transferId && ticket.state === "open" && (
-              <>
-                <ConfirmDialog
-                  title={"Do you want to transfer this ticket?"}
-                  description={
-                    "This will create a code on the ticket that can be used to redeem the ticket. While the ticket is in transfer it cannot be used to check in"
-                  }
-                  onConfirm={async () => {
-                    await createTicketTransfer()
-                    await refetch()
-                  }}>
+          <div className={"flex flex-1 flex-col justify-end"}>
+            <div className={"overflow-hidden whitespace-nowrap"}>
+              <span className={"font-bold"}>{conference?.name}</span>
+            </div>
+            <div className={"text-sm text-muted"}>
+              {conference?.ticketDescription}
+            </div>
+            <div className={"flex flex-1 items-end justify-end"}>
+              {!ticket.transferId && ticket.state === "open" && (
+                <>
+                  <ConfirmDialog
+                    title={"Do you want to transfer this ticket?"}
+                    description={
+                      "This will create a code on the ticket that can be used to redeem the ticket. While the ticket is in transfer it cannot be used to check in"
+                    }
+                    onConfirm={async () => {
+                      await createTicketTransfer()
+                      await refetch()
+                    }}>
+                    <Button
+                      size={"sm"}
+                      className={"mr-2"}
+                      variant={"ghost"}
+                      disabled={loading}>
+                      <ArrowBigRightDash className={"mr-2"} />
+                      Transfer ticket
+                    </Button>
+                  </ConfirmDialog>
+
                   <Button
                     size={"sm"}
-                    className={"mr-2"}
-                    variant={"ghost"}
-                    disabled={loading}>
-                    <ArrowBigRightDash className={"mr-2"} />
-                    Transfer ticket
+                    disabled={loading}
+                    onClick={() => setTicketDialogOpened(true)}>
+                    <TicketIcon className={"mr-2"} />
+                    Check in
                   </Button>
-                </ConfirmDialog>
+                </>
+              )}
+              {ticket.state === "open" && ticket.transferId && (
+                <>
+                  <ConfirmDialog
+                    title={"Cancel ticket transfer"}
+                    description={
+                      "Are you sure you want to cancel the ticket transfer? The redeem code will be removed and the ticket will be available for check in again"
+                    }
+                    onConfirm={async () => {
+                      await cancelTicketTransfer()
+                      await refetch()
+                    }}>
+                    <Button
+                      size={"sm"}
+                      className={"mr-2"}
+                      variant={"secondary"}
+                      disabled={loading}>
+                      <ArrowBigLeftDash className={"mr-2"} />
+                      Cancel transfer
+                    </Button>
+                  </ConfirmDialog>
 
+                  <Button
+                    size={"sm"}
+                    variant={"ghost"}
+                    disabled={loading}
+                    onClick={() => {
+                      copy(
+                        `${window.location.origin}/me/tickets?redeemCode=${ticket.transferId}`,
+                      )
+                      toast.success("Share link copied to clipboard")
+                    }}>
+                    <Clipboard className={"mr-2"} />
+                    Share link
+                  </Button>
+                </>
+              )}
+              {ticket.state === "checked-in" && (
                 <Button
                   size={"sm"}
-                  disabled={loading}
+                  variant={"link"}
                   onClick={() => setTicketDialogOpened(true)}>
                   <TicketIcon className={"mr-2"} />
-                  Check in
+                  Ticket is checked in. Click here to view ticket
                 </Button>
-              </>
-            )}
-            {ticket.state === "open" && ticket.transferId && (
-              <>
+              )}
+              <RestrictedToRole role={UserRole.admin}>
                 <ConfirmDialog
-                  title={"Cancel ticket transfer"}
+                  title={"Archive ticket"}
                   description={
-                    "Are you sure you want to cancel the ticket transfer? The redeem code will be removed and the ticket will be available for check in again"
+                    "Are you sure you want to archive this ticket? this action cannot be undone"
                   }
                   onConfirm={async () => {
-                    await cancelTicketTransfer()
+                    await archiveTicket()
                     await refetch()
                   }}>
                   <Button
-                    size={"sm"}
-                    className={"mr-2"}
-                    variant={"secondary"}
-                    disabled={loading}>
-                    <ArrowBigLeftDash className={"mr-2"} />
-                    Cancel transfer
+                    size={"icon"}
+                    variant={"destructive"}
+                    className={
+                      "invisible absolute right-1 top-1 ml-2 opacity-25 hover:opacity-100 group-hover:visible"
+                    }>
+                    <Trash size={"14"} />
                   </Button>
                 </ConfirmDialog>
-
-                <Button
-                  size={"sm"}
-                  variant={"ghost"}
-                  disabled={loading}
-                  onClick={() => {
-                    copy(
-                      `${window.location.origin}/me/tickets?redeemCode=${ticket.transferId}`,
-                    )
-                    toast.success("Share link copied to clipboard")
-                  }}>
-                  <Clipboard className={"mr-2"} />
-                  Share link
-                </Button>
-              </>
-            )}
-            {ticket.state === "checked-in" && (
-              <Button
-                size={"sm"}
-                variant={"link"}
-                onClick={() => setTicketDialogOpened(true)}>
-                <TicketIcon className={"mr-2"} />
-                Ticket is checked in. Click here to view ticket
-              </Button>
-            )}
-            <RestrictedToRole role={UserRole.admin}>
-              <ConfirmDialog
-                title={"Archive ticket"}
-                description={
-                  "Are you sure you want to archive this ticket? this action cannot be undone"
-                }
-                onConfirm={async () => {
-                  await archiveTicket()
-                  await refetch()
-                }}>
-                <Button
-                  size={"icon"}
-                  variant={"destructive"}
-                  className={
-                    "invisible absolute right-1 top-1 ml-2 opacity-25 hover:opacity-100 group-hover:visible"
-                  }>
-                  <Trash size={"14"} />
-                </Button>
-              </ConfirmDialog>
-            </RestrictedToRole>
+              </RestrictedToRole>
+            </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
+
       <Dialog
         open={ticketDialogOpened}
         modal
