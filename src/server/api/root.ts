@@ -1,3 +1,4 @@
+import { attendanceRouter } from "@/server/api/routers/attendance/attendance.router"
 import { companyRouter } from "@/server/api/routers/company/company.router"
 import { conferenceRouter } from "@/server/api/routers/conference/conference.router"
 import { profileRouter } from "@/server/api/routers/profile/profile.router"
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   profile: profileRouter,
   ticket: ticketRouter,
+  attendance: attendanceRouter,
 })
 
 // export type definition of API

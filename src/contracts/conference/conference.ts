@@ -14,6 +14,11 @@ export const ConferenceProfileDto = z.object({
   stripeId: z.string(),
 })
 
+export const ConferencePreviewDto = ConferenceProfileDto.pick({
+  id: true,
+  name: true,
+})
+
 export const CreateConferenceInputDto = ConferenceProfileDto.pick({
   name: true,
   description: true,
@@ -33,6 +38,8 @@ export const UpdateConferenceInputDto = ConferenceProfileDto.partial()
 
 // Types
 export type ConferenceProfile = z.infer<typeof ConferenceProfileDto>
+
+export type ConferencePreview = z.infer<typeof ConferencePreviewDto>
 
 export type CreateConferenceInput = z.infer<typeof CreateConferenceInputDto>
 
