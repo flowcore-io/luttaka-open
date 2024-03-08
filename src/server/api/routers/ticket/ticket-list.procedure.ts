@@ -22,7 +22,7 @@ export const getTicketsProcedure = protectedProcedure.query(({ ctx }) => {
         eq(ticketTransfers.state, "open"),
       ),
     )
-    .orderBy(desc(tickets.state), desc(ticketTransfers.id))
+    .orderBy(desc(tickets.state), desc(ticketTransfers.id), desc(tickets.createdAt))
     .where(eq(tickets.userId, userId))
     .execute()
 })
