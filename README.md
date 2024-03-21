@@ -84,7 +84,7 @@ You can [read mode about our contribution guidelines in here](./CONTRIBUTING.md)
 
 If you have any questions, concerns, or suggestions, please reach out to us through one of the following channels:
 
-- [GitHub Issues](https://github.com/flowcore-io/application-conference/issues)
+- [GitHub Issues](https://github.com/flowcore-io/luttaka/issues)
 - [Discord](https://discord.gg/Jw4HGPaG)
 - [Email](mailto:flowcore@flowcore.com)
 
@@ -139,7 +139,7 @@ To setup a test stripe account without providing bank information
 5. Copy the content inside the `.env.example` and paste it inside newly created `.env` file
 6. Paste the `Secret key` as `STRIPE_SECRET_KEY`
 7. Paste the `Publishable Key` as `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in the `.env` file
-8. Run `yarn stripe:listen` in your terminal and then fill the ` WEBHOOK_SECRET ` directly from the terminal
+8. Run `yarn stripe:listen` in your terminal and then fill the `WEBHOOK_SECRET` directly from the terminal
 
 ---
 
@@ -168,7 +168,7 @@ You need to create an account with [Clerk](https://clerk.com) and create a new a
 1. Run `yarn build-image` to build the docker image from the Dockerfile
 2. Copy the file `.env.example` as `.container.env` and adjust the values to match the container environment
 3. Run `yarn docker:app` to start the postgres and the app containers
-4. You can access the app by browsing to [http://localhost:3000]([https://](http://localhost:3000))
+4. You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)
 
 # License
 

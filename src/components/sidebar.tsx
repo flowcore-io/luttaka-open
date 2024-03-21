@@ -9,7 +9,7 @@ import {
 import Image from "next/image"
 import Link from "next/link"
 
-import ConferenceLogo from "../../public/images/conference_logo.png"
+import LuttakaLogo from "../../public/images/luttaka_logo.png"
 import { Nav } from "./nav"
 
 interface SidebarProps {
@@ -30,14 +30,14 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
             }
           }}>
           <Image
-            src={ConferenceLogo}
-            alt="Conference App Logo"
+            src={LuttakaLogo}
+            alt="Luttaka Logo"
             height={50}
             width={50}
             priority
           />
           <div className="flex h-full flex-col justify-center text-lg">
-            Open Conference
+            Luttaka
           </div>
         </Link>
       </div>
