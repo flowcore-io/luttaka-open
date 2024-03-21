@@ -8,11 +8,12 @@ import { RestrictedToRole } from "@/components/restricted-to-role"
 import Sidebar from "@/components/sidebar"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { UserRole } from "@/contracts/user/user-role"
+import { BottomBar } from "../components/bottom-bar"
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   return (
-    <>
+    <div className="h-screen overflow-hidden">
       <RestrictedToRole role={UserRole.admin}>
         <div className={"bg-primary text-center"}>
           <p className={"text-[0.85rem] font-thin text-primary-foreground"}>
@@ -20,8 +21,7 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
           </p>
         </div>
       </RestrictedToRole>
-
-      <div className="flex h-screen flex-row overflow-hidden">
+      <div className="flex flex-row">
         <div className="hidden sm:block">
           <Sidebar />
         </div>
@@ -42,9 +42,10 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
               {children}
             </div>
           </main>
+          <BottomBar />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
