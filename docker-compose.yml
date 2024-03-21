@@ -7,9 +7,9 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: conference
+      POSTGRES_DB: luttaka
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -23,5 +23,5 @@ services:
       - postgres
 
 networks:
-  conference:
+  luttaka:
     driver: bridge
