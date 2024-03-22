@@ -1,16 +1,16 @@
 "use client"
 
-import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { IconProp } from "@fortawesome/fontawesome-svg-core"
+import { type IconProp } from "@fortawesome/fontawesome-svg-core"
 import {
-  faTicket,
-  faPeopleGroup,
-  faHouse,
   faCalendarDays,
+  faHouse,
   faMagnifyingGlass,
+  faPeopleGroup,
+  faTicket,
 } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
+import React from "react"
 
 export const BottomBar = () => {
   return (

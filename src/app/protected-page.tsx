@@ -8,6 +8,7 @@ import { RestrictedToRole } from "@/components/restricted-to-role"
 import Sidebar from "@/components/sidebar"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { UserRole } from "@/contracts/user/user-role"
+
 import { BottomBar } from "../components/bottom-bar"
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
