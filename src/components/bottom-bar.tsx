@@ -4,9 +4,9 @@ import { type IconProp } from "@fortawesome/fontawesome-svg-core"
 import {
   faCalendarDays,
   faHouse,
-  faMagnifyingGlass,
   faPeopleGroup,
   faTicket,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
@@ -29,7 +29,7 @@ export const BottomBar = () => {
           <FontAwesomeIcon icon={faCalendarDays as IconProp} />
         </Link>
         <Link href="/me" className="m-auto">
-          <FontAwesomeIcon icon={faMagnifyingGlass as IconProp} />
+          <FontAwesomeIcon icon={faUser as IconProp} />
         </Link>
       </div>
     </div>
