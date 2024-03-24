@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
-import { Inter, Dongle } from "next/font/google"
+import { Dongle, Inter } from "next/font/google"
 import { cookies } from "next/headers"
 
 import { ThemeProvider } from "@/components/theme-provider"
@@ -19,7 +19,7 @@ const inter = Inter({
 const dongle = Dongle({
   subsets: ["latin"],
   variable: "--font-dongle",
-  weight: "400",
+  weight: "300",
 })
 
 export const metadata = {

@@ -5,14 +5,12 @@ import type { LucideIcon } from "lucide-react"
 import type { Url } from "next/dist/shared/lib/router/router"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 interface NavProps {
-  isSidebarOpen?: boolean
-  setIsSidebarOpen?: (isOpen: boolean) => void
   links: {
     href?: Url
     title: string
@@ -22,7 +20,7 @@ interface NavProps {
   }[]
 }
 
-export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
+export function Nav({ links }: NavProps) {
   const pathname = usePathname()
   const { isLoaded, userMemberships } = useOrganizationList({
     userMemberships: {
@@ -40,12 +38,6 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
     }
   }, [isLoaded, userMemberships])
 
-  const onLinkClick = useCallback(() => {
-    if (isSidebarOpen && setIsSidebarOpen) {
-      setIsSidebarOpen(false)
-    }
-  }, [isSidebarOpen, setIsSidebarOpen])
-
   return (
     isLoaded && (
       <div className="group flex flex-col gap-4 py-4 data-[collapsed=true]:py-4">
@@ -61,7 +53,7 @@ export function Nav({ isSidebarOpen, setIsSidebarOpen, links }: NavProps) {
                 className="items-start justify-start"
                 asChild
                 variant={isCurrent ? "default" : "ghost"}>
-                <Link href={link.href ?? "/"} onClick={onLinkClick}>
+                <Link href={link.href ?? "/"}>
                   <link.icon className="mr-2 h-5 w-5" />
                   {link.title}
                   {link.label && (

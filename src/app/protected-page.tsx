@@ -1,18 +1,13 @@
 "use client"
 
-import { HamburgerMenuIcon } from "@radix-ui/react-icons"
-import React, { useState } from "react"
-
 import Header from "@/components/header"
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import Sidebar from "@/components/sidebar"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { UserRole } from "@/contracts/user/user-role"
 
 import { BottomBar } from "../components/bottom-bar"
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   return (
     <div className="h-screen">
       <RestrictedToRole role={UserRole.admin}>
@@ -25,16 +20,6 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
       <div className="flex flex-row">
         <div className="hidden sm:block">
           <Sidebar />
-        </div>
-        <div className="fixed left-2 top-2 z-50 sm:hidden">
-          <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-            <SheetTrigger>
-              <HamburgerMenuIcon className="h-8 w-8" />
-            </SheetTrigger>
-            <SheetContent side="left" className="border-0 p-0">
-              <Sidebar isSidebarOpen setIsSidebarOpen={setIsSidebarOpen} />
-            </SheetContent>
-          </Sheet>
         </div>
         <div className="relative flex w-96 flex-1 flex-col">
           <Header />
