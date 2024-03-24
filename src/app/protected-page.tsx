@@ -14,7 +14,7 @@ import { BottomBar } from "../components/bottom-bar"
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-screen">
       <RestrictedToRole role={UserRole.admin}>
         <div className={"bg-primary text-center"}>
           <p className={"text-[0.85rem] font-thin text-primary-foreground"}>
@@ -36,10 +36,10 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
             </SheetContent>
           </Sheet>
         </div>
-        <div className="relative flex w-96 flex-1 flex-col overflow-y-auto overflow-x-hidden">
+        <div className="relative flex w-96 flex-1 flex-col">
           <Header />
           <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+            <div className="mx-auto mb-24 max-w-screen-2xl p-4 md:p-6 2xl:p-10">
               {children}
             </div>
           </main>
