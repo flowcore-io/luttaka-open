@@ -44,5 +44,6 @@ yarn-error.log*
 # vscode
 .vscode
 
-# ignore the local flowcore config
+# ignore the local and preview flowcore config
 flowcore.local.yaml
+flowcore.preview.yaml
