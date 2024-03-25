@@ -33,8 +33,8 @@ const Sidebar = () => {
             icon: Ticket,
           },
           {
-            href: "/attendees",
-            title: "Attendees",
+            href: "/networking",
+            title: "Networking",
             label: "",
             superuserRequired: false,
             icon: Users,
