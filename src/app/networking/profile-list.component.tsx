@@ -1,6 +1,6 @@
 import React, { type FC, useMemo } from "react"
 
-import { ProfileListItem } from "@/app/attendees/profile-list-item.component"
+import { ProfileListItem } from "@/app/networking/profile-list-item.component"
 import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
 import { MissingText } from "@/components/ui/messages/missing-text"
 import {
