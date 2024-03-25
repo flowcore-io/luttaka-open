@@ -1,6 +1,5 @@
-import { UserButton } from "@clerk/nextjs"
-
 import { LuttakaLogoAndTitle } from "./luttaka-logo-and-title"
+import { LuttakaUserButton } from "./luttaka-user-button"
 
 const Header = () => {
   return (
@@ -10,7 +9,7 @@ const Header = () => {
       </div>
       <div className="hidden sm:block">&nbsp;</div>
       <div className="m-2 mr-6 dark:[&_*]:text-white">
-        <UserButton afterSignOutUrl="/" showName />
+        <LuttakaUserButton />
       </div>
     </header>
   )
