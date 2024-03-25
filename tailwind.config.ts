@@ -26,6 +26,7 @@ const config = {
       fontFamily: {
         inter: ["var(--font-inter)"],
         dongle: ["var(--font-dongle)"],
+        lato: ["var(--font-lato)"],
       },
       scale: {
         "101": "1.01",

@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
-import { Dongle, Inter } from "next/font/google"
+import { Dongle, Inter, Lato } from "next/font/google"
 import { cookies } from "next/headers"
 
 import { ThemeProvider } from "@/components/theme-provider"
@@ -22,6 +22,12 @@ const dongle = Dongle({
   weight: "300",
 })
 
+const lato = Lato({
+  subsets: ["latin"],
+  variable: "--font-lato",
+  weight: "400",
+})
+
 export const metadata = {
   manifest: "/manifest.json",
   title: "Luttaka",
@@ -37,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={`min-h-screen ${inter.variable} ${dongle.variable} font-inter`}>
+        className={`min-h-screen ${inter.variable} ${dongle.variable} ${lato.variable} font-inter`}>
         <ThemeProvider
           attribute={"class"}
           defaultTheme={"system"}
