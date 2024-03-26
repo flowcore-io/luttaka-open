@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
-import { Inter } from "next/font/google"
+import { Dongle, Inter, Lato } from "next/font/google"
 import { cookies } from "next/headers"
 
 import { ThemeProvider } from "@/components/theme-provider"
@@ -14,6 +14,18 @@ import PublicPage from "./public-page"
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+})
+
+const dongle = Dongle({
+  subsets: ["latin"],
+  variable: "--font-dongle",
+  weight: "300",
+})
+
+const lato = Lato({
+  subsets: ["latin"],
+  variable: "--font-lato",
+  weight: "400",
 })
 
 export const metadata = {
@@ -29,8 +41,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`min-h-screen ${inter.variable} font-inter`}>
+    <html lang="en" suppressHydrationWarning={true}>
+      <body
+        className={`min-h-screen ${inter.variable} ${dongle.variable} ${lato.variable} font-inter`}>
         <ThemeProvider
           attribute={"class"}
           defaultTheme={"system"}

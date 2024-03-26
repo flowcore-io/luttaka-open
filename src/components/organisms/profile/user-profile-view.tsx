@@ -29,9 +29,9 @@ export const UserProfileView: FC<UserProfileProps> = ({ profile }) => {
         <div className={"mt-2 text-center md:text-left"}>
           <h1 className={"text-4xl font-bold"}>{profile.displayName}</h1>
           {profile.title ? (
-            <p>{profile.title}</p>
+            <div>{profile.title}</div>
           ) : (
-            <p className={"italic text-muted"}>no title</p>
+            <div className={"italic text-muted"}>no title</div>
           )}
         </div>
         <div className={"mb-2 text-center md:text-left"}>
@@ -45,22 +45,22 @@ export const UserProfileView: FC<UserProfileProps> = ({ profile }) => {
         <div>
           <h2 className={"text-2xl font-bold"}>Company</h2>
           {profile.company ? (
-            <p>
-              <Link href={`company/${profile.companyId}`}>
+            <div>
+              <Link href={`/company/${profile.companyId}`}>
                 {profile.company}
               </Link>
-            </p>
+            </div>
           ) : (
-            <p className={"italic"}>Individual</p>
+            <div className={"italic"}>Individual</div>
           )}
         </div>
         <div className={"mt-5"}>
           <h2 className={"text-2xl font-bold"}>About</h2>
           <section>
             {profile.description ? (
-              <p>{profile.description}</p>
+              <div>{profile.description}</div>
             ) : (
-              <p className={"italic text-muted"}>No description</p>
+              <div className={"italic text-muted"}>No description</div>
             )}
           </section>
         </div>

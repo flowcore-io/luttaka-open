@@ -39,11 +39,11 @@ export const CompanyProfileView: FC<CompanyProfileProps> = ({ profile }) => {
             )}
           </div>
           {profile.description ? (
-            <p>
+            <div>
               <MarkdownViewer source={profile.description} className={"mt-2"} />
-            </p>
+            </div>
           ) : (
-            <p className={"italic text-muted"}>No description</p>
+            <div className={"italic text-muted"}>No description</div>
           )}
         </div>
       </div>
