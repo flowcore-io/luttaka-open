@@ -10,8 +10,9 @@ import { Ticket } from "@/app/me/tickets/ticket.component"
 import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
 import { Button } from "@/components/ui/button"
 import { PageTitle } from "@/components/ui/page-title"
-import { api } from "@/trpc/react"
 import { ConferenceContext } from "@/context/conference-context"
+import { api } from "@/trpc/react"
+
 import Conference from "./buy-ticket"
 
 export default function Tickets() {
@@ -67,11 +68,6 @@ export default function Tickets() {
 
   const ticketsOtherEvents =
     tickets?.filter((ticket) => ticket.conferenceId !== conferenceId) ?? []
-  const otherConferences =
-    conferences?.filter(
-      (conference) =>
-        !tickets?.some((ticket) => ticket.conferenceId === conference.id),
-    ) ?? []
 
   return (
     <div className="mx-auto w-full p-4 md:p-6">

@@ -1,12 +1,14 @@
 "use client"
 
-import { Skeleton } from "@/components/ui/skeleton"
-import { api } from "@/trpc/react"
-import { useContext } from "react"
-import { ConferenceContext } from "@/context/conference-context"
 import { useAuth } from "@clerk/nextjs"
-import HomeSelectedConference from "./home-selected-conference"
+import { useContext } from "react"
+
+import { Skeleton } from "@/components/ui/skeleton"
+import { ConferenceContext } from "@/context/conference-context"
+import { api } from "@/trpc/react"
+
 import HomeAvailableConferences from "./home-available-conferences"
+import HomeSelectedConference from "./home-selected-conference"
 
 export default function Home() {
   const { isLoaded, userId } = useAuth()

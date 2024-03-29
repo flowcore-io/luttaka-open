@@ -1,10 +1,11 @@
-import { PageTitle } from "@/components/ui/page-title"
-import { type appRouter } from "@/server/api/root"
-import { inferRouterOutputs } from "@trpc/server"
-import CountdownBanner from "@/components/countdown-banner"
-import { Skeleton } from "@/components/ui/skeleton"
+import { type inferRouterOutputs } from "@trpc/server"
 import { useContext } from "react"
+
+import CountdownBanner from "@/components/countdown-banner"
+import { PageTitle } from "@/components/ui/page-title"
+import { Skeleton } from "@/components/ui/skeleton"
 import { ConferenceContext } from "@/context/conference-context"
+import { type appRouter } from "@/server/api/root"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
 interface ConferenceProps {

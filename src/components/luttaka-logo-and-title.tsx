@@ -2,10 +2,11 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useContext } from "react"
+
+import { ConferenceContext } from "@/context/conference-context"
 
 import LuttakaLogo from "../../public/images/luttaka_logo.png"
-import { ConferenceContext } from "@/context/conference-context"
-import { useContext } from "react"
 
 export const LuttakaLogoAndTitle = () => {
   const { conferenceName } = useContext(ConferenceContext)

@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button"
-import { ConferenceContext } from "@/context/conference-context"
 import dayjs from "dayjs"
 import { useContext } from "react"
+
+import { Button } from "@/components/ui/button"
+import { ConferenceContext } from "@/context/conference-context"
 import { type ConferenceProfile } from "@/contracts/conference/conference"
 
 interface ConferencesListProps {

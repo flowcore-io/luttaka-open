@@ -19,8 +19,8 @@ export const attendanceMyConferencesProcedure = protectedProcedure.query(
     return conferencesUserIsAttending.map(({ conference }) => ({
       id: conference.id,
       name: conference.name,
-      description: conference.description || "",
-      ticketDescription: conference.ticketDescription || "",
+      description: conference.description ?? "",
+      ticketDescription: conference.ticketDescription ?? "",
       ticketPrice: conference.ticketPrice,
       ticketCurrency: conference.ticketCurrency,
       startDate: conference.startDate,

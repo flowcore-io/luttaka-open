@@ -2,8 +2,9 @@
 
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
-import { BottomBar } from "../components/bottom-bar"
 import { ConferenceProvider } from "@/context/conference-context"
+
+import { BottomBar } from "../components/bottom-bar"
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
   return (

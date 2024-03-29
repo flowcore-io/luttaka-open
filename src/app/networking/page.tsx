@@ -1,11 +1,12 @@
 "use client"
 
 import { useContext } from "react"
+
 import { ProfileList } from "@/app/networking/profile-list.component"
+import { ConferencesList } from "@/components/conferences-list"
 import { NoticeText } from "@/components/ui/messages/notice-text"
 import { PageTitle } from "@/components/ui/page-title"
 import { ConferenceContext } from "@/context/conference-context"
-import { ConferencesList } from "@/components/conferences-list"
 import { api } from "@/trpc/react"
 
 export default function NetworkingPage() {

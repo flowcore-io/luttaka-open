@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+
 import useLocalStorage from "@/hooks/use-local-storage"
 import { api } from "@/trpc/react"
 
@@ -15,9 +16,15 @@ export const ConferenceContext = React.createContext<ConferenceContextType>({
   conferenceId: null,
   conferenceName: null,
   conferenceStartDate: null,
-  setConferenceId: () => {},
-  setConferenceName: () => {},
-  setConferenceStartDate: () => {},
+  setConferenceId: () => {
+    throw new Error("setConferenceId function must be overridden")
+  },
+  setConferenceName: () => {
+    throw new Error("setConferenceName function must be overridden")
+  },
+  setConferenceStartDate: () => {
+    throw new Error("setConferenceStartDate function must be overridden")
+  },
 })
 
 export const ConferenceProvider: React.FC<{ children: React.ReactNode }> = ({

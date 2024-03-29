@@ -4,7 +4,9 @@ import type { LucideIcon } from "lucide-react"
 import type { Url } from "next/dist/shared/lib/router/router"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+
 import { Button } from "@/components/ui/button"
+import { UserRole } from "@/contracts/user/user-role"
 import { cn } from "@/lib/utils"
 import { api } from "@/trpc/react"
 
@@ -27,7 +29,7 @@ export function Nav({ links }: NavProps) {
       <nav className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {links.map((link, index) => {
           const isCurrent = link.href === pathname
-          if (link.superuserRequired && userRole.data !== "admin") {
+          if (link.superuserRequired && userRole.data !== UserRole.admin) {
             return false
           }
           return (

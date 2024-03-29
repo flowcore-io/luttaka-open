@@ -1,5 +1,4 @@
 import { Loader, PenIcon, Trash } from "lucide-react"
-import Image from "next/image"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 

@@ -1,8 +1,10 @@
+import { type inferRouterOutputs } from "@trpc/server"
+
+import { PageTitle } from "@/components/ui/page-title"
 import { Skeleton } from "@/components/ui/skeleton"
 import { type appRouter } from "@/server/api/root"
-import { inferRouterOutputs } from "@trpc/server"
 import { api } from "@/trpc/react"
-import { PageTitle } from "@/components/ui/page-title"
+
 import { ConferencesList } from "../components/conferences-list"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>

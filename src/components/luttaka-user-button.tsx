@@ -5,8 +5,10 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { RestrictedToRole } from "./restricted-to-role"
+
 import { UserRole } from "@/contracts/user/user-role"
+
+import { RestrictedToRole } from "./restricted-to-role"
 
 export const LuttakaUserButton = () => {
   const { isLoaded, user } = useUser()

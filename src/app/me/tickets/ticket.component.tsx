@@ -6,7 +6,6 @@ import {
   TicketIcon,
   Trash,
 } from "lucide-react"
-import Image from "next/image"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
