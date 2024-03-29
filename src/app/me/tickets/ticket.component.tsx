@@ -94,15 +94,6 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
             className={`${!selected && "invisible"} absolute left-2 top-2 ${ticket.state === "open" ? "group-hover:visible" : ""}`}>
             <Checkbox checked={selected} onClick={() => onSelect(!selected)} />
           </div>
-          <div className="hidden w-32 items-center justify-center self-stretch md:flex">
-            <Image
-              className={"bg-current text-primary"}
-              alt={"Tonik"}
-              src={"/images/tonik.svg"}
-              width={120}
-              height={120}
-            />
-          </div>
           <div className={"flex flex-1 flex-col justify-end"}>
             <div className={"overflow-hidden whitespace-nowrap"}>
               <span className={"font-bold"}>{conference?.name}</span>
@@ -133,7 +124,7 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
                   </ConfirmDialog>
 
                   <Button
-                    size={"sm"}
+                    size={"lg"}
                     disabled={loading}
                     onClick={() => setTicketDialogOpened(true)}>
                     <TicketIcon className={"mr-2"} />
@@ -219,14 +210,6 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
           setTicketDialogOpened(opened)
         }}>
         <DialogContent>
-          <div className={"flex justify-center"}>
-            <Image
-              alt={"Tonik"}
-              src={"/images/tonik.svg"}
-              width={240}
-              height={240}
-            />
-          </div>
           <div className={"relative flex justify-center"}>
             {ticket.state === "checked-in" && !forceView && (
               <div

@@ -49,14 +49,6 @@ export function Conference({ conference, refetch }: ConferenceProps) {
       <div
         key={conference.id}
         className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:scale-101 hover:shadow-lg">
-        <div className={"pr-4"}>
-          <Image
-            src={"/images/tonik.svg"}
-            width={120}
-            height={120}
-            alt={"Tonik"}
-          />
-        </div>
         <div className={"flex-1 self-stretch"}>
           <div className={"pb-2 font-bold"}>{conference.name}</div>
           <div className={"text-sm text-gray-500"}>
