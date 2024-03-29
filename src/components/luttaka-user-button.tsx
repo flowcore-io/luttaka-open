@@ -5,6 +5,8 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { RestrictedToRole } from "./restricted-to-role"
+import { UserRole } from "@/contracts/user/user-role"
 
 export const LuttakaUserButton = () => {
   const { isLoaded, user } = useUser()
@@ -30,26 +32,34 @@ export const LuttakaUserButton = () => {
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="mt-2 flex w-52 flex-col items-start rounded border border-gray-200 bg-white px-6 py-4 font-lato text-black drop-shadow-2xl">
+        <DropdownMenu.Content className="mt-2 flex w-52 flex-col items-start gap-2 rounded border border-gray-200 bg-white px-6 py-4 font-lato text-black drop-shadow-2xl">
           <DropdownMenu.Item asChild>
-            <Link href="/me" passHref className="py-3">
+            <Link href="/me" passHref>
               Profile
             </Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item asChild>
-            <Link href="/conferences" passHref className="py-3">
-              Conferences
-            </Link>
+            <button onClick={() => openUserProfile()}>Account Settings</button>
           </DropdownMenu.Item>
+          <RestrictedToRole role={UserRole.admin}>
+            <DropdownMenu.DropdownMenuSeparator className="mt-4 w-full border border-slate-200" />
+            <DropdownMenu.DropdownMenuLabel className="text-slate-400">
+              Admin
+            </DropdownMenu.DropdownMenuLabel>
+            <DropdownMenu.Item asChild>
+              <Link href="/admin/check-in" passHref>
+                Check-in
+              </Link>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item asChild>
+              <Link href="/admin/conferences" passHref>
+                Manage Events
+              </Link>
+            </DropdownMenu.Item>
+          </RestrictedToRole>
+          <DropdownMenu.DropdownMenuSeparator className="mt-4 w-full border border-slate-200" />
           <DropdownMenu.Item asChild>
-            <button onClick={() => openUserProfile()} className="py-3">
-              Settings
-            </button>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item asChild>
-            <button
-              onClick={() => signOut(() => router.push("/"))}
-              className="py-3">
+            <button onClick={() => signOut(() => router.push("/"))}>
               Sign Out{" "}
             </button>
           </DropdownMenu.Item>
