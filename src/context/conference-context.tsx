@@ -1,14 +1,23 @@
-import React from "react"
+import React, { useEffect } from "react"
 import useLocalStorage from "@/hooks/use-local-storage"
+import { api } from "@/trpc/react"
 
 interface ConferenceContextType {
   conferenceId: string | null
+  conferenceName: string | null
+  conferenceStartDate: string | null
   setConferenceId: (id: string) => void
+  setConferenceName: (name: string) => void
+  setConferenceStartDate: (startDate: string) => void
 }
 
 export const ConferenceContext = React.createContext<ConferenceContextType>({
   conferenceId: null,
+  conferenceName: null,
+  conferenceStartDate: null,
   setConferenceId: () => {},
+  setConferenceName: () => {},
+  setConferenceStartDate: () => {},
 })
 
 export const ConferenceProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -18,9 +27,33 @@ export const ConferenceProvider: React.FC<{ children: React.ReactNode }> = ({
     "luttaka.conferenceId",
     null,
   )
+  const [conferenceName, setConferenceName] = React.useState<string | null>(
+    null,
+  )
+  const [conferenceStartDate, setConferenceStartDate] = React.useState<
+    string | null
+  >(null)
+  const { data: conferences } = api.conference.list.useQuery()
 
+  useEffect(() => {
+    if (conferences && conferenceId) {
+      const conference = conferences.find((c) => c.id === conferenceId)
+      if (conference) {
+        setConferenceName(conference.name)
+        setConferenceStartDate(conference.startDate)
+      }
+    }
+  }, [conferences, conferenceId])
   return (
-    <ConferenceContext.Provider value={{ conferenceId, setConferenceId }}>
+    <ConferenceContext.Provider
+      value={{
+        conferenceId,
+        conferenceName,
+        conferenceStartDate,
+        setConferenceId,
+        setConferenceName,
+        setConferenceStartDate,
+      }}>
       {children}
     </ConferenceContext.Provider>
   )
