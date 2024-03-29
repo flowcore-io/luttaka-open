@@ -1,9 +1,17 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 
 import LuttakaLogo from "../../public/images/luttaka_logo.png"
+import { ConferenceContext } from "@/context/conference-context"
+import { useContext } from "react"
 
 export const LuttakaLogoAndTitle = () => {
+  const { conferenceName } = useContext(ConferenceContext)
+  const showConferenceName = conferenceName
+    ? conferenceName.substring(0, 13).toUpperCase()
+    : "LUTTAKA"
   return (
     <Link href="/" className="flex cursor-pointer flex-row items-center gap-2">
       <Image
@@ -13,7 +21,9 @@ export const LuttakaLogoAndTitle = () => {
         width={50}
         priority
       />
-      <div className="pt-2 font-dongle text-5xl text-[#48556E]">LUTTAKA</div>
+      <div className="pt-2 font-dongle text-5xl text-[#48556E]">
+        {showConferenceName}
+      </div>
     </Link>
   )
 }
