@@ -47,11 +47,6 @@ export default function Tickets() {
     const tickets0 =
       tickets?.filter((ticket) => ticket.conferenceId === conferenceId) ?? []
     setTicketsCurrentEvent(tickets0)
-    if (tickets0.length === 0 && !isLoading) {
-      setConferenceId("")
-      setConferenceName("Luttaka")
-      setConferenceStartDate("")
-    }
   }, [tickets, conferenceId])
 
   const onSelect = useCallback(
