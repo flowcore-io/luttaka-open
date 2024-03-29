@@ -12,7 +12,7 @@ export default async function MyUserRedirectPage() {
   const profile = await api.profile.me.query()
 
   return (
-    <div className={"w-[100%] md:flex md:space-x-10"}>
+    <div className="w-[100%] p-4 md:flex md:space-x-10 md:p-6">
       <div className={"flex-1"}>
         <UserProfileForm user={profile} />
       </div>

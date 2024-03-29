@@ -96,7 +96,7 @@ export default function CheckInPage() {
   }
 
   return (
-    <main className={"mx-auto w-full"}>
+    <div className="mx-auto w-full p-4 md:p-6">
       {!ticketId && (
         <div className={"mb-4 flex justify-center"}>
           <Button
@@ -169,6 +169,6 @@ export default function CheckInPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </main>
+    </div>
   )
 }
