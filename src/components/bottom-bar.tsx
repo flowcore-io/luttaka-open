@@ -33,7 +33,7 @@ export const BottomBar = () => {
         <Link href="/" className={`${linkClass("/")}`}>
           <FontAwesomeIcon icon={faHouse as IconProp} />
         </Link>
-        <Link href="/program" className={`${linkClass("/program")}`}>
+        <Link href="/programme" className={`${linkClass("/programme")}`}>
           <FontAwesomeIcon icon={faCalendarDays as IconProp} />
         </Link>
         <Link href="/search" className={`${linkClass("/search")}`}>
