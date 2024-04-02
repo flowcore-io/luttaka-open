@@ -15,12 +15,12 @@ export default async function CompanyProfile({
   })
 
   if (!profile) {
-    return <MissingText text={"profile not found"} />
+    return <MissingText text={`profile not found`} />
   }
 
   return (
-    <div className={"w-[100%] md:flex md:space-x-10"}>
-      <div className={"flex-grow"}>
+    <div className={`w-[100%] p-4 md:flex md:space-x-10 md:p-6`}>
+      <div className={`flex-grow`}>
         <CompanyProfileForm company={profile} />
       </div>
     </div>

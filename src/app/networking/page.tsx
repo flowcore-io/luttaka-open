@@ -1,37 +1,38 @@
 "use client"
 
-import { useState } from "react"
+import { useContext } from "react"
 
-import { ConferenceSelection } from "@/app/networking/conference-selection"
 import { ProfileList } from "@/app/networking/profile-list.component"
+import { ConferencesList } from "@/components/conferences-list"
 import { NoticeText } from "@/components/ui/messages/notice-text"
 import { PageTitle } from "@/components/ui/page-title"
+import { ConferenceContext } from "@/context/conference-context"
 import { api } from "@/trpc/react"
 
 export default function NetworkingPage() {
   const apiFetchAttendingConferences = api.attendance.myConferences.useQuery()
-
-  const [selectedConferenceId, setSelectedConferenceId] = useState<string>("")
+  const { conferenceId, conferenceName } = useContext(ConferenceContext)
 
   return (
-    <div>
+    <div className="p-4 md:p-6">
       <PageTitle
         title={"Networking"}
-        subtitle={
-          "A list of all the people who have tickets for the selected conference"
-        }
+        subtitle={`A list of all the people who have tickets for ${conferenceName}`}
       />
-      <div className={"mb-5"}>
-        <ConferenceSelection
-          conferences={apiFetchAttendingConferences.data ?? []}
-          onSelect={setSelectedConferenceId}
-        />
-      </div>
 
-      {selectedConferenceId ? (
-        <ProfileList conferenceId={selectedConferenceId} />
+      {conferenceId ? (
+        <ProfileList conferenceId={conferenceId} />
       ) : (
-        <NoticeText text={"Select a conference to view participants"} />
+        <>
+          <NoticeText
+            text={
+              "Select a conference (that you have a ticket for) to view participants."
+            }
+          />
+          <ConferencesList
+            conferences={apiFetchAttendingConferences.data ?? []}
+          />
+        </>
       )}
     </div>
   )

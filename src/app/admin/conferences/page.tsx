@@ -21,14 +21,12 @@ export default function Conferences() {
   }
 
   return (
-    <main className="mx-auto w-full">
+    <div className="mx-auto w-full p-4 md:p-6">
       <div className="flex pb-8">
-        <div className="flex-1 text-3xl font-bold text-slate-900">
-          Conferences
-        </div>
+        <div className="flex-1 text-3xl font-bold text-slate-900">Events</div>
         <div className="flex-1 text-right">
           <Button onClick={() => setCreateConferenceDialogOpened(true)}>
-            Create Conference
+            Create Event
           </Button>
         </div>
       </div>
@@ -61,6 +59,6 @@ export default function Conferences() {
           />
         </DialogContent>
       </Dialog>
-    </main>
+    </div>
   )
 }

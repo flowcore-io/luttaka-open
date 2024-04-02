@@ -14,7 +14,7 @@ export default async function User({
   })
 
   return (
-    <div>
+    <div className="p-4 md:p-6">
       <UserProfileView profile={profile} />
     </div>
   )

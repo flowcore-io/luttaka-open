@@ -20,30 +20,30 @@ export const CompanyProfileView: FC<CompanyProfileProps> = ({ profile }) => {
   }
 
   return (
-    <div className={"md:flex md:space-x-4"}>
-      {/*<Avatar className={"h-auto w-[100%] rounded md:h-56 md:w-56"}>*/}
-      {/*  <AvatarImage src={profile.avatarUrl} alt={"profile picture"} />*/}
-      {/*  <AvatarFallback className={"rounded"}>*/}
+    <div className={`md:flex md:space-x-4`}>
+      {/*<Avatar className={`h-auto w-[100%] rounded md:h-56 md:w-56`}>*/}
+      {/*  <AvatarImage src={profile.avatarUrl} alt={`profile picture`} />*/}
+      {/*  <AvatarFallback className={`rounded`}>*/}
       {/*    {profile.initials}*/}
       {/*  </AvatarFallback>*/}
       {/*</Avatar>*/}
       <div>
-        <div className={"mt-2 text-center md:text-left"}>
-          <div className={"flex flex-row"}>
-            <h1 className={"text-4xl font-bold"}>{profile.name}</h1>
+        <div className={`mt-2 text-center md:text-left`}>
+          <div className={`flex flex-row`}>
+            <h1 className={`text-4xl font-bold`}>{profile.name}</h1>
             {profile.isOwner && (
               <EditIcon
-                className={"h-4 w-4 cursor-pointer"}
+                className={`h-4 w-4 cursor-pointer`}
                 onClick={() => router.push(`${profile.id}/edit`)}
               />
             )}
           </div>
           {profile.description ? (
             <div>
-              <MarkdownViewer source={profile.description} className={"mt-2"} />
+              <MarkdownViewer source={profile.description} className={`mt-2`} />
             </div>
           ) : (
-            <div className={"italic text-muted"}>No description</div>
+            <div className={`mt-10 italic text-muted`}>No description</div>
           )}
         </div>
       </div>

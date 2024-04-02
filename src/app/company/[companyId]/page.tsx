@@ -19,7 +19,7 @@ export default async function CompanyProfile({
   }
 
   return (
-    <div className={"w-[100%] md:flex md:space-x-10"}>
+    <div className="w-[100%] p-4 md:flex md:space-x-10 md:p-6">
       <CompanyProfileView profile={profile} />
     </div>
   )

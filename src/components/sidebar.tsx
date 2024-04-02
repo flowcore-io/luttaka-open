@@ -1,9 +1,10 @@
 import {
   BookmarkCheck,
   BookOpen,
+  CalendarIcon,
   Home,
+  SearchIcon,
   Ticket,
-  User,
   Users,
 } from "lucide-react"
 
@@ -40,25 +41,32 @@ const Sidebar = () => {
             icon: Users,
           },
           {
-            href: "/conferences",
-            title: "Conferences",
+            href: "/programme",
+            title: "Programme",
             label: "",
             superuserRequired: false,
-            icon: BookOpen,
+            icon: CalendarIcon,
           },
           {
-            href: "/me",
-            title: "Profile",
+            href: "/search",
+            title: "Search",
             label: "",
             superuserRequired: false,
-            icon: User,
+            icon: SearchIcon,
           },
           {
             href: "/admin/check-in",
-            title: "Check In",
+            title: "Check-In",
             label: "",
             superuserRequired: true,
             icon: BookmarkCheck,
+          },
+          {
+            href: "/admin/conferences",
+            title: "Manage Events",
+            label: "",
+            superuserRequired: true,
+            icon: BookOpen,
           },
         ]}
       />

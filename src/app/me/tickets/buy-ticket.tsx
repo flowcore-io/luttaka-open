@@ -3,7 +3,6 @@
 import { DialogTitle } from "@radix-ui/react-dialog"
 import { type inferRouterOutputs } from "@trpc/server"
 import dayjs from "dayjs"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
@@ -27,41 +26,12 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Skeleton } from "@/components/ui/skeleton"
 import { UserRole } from "@/contracts/user/user-role"
 import getStripe from "@/lib/stripe/get"
 import { type appRouter } from "@/server/api/root"
 import { api } from "@/trpc/react"
 
-export default function ConferencesPage() {
-  const { data: conferences, isLoading } = api.conference.list.useQuery()
-  return (
-    <main className="mx-auto w-full">
-      <div className="mb-6 text-3xl font-bold">
-        Conferences
-        <Link href="/admin/conferences" className="float-right text-sm">
-          Admin
-        </Link>
-      </div>
-      {isLoading || !conferences ? (
-        <Skeleton />
-      ) : (
-        <ConferencesList conferences={conferences} />
-      )}
-    </main>
-  )
-}
-
 type RouterOutput = inferRouterOutputs<typeof appRouter>
-
-interface ConferencesListProps {
-  conferences: RouterOutput["conference"]["list"]
-}
-function ConferencesList({ conferences }: ConferencesListProps) {
-  return conferences.map((conference) => (
-    <Conference conference={conference} key={conference.id} />
-  ))
-}
 
 const CheckoutResponse = z.object({
   sessionId: z.string(),
@@ -70,7 +40,7 @@ const CheckoutResponse = z.object({
 interface ConferenceProps {
   conference: RouterOutput["conference"]["list"][0]
 }
-function Conference({ conference }: ConferenceProps) {
+export default function Conference({ conference }: ConferenceProps) {
   const [purchaseTicketDialogOpened, setPurchaseTicketDialogOpened] =
     useState(false)
   const [ticketQuantity, setTicketQuantity] = useState(1)
@@ -127,19 +97,17 @@ function Conference({ conference }: ConferenceProps) {
   }, [ticketQuantity, conference.id])
 
   return (
-    <div key={conference.id} className="mb-6">
-      <div className="mb-4 text-xl font-bold">{conference.name}</div>
-      <div className="mb-2">{conference.description}</div>
-      <div className="mb-2 text-sm italic">
-        {dayjs(conference.startDate).format("MMMM D, YYYY")}
-        {" - "}
-        {dayjs(conference.endDate).format("MMMM D, YYYY")}
-      </div>
+    <div key={conference.id} className={`mb-6 p-2`}>
       <div>
         <Card className="w-full sm:w-80">
           <CardHeader>
             <CardTitle>{conference.name}</CardTitle>
             <CardDescription>{conference.ticketDescription}</CardDescription>
+            <CardDescription>
+              {dayjs(conference.startDate).format("MMMM D, YYYY")}
+              {" - "}
+              {dayjs(conference.endDate).format("MMMM D, YYYY")}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="mb-2 font-bold">Price:</div>
