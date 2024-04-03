@@ -10,7 +10,7 @@ export const getTicketsProcedure = protectedProcedure.query(({ ctx }) => {
     .select({
       id: tickets.id,
       userId: tickets.userId,
-      conferenceId: tickets.conferenceId,
+      eventId: tickets.eventId,
       state: tickets.state,
       transferId: ticketTransfers.id,
     })
@@ -22,7 +22,11 @@ export const getTicketsProcedure = protectedProcedure.query(({ ctx }) => {
         eq(ticketTransfers.state, "open"),
       ),
     )
-    .orderBy(desc(tickets.state), desc(ticketTransfers.id), desc(tickets.createdAt))
+    .orderBy(
+      desc(tickets.state),
+      desc(ticketTransfers.id),
+      desc(tickets.createdAt),
+    )
     .where(eq(tickets.userId, userId))
     .execute()
 })

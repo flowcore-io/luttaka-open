@@ -15,10 +15,10 @@ import { api } from "@/trpc/react"
 const PAGE_SIZE = 8
 
 export type ProfileListProps = {
-  conferenceId: string
+  eventId: string
 }
 
-export const ProfileList: FC<ProfileListProps> = ({ conferenceId }) => {
+export const ProfileList: FC<ProfileListProps> = ({ eventId }) => {
   const pager = usePagination()
 
   const profileCountRequest = api.profile.count.useQuery()
@@ -26,10 +26,10 @@ export const ProfileList: FC<ProfileListProps> = ({ conferenceId }) => {
     {
       page: pager.page,
       pageSize: PAGE_SIZE,
-      conferenceId,
+      eventId,
     },
     {
-      enabled: !!conferenceId,
+      enabled: !!eventId,
     },
   )
 

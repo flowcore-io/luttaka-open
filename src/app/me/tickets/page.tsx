@@ -10,24 +10,19 @@ import { Ticket } from "@/app/me/tickets/ticket.component"
 import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
 import { Button } from "@/components/ui/button"
 import { PageTitle } from "@/components/ui/page-title"
-import { ConferenceContext } from "@/context/conference-context"
+import { EventContext } from "@/context/event-context"
 import { api } from "@/trpc/react"
 
-import Conference from "./buy-ticket"
+import Event from "./buy-ticket"
 
 export default function Tickets() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { data: tickets, refetch } = api.ticket.list.useQuery()
-  const { data: conferences, isLoading } = api.conference.list.useQuery()
+  const { data: events } = api.event.list.useQuery()
   const [selectedTickets, setSelectedTickets] = useState<string[]>([])
-  const {
-    conferenceId,
-    setConferenceId,
-    setConferenceName,
-    setConferenceStartDate,
-  } = useContext(ConferenceContext)
+  const { eventId, setEventId } = useContext(EventContext)
   const [ticketsCurrentEvent, setTicketsCurrentEvent] = useState<
     typeof tickets
   >([])
@@ -45,9 +40,9 @@ export default function Tickets() {
 
   useEffect(() => {
     const tickets0 =
-      tickets?.filter((ticket) => ticket.conferenceId === conferenceId) ?? []
+      tickets?.filter((ticket) => ticket.eventId === eventId) ?? []
     setTicketsCurrentEvent(tickets0)
-  }, [tickets, conferenceId])
+  }, [tickets, eventId])
 
   const onSelect = useCallback(
     (ticketId: string) => (selected: boolean) => {
@@ -62,7 +57,7 @@ export default function Tickets() {
   )
 
   const ticketsOtherEvents =
-    tickets?.filter((ticket) => ticket.conferenceId !== conferenceId) ?? []
+    tickets?.filter((ticket) => ticket.eventId !== eventId) ?? []
 
   return (
     <div className="mx-auto w-full p-4 md:p-6">
@@ -115,7 +110,7 @@ export default function Tickets() {
               className="mb-8"
               variant="outline"
               onClick={() => {
-                setConferenceId(ticket.conferenceId)
+                setEventId(ticket.eventId)
                 toast.success(`Switched event.`)
                 router.push("/")
               }}>
@@ -124,9 +119,7 @@ export default function Tickets() {
           </div>
         ))}
         <h3 className={"mb-4 mt-16 text-2xl font-bold"}>Buy more tickets</h3>
-        {conferences?.map((conference) => (
-          <Conference key={conference.id} conference={conference} />
-        ))}
+        {events?.map((event) => <Event key={event.id} event={event} />)}
       </div>
     </div>
   )

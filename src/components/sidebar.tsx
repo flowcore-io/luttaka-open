@@ -62,7 +62,7 @@ const Sidebar = () => {
             icon: BookmarkCheck,
           },
           {
-            href: "/admin/conferences",
+            href: "/admin/events",
             title: "Manage Events",
             label: "",
             superuserRequired: true,

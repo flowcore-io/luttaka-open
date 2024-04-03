@@ -1,6 +1,6 @@
 import { attendanceRouter } from "@/server/api/routers/attendance/attendance.router"
 import { companyRouter } from "@/server/api/routers/company/company.router"
-import { conferenceRouter } from "@/server/api/routers/conference/conference.router"
+import { eventRouter } from "@/server/api/routers/event/event.router"
 import { profileRouter } from "@/server/api/routers/profile/profile.router"
 import ticketRouter from "@/server/api/routers/ticket/ticket.router"
 import { userRouter } from "@/server/api/routers/user/user.router"
@@ -13,7 +13,7 @@ import { createTRPCRouter } from "@/server/api/trpc"
  */
 export const appRouter = createTRPCRouter({
   company: companyRouter,
-  conference: conferenceRouter,
+  event: eventRouter,
   user: userRouter,
   profile: profileRouter,
   ticket: ticketRouter,

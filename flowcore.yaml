@@ -4,15 +4,15 @@ dataCore:
   deleteProtection: true
   description: "This data core contains the data for Luttaka"
   flowTypes:
-    conference.0:
-      description: "actions and events related to a conference"
+    event.0:
+      description: "actions and events related to an event"
       eventTypes:
-        conference.created.0:
-          description: "a new conference has been created"
-        conference.updated.0:
-          description: "a conference has been updated"
-        conference.archived.0:
-          description: "a conference has been archived"
+        event.created.0:
+          description: "a new event has been created"
+        event.updated.0:
+          description: "a event has been updated"
+        event.archived.0:
+          description: "a event has been archived"
     company.0:
       description: "actions and events related to a company"
       eventTypes:
@@ -69,18 +69,18 @@ scenario:
           value: open-source-luttaka-secret
       blueprint:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
-    conferences:
-      description: "transformer for conference management"
+    events:
+      description: "transformer for event management"
       dataCore: luttaka
-      flowType: conference.0
+      flowType: event.0
       events:
-        - conference.created.0
-        - conference.updated.0
-        - conference.archived.0
+        - event.created.0
+        - event.updated.0
+        - event.archived.0
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://luttaka.com/api/transform/conference.0"
+          value: "https://luttaka.com/api/transform/event.0"
         - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-luttaka-secret

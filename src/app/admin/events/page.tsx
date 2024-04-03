@@ -3,18 +3,17 @@
 import { useAuth } from "@clerk/nextjs"
 import { useState } from "react"
 
-import { Conference } from "@/app/admin/conferences/conference.component"
-import { CreateConferenceForm } from "@/app/admin/conferences/create-conference.form"
+import { CreateEventForm } from "@/app/admin/events/create-event.form"
+import { Event } from "@/app/admin/events/event.component"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { api } from "@/trpc/react"
 
-export default function Conferences() {
+export default function Events() {
   const { isLoaded, userId } = useAuth()
-  const [createConferenceDialogOpened, setCreateConferenceDialogOpened] =
-    useState(false)
+  const [createEventDialogOpened, setCreateEventDialogOpened] = useState(false)
 
-  const { data: conferences, refetch } = api.conference.list.useQuery()
+  const { data: events, refetch } = api.event.list.useQuery()
 
   if (!isLoaded || !userId) {
     return null
@@ -25,19 +24,19 @@ export default function Conferences() {
       <div className="flex pb-8">
         <div className="flex-1 text-3xl font-bold text-slate-900">Events</div>
         <div className="flex-1 text-right">
-          <Button onClick={() => setCreateConferenceDialogOpened(true)}>
+          <Button onClick={() => setCreateEventDialogOpened(true)}>
             Create Event
           </Button>
         </div>
       </div>
 
-      {conferences?.map((conference) => (
-        <Conference
-          key={conference.id}
-          conference={{
-            ...conference,
-            ...(typeof conference.ticketPrice === "string" && {
-              ticketPrice: parseFloat(conference.ticketPrice),
+      {events?.map((event) => (
+        <Event
+          key={event.id}
+          event={{
+            ...event,
+            ...(typeof event.ticketPrice === "string" && {
+              ticketPrice: parseFloat(event.ticketPrice),
             }),
           }}
           refetch={async () => {
@@ -47,14 +46,14 @@ export default function Conferences() {
       ))}
 
       <Dialog
-        open={createConferenceDialogOpened}
+        open={createEventDialogOpened}
         onOpenChange={(open) => {
-          !open && setCreateConferenceDialogOpened(open)
+          !open && setCreateEventDialogOpened(open)
         }}>
         <DialogContent className={"max-w-4xl"}>
-          <DialogHeader>Create new conference</DialogHeader>
-          <CreateConferenceForm
-            close={() => setCreateConferenceDialogOpened(false)}
+          <DialogHeader>Create new event</DialogHeader>
+          <CreateEventForm
+            close={() => setCreateEventDialogOpened(false)}
             refetch={() => refetch()}
           />
         </DialogContent>

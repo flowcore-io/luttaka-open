@@ -7,7 +7,7 @@ export default authMiddleware({
     "/api/transform/ticket.0",
     "/api/transform/user.0",
     "/api/transform/profile.0",
-    "/api/transform/conference.0",
+    "/api/transform/event.0",
     "/api/transform/company.0",
   ],
 })

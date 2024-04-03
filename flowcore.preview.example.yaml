@@ -11,12 +11,12 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://<some-preview-subdomain>.vercel.app/api/transform/company.0"
-    conferences:
+    events:
       dataCore: luttaka-preview
       parameters:
         - name: PROXY_ENDPOINT
           type: manual
-          value: "https://<some-preview-subdomain>.vercel.app/api/transform/conference.0"
+          value: "https://<some-preview-subdomain>.vercel.app/api/transform/event.0"
     tickets:
       dataCore: luttaka-preview
       parameters:

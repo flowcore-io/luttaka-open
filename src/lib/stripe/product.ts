@@ -5,7 +5,7 @@ import Stripe from "stripe"
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 interface CreateProductInput {
-  conferenceId: string
+  eventId: string
   id: string
   name: string
   description: string
@@ -23,7 +23,7 @@ export async function createProduct(input: CreateProductInput) {
       id: input.id,
       name: input.name,
       metadata: {
-        conferenceId: input.conferenceId,
+        eventId: input.eventId,
       },
     },
   })

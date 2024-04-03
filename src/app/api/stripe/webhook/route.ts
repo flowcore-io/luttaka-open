@@ -29,12 +29,12 @@ export async function POST(request: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const userId = event.data.object.client_reference_id
-    const conferenceId = event.data.object.metadata?.conferenceId
+    const eventId = event.data.object.metadata?.eventId
     const ticketIds = event.data.object.metadata?.ticketIds?.split(",") ?? []
-    if (!userId || !conferenceId || !ticketIds.length) {
+    if (!userId || !eventId || !ticketIds.length) {
       console.error("Invalid checkout session", {
         userId,
-        conferenceId,
+        eventId,
         ticketIds,
       })
       return NextResponse.json({ success: false }, { status: 400 })
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       await sendTicketCreatedEvent({
         id: ticketId,
         userId,
-        conferenceId,
+        eventId,
         state: "open",
       })
     }

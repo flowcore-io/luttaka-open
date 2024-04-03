@@ -4,15 +4,15 @@ import { useAuth } from "@clerk/nextjs"
 import { useContext } from "react"
 
 import { Skeleton } from "@/components/ui/skeleton"
-import { ConferenceContext } from "@/context/conference-context"
+import { EventContext } from "@/context/event-context"
 import { api } from "@/trpc/react"
 
-import HomeAvailableConferences from "./home-available-conferences"
-import HomeSelectedConference from "./home-selected-conference"
+import HomeAvailableEvents from "./home-available-events"
+import HomeSelectedEvent from "./home-selected-event"
 
 export default function Home() {
   const { isLoaded, userId } = useAuth()
-  const { conferenceId } = useContext(ConferenceContext)
+  const { eventId } = useContext(EventContext)
   if (!isLoaded || !userId) {
     // Show the public page
     return (
@@ -21,19 +21,11 @@ export default function Home() {
       </div>
     )
   }
-  const { data: conferences, isLoading } = api.conference.list.useQuery()
-  if (conferences === undefined) return <Skeleton />
-  const conference = conferences?.find((c) => c.id === conferenceId)
-  if (
-    !conference ||
-    (conferenceId === null && conferences && conferences.length > 0)
-  ) {
-    return (
-      <HomeAvailableConferences
-        conferences={conferences}
-        isLoading={isLoading}
-      />
-    )
+  const { data: events, isLoading } = api.event.list.useQuery()
+  if (events === undefined) return <Skeleton />
+  const event = events?.find((c) => c.id === eventId)
+  if (!event || (eventId === null && events && events.length > 0)) {
+    return <HomeAvailableEvents events={events} isLoading={isLoading} />
   }
-  return <HomeSelectedConference conference={conference} />
+  return <HomeSelectedEvent event={event} />
 }

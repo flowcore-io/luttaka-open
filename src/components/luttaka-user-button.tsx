@@ -54,7 +54,7 @@ export const LuttakaUserButton = () => {
               </Link>
             </DropdownMenu.Item>
             <DropdownMenu.Item asChild>
-              <Link href="/admin/conferences" passHref>
+              <Link href="/admin/events" passHref>
                 Manage Events
               </Link>
             </DropdownMenu.Item>

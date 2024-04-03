@@ -23,7 +23,7 @@ export interface TicketProps {
   ticket: {
     id: string
     userId: string
-    conferenceId: string
+    eventId: string
     state: string
     transferId: string | null
   }
@@ -36,8 +36,8 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
   const [loading, setLoading] = useState(false)
   const [ticketDialogOpened, setTicketDialogOpened] = useState(false)
   const { Canvas } = useQRCode()
-  const { data: conference } = api.conference.get.useQuery({
-    id: ticket.conferenceId,
+  const { data: event } = api.event.get.useQuery({
+    id: ticket.eventId,
   })
 
   const apiCreateTicketTransfer = api.ticket.createTransfer.useMutation()
@@ -95,10 +95,10 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
           </div>
           <div className={"flex flex-1 flex-col justify-end"}>
             <div className={"overflow-hidden whitespace-nowrap"}>
-              <span className={"font-bold"}>{conference?.name}</span>
+              <span className={"font-bold"}>{event?.name}</span>
             </div>
             <div className={"text-sm text-muted"}>
-              {conference?.ticketDescription}
+              {event?.ticketDescription}
             </div>
             <div className={"flex flex-1 items-end justify-end"}>
               {!ticket.transferId && ticket.state === "open" && (
