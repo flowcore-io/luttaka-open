@@ -4,25 +4,25 @@ import { useContext } from "react"
 import CountdownBanner from "@/components/countdown-banner"
 import { PageTitle } from "@/components/ui/page-title"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ConferenceContext } from "@/context/conference-context"
+import { EventContext } from "@/context/event-context"
 import { type appRouter } from "@/server/api/root"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
-interface ConferenceProps {
-  conference: RouterOutput["conference"]["list"][0]
+interface EventProps {
+  event: RouterOutput["event"]["list"][0]
 }
 
-export default function HomeSelectedConference(props: ConferenceProps) {
-  const { conferenceName, conferenceStartDate } = useContext(ConferenceContext)
+export default function HomeSelectedEvent(props: EventProps) {
+  const { eventName, eventStartDate } = useContext(EventContext)
   return (
     <div className="mx-auto w-full">
       <div className="block sm:hidden">
-        <CountdownBanner targetDate={new Date(conferenceStartDate ?? "")} />
+        <CountdownBanner targetDate={new Date(eventStartDate ?? "")} />
       </div>
       <div className="p-4 md:p-6">
         <PageTitle
-          title={conferenceName ?? ""}
-          subtitle={props.conference.description ?? ""}
+          title={eventName ?? ""}
+          subtitle={props.event.description ?? ""}
         />
         <div className="flex flex-col space-y-3">
           <Skeleton className="h-4 w-[250px] bg-muted/50" />

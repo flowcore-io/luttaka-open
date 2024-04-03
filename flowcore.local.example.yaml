@@ -7,7 +7,7 @@ scenario:
   transformers:
     companies:
       dataCore: luttaka-dev
-    conferences:
+    events:
       dataCore: luttaka-dev
     tickets:
       dataCore: luttaka-dev

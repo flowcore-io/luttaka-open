@@ -6,12 +6,12 @@ import Stripe from "stripe"
 import { z } from "zod"
 
 import { db } from "@/database"
-import { conferences, users } from "@/database/schemas"
+import { events, users } from "@/database/schemas"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const CheckoutRequest = z.object({
-  conferenceId: z.string(),
+  eventId: z.string(),
   quantity: z.number().min(1).default(1),
 })
 
@@ -31,11 +31,11 @@ export async function POST(request: NextRequest) {
   try {
     const bodyRaw: unknown = await request.json()
     const body = CheckoutRequest.parse(bodyRaw)
-    const conference = await db.query.conferences.findFirst({
-      where: eq(conferences.id, body.conferenceId),
+    const event = await db.query.events.findFirst({
+      where: eq(events.id, body.eventId),
     })
     const prices = await stripe.prices.list({
-      lookup_keys: [`standard_${conference?.stripeId}`],
+      lookup_keys: [`standard_${event?.stripeId}`],
     })
     const price = prices.data[0]
     if (!price) {
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       client_reference_id: user.id,
       customer_email: clerkUser.emailAddresses[0]?.emailAddress,
       metadata: {
-        conferenceId: body.conferenceId,
+        eventId: body.eventId,
         ticketIds: ticketIds.join(","),
       },
       mode: "payment",

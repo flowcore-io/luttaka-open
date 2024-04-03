@@ -16,7 +16,7 @@ export const getTicketProcedure = protectedProcedure
       .select({
         id: tickets.id,
         userId: tickets.userId,
-        conferenceId: tickets.conferenceId,
+        eventId: tickets.eventId,
         state: tickets.state,
         transferId: ticketTransfers.id,
       })

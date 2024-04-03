@@ -1,7 +1,7 @@
-Luttaka is an open source application to manage tickets, networking and content at conferences. You
+Luttaka is an open source application to manage tickets, networking and content at events. You
 can either use the official instance at luttaka.com, or deploy your own instance.
 
-# Basic features for conference participants
+# Basic features for event participants
 
 - Tickets
 - [ ] Buy ticket with credit/debit cards
@@ -14,12 +14,12 @@ can either use the official instance at luttaka.com, or deploy your own instance
 - Content
 - [ ] Search for companies
 - [ ] Mark favourites
-- [ ] Conference program
+- [ ] event program
 - Settings
 - [ ] Edit participant profile
 - [ ] Edit company profile
 
-# Basic features for conference administrators
+# Basic features for event administrators
 
 - Tickets
 - [ ] Manual registration of sold tickets
@@ -35,7 +35,7 @@ can either use the official instance at luttaka.com, or deploy your own instance
 - [ ] Search for companies
 - [ ] Edit company information
 - [ ] Hide company
-- [ ] Edit conference program
+- [ ] Edit event program
 - Settings
 - [ ] Manage admin permissions
 - [ ] Logs
@@ -51,7 +51,7 @@ can either use the official instance at luttaka.com, or deploy your own instance
 - Company showcase section
 - Rating system for participants to provide feedback to companies
 - Voting system
-- Conference announcements
+- Event announcements
 - Live updates
 - Interactive features for participants to ask questions during sessions.
 - Polls for participant engagement and feedback.

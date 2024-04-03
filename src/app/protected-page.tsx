@@ -2,14 +2,14 @@
 
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
-import { ConferenceProvider } from "@/context/conference-context"
+import { EventProvider } from "@/context/event-context"
 
 import { BottomBar } from "../components/bottom-bar"
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="">
-      <ConferenceProvider>
+      <EventProvider>
         <div className="flex flex-row">
           <div className="hidden sm:block">
             <Sidebar />
@@ -24,7 +24,7 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
             <BottomBar />
           </div>
         </div>
-      </ConferenceProvider>
+      </EventProvider>
     </div>
   )
 }

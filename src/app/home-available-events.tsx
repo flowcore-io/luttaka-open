@@ -5,20 +5,20 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { type appRouter } from "@/server/api/root"
 import { api } from "@/trpc/react"
 
-import { ConferencesList } from "../components/conferences-list"
+import { EventsList } from "../components/events-list"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
 
-interface HomeAvailableConferencesProps {
-  conferences: RouterOutput["conference"]["list"]
+interface HomeAvailableEventsProps {
+  events: RouterOutput["event"]["list"]
   isLoading: boolean
 }
 
-export default function HomeAvailableConferences({
-  conferences,
+export default function HomeAvailableEvents({
+  events,
   isLoading,
-}: HomeAvailableConferencesProps) {
-  const apiFetchAttendingConferences = api.attendance.myConferences.useQuery()
+}: HomeAvailableEventsProps) {
+  const apiFetchAttendingEvents = api.attendance.myEvents.useQuery()
 
   return (
     <div className="mx-auto w-full p-4 md:p-6">
@@ -26,12 +26,10 @@ export default function HomeAvailableConferences({
         title={"Your events"}
         subtitle={"A list of events that you have tickets to"}
       />
-      {isLoading || !conferences ? (
+      {isLoading || !events ? (
         <Skeleton />
       ) : (
-        <ConferencesList
-          conferences={apiFetchAttendingConferences.data ?? []}
-        />
+        <EventsList events={apiFetchAttendingEvents.data ?? []} />
       )}
     </div>
   )

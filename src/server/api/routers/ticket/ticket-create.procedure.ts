@@ -10,7 +10,7 @@ import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-on
 import { protectedProcedure } from "@/server/api/trpc"
 
 const CreateTicketInput = z.object({
-  conferenceId: z.string(),
+  eventId: z.string(),
   quantity: z.number(),
 })
 
@@ -26,7 +26,7 @@ export const createTicketProcedure = protectedProcedure
       await sendTicketCreatedEvent({
         id,
         userId,
-        conferenceId: input.conferenceId,
+        eventId: input.eventId,
         state: "open",
       })
     }

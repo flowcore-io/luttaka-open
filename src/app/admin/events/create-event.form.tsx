@@ -26,104 +26,55 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
-  type ConferenceProfile,
-  type UpdateConferenceInput,
-  UpdateConferenceInputDto,
-} from "@/contracts/conference/conference"
+  type CreateEventInput,
+  CreateEventInputDto,
+} from "@/contracts/event/event"
 import { api } from "@/trpc/react"
 
-export type UpdateConferenceProps = {
-  conference: ConferenceProfile
+export type CreateEventProps = {
   close: () => void
   refetch: () => void
 }
 
-export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
-  conference,
-  close,
-  refetch,
-}) => {
-  const updateConference = api.conference.update.useMutation({
+export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
+  const createEvent = api.event.create.useMutation({
     onError: (error) => {
       const title =
-        error instanceof Error ? error.message : "Conference update failed"
+        error instanceof Error ? error.message : "Event create failed"
       toast.error(title)
       close()
     },
   })
 
-  const form = useForm<UpdateConferenceInput>({
-    resolver: zodResolver(UpdateConferenceInputDto),
+  const form = useForm<CreateEventInput>({
+    resolver: zodResolver(CreateEventInputDto),
     defaultValues: {
-      id: conference.id,
-      name: conference.name,
-      description: conference.description,
-      ticketDescription: conference.ticketDescription,
-      ticketCurrency: conference.ticketCurrency,
-      ticketPrice: conference.ticketPrice,
-      startDate: conference.startDate,
-      endDate: conference.endDate,
+      name: "",
+      description: "",
+      ticketDescription: "",
+      ticketCurrency: "USD",
+      ticketPrice: 0.0,
+      startDate: new Date().toISOString(),
+      endDate: new Date().toISOString(),
+      stripeId: "",
     },
   })
 
-  const [hasTime, setHasTime] = useState(true)
+  const [hasTime, setHasTime] = useState(false)
 
-  const onSubmit = useCallback(
-    async (values: UpdateConferenceInput) => {
-      if (
-        conference.startDate !== values.startDate ||
-        conference.endDate !== values.endDate
-      ) {
-        if (
-          new Date(values.startDate ?? conference.startDate) >
-          new Date(values.endDate ?? conference.endDate)
-        ) {
-          form.setError("startDate", {
-            type: "manual",
-            message: "Start date must be before end date",
-          })
-          return
-        }
-      }
-
-      let ticketPrice: number | undefined = undefined
-      let ticketCurrency: string | undefined = undefined
-      if (
-        values.ticketPrice !== conference.ticketPrice ||
-        values.ticketCurrency !== conference.ticketCurrency
-      ) {
-        ticketPrice = values.ticketPrice ?? conference.ticketPrice
-        ticketCurrency = values.ticketCurrency ?? conference.ticketCurrency
-      }
-
-      const valuesToSubmit: UpdateConferenceInput = {
-        id: conference.id,
-        name: conference.name !== values.name ? values.name : undefined,
-        description:
-          conference.description !== values.description
-            ? values.description
-            : undefined,
-        ticketDescription:
-          conference.ticketDescription !== values.ticketDescription
-            ? values.ticketDescription
-            : undefined,
-        ticketPrice: ticketPrice,
-        ticketCurrency: ticketCurrency,
-        startDate:
-          conference.startDate !== values.startDate
-            ? values.startDate
-            : undefined,
-        endDate:
-          conference.endDate !== values.endDate ? values.endDate : undefined,
-      }
-
-      await updateConference.mutateAsync(valuesToSubmit)
-      toast.success("Conference Updated")
-      refetch()
-      close()
-    },
-    [conference],
-  )
+  const onSubmit = useCallback(async (values: CreateEventInput) => {
+    if (new Date(values.startDate) > new Date(values.endDate)) {
+      form.setError("startDate", {
+        type: "manual",
+        message: "Start date must be before end date",
+      })
+      return
+    }
+    await createEvent.mutateAsync(values)
+    toast.success("Event created")
+    refetch()
+    close()
+  }, [])
 
   const codes = useMemo(() => {
     return currencyCodes.data.map((code) => {
@@ -136,22 +87,15 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit, (errors, event) => {
-          console.log("errors", errors, event)
-          toast.error(
-            `Failed to update conference with ${JSON.stringify(errors)}`,
-          )
-        })}
-        className={"space-y-3"}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-3"}>
         <FormField
           control={form.control}
           name={"name"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Conference Name</FormLabel>
+              <FormLabel>Event Name</FormLabel>
               <FormControl>
-                <Input placeholder={"conference name"} {...field} />
+                <Input placeholder={"event name"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -167,7 +111,7 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
                 <div>
                   <MarkdownEditor
                     name={field.name}
-                    value={field.value!}
+                    value={field.value}
                     onChange={field.onChange}
                   />
                 </div>
@@ -189,8 +133,8 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
             </FormItem>
           )}
         />
-        <div className={"flex space-x-2"}>
-          <div className={"flex-1"}>
+        <div className="flex space-x-2">
+          <div className="flex-1">
             <FormField
               control={form.control}
               name={"ticketPrice"}
@@ -217,8 +161,10 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
               )}
             />
           </div>
-          <div className={"flex-1"}>
+          <div className="flex-1">
             <FormField
+              control={form.control}
+              name={"ticketCurrency"}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Currency</FormLabel>
@@ -241,8 +187,6 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
                   <FormMessage />
                 </FormItem>
               )}
-              name={"ticketCurrency"}
-              control={form.control}
             />
           </div>
         </div>
@@ -257,17 +201,19 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
                 <div>
                   <DateTimePicker
                     onChange={(value) => {
-                      field.onChange(value.date.toISOString())
+                      field.onChange({
+                        target: {
+                          value: value.date.toISOString(),
+                          name: field.name,
+                        },
+                      })
                       setHasTime(value.hasTime)
-                      if (
-                        value.date >
-                        new Date(form.watch("endDate") ?? conference.endDate)
-                      ) {
+                      if (value.date > new Date(form.watch("endDate"))) {
                         form.setValue("endDate", value.date.toISOString())
                       }
                     }}
                     value={{
-                      date: new Date(field.value ?? conference.startDate),
+                      date: new Date(field.value),
                       hasTime: hasTime,
                     }}
                   />
@@ -287,11 +233,16 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
                 <div>
                   <DateTimePicker
                     onChange={(value) => {
-                      field.onChange(value.date.toISOString())
+                      field.onChange({
+                        target: {
+                          value: value.date.toISOString(),
+                          name: field.name,
+                        },
+                      })
                       setHasTime(value.hasTime)
                     }}
                     value={{
-                      date: new Date(field.value ?? conference.endDate),
+                      date: new Date(field.value),
                       hasTime: hasTime,
                     }}
                   />
@@ -302,11 +253,9 @@ export const UpdateConferenceForm: FC<UpdateConferenceProps> = ({
           )}
         />
         <div className={"flex justify-end"}>
-          <Button type={"submit"} disabled={updateConference.isLoading}>
-            {updateConference.isLoading && (
-              <Loader className={"animate-spin"} />
-            )}
-            Update Conference
+          <Button type={"submit"} disabled={createEvent.isLoading}>
+            {createEvent.isLoading && <Loader className={"animate-spin"} />}
+            Create Event
           </Button>
         </div>
       </form>

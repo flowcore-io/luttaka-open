@@ -16,14 +16,14 @@ export const ticket = {
 
 export const TicketEventCreatedPayload = z.object({
   id: z.string(),
-  conferenceId: z.string(),
+  eventId: z.string(),
   userId: z.string(),
   state: z.string(),
 })
 
 export const TicketEventUpdatedPayload = z.object({
   id: z.string(),
-  conferenceId: z.string().optional(),
+  eventId: z.string().optional(),
   userId: z.string().optional(),
   state: z.string().optional(),
 })

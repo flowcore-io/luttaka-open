@@ -31,7 +31,7 @@ const lato = Lato({
 export const metadata = {
   manifest: "/manifest.json",
   title: "Luttaka",
-  description: "The open source conference app from Flowcore",
+  description: "The open source event experience app from Flowcore",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 }
 

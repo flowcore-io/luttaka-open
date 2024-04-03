@@ -1,14 +1,14 @@
-import {sql} from "drizzle-orm";
-import { boolean, decimal, pgTable, text,timestamp } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm"
+import { boolean, decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
 import { UserRole } from "@/contracts/user/user-role"
 
 export const tickets = pgTable("tickets", {
   id: text("id").primaryKey(),
-  conferenceId: text("conference_id").notNull(),
+  eventId: text("event_id").notNull(),
   userId: text("user_id").notNull(),
   state: text("state").notNull(),
-  createdAt: timestamp('created_at').default(sql`now()`),
+  createdAt: timestamp("created_at").default(sql`now()`),
 })
 
 export const ticketTransfers = pgTable("ticket_transfers", {
@@ -39,7 +39,7 @@ export const profiles = pgTable("profiles", {
   reason: text("reason"),
 })
 
-export const conferences = pgTable("conferences", {
+export const events = pgTable("events", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description"),

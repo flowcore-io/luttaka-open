@@ -37,10 +37,10 @@ const CheckoutResponse = z.object({
   sessionId: z.string(),
 })
 
-interface ConferenceProps {
-  conference: RouterOutput["conference"]["list"][0]
+interface EventProps {
+  event: RouterOutput["event"]["list"][0]
 }
-export default function Conference({ conference }: ConferenceProps) {
+export default function Event({ event }: EventProps) {
   const [purchaseTicketDialogOpened, setPurchaseTicketDialogOpened] =
     useState(false)
   const [ticketQuantity, setTicketQuantity] = useState(1)
@@ -58,7 +58,7 @@ export default function Conference({ conference }: ConferenceProps) {
     setPurchaseLoading(true)
     try {
       await apiCreateTicket.mutateAsync({
-        conferenceId: conference.id,
+        eventId: event.id,
         quantity: ticketQuantity,
       })
       toast.success("Ticket(s) created")
@@ -69,7 +69,7 @@ export default function Conference({ conference }: ConferenceProps) {
       toast.error(title)
     }
     setPurchaseLoading(false)
-  }, [ticketQuantity, conference.id])
+  }, [ticketQuantity, event.id])
 
   const purchaseTicket = useCallback(async () => {
     setPurchaseLoading(true)
@@ -81,7 +81,7 @@ export default function Conference({ conference }: ConferenceProps) {
     const response = await fetch("/api/stripe/checkout", {
       method: "POST",
       body: JSON.stringify({
-        conferenceId: conference.id,
+        eventId: event.id,
         quantity: ticketQuantity,
       }),
     })
@@ -94,29 +94,24 @@ export default function Conference({ conference }: ConferenceProps) {
       setPurchaseLoading(false)
       return
     }
-  }, [ticketQuantity, conference.id])
+  }, [ticketQuantity, event.id])
 
   return (
-    <div key={conference.id} className={`mb-6 p-2`}>
+    <div key={event.id} className={`mb-6 p-2`}>
       <div>
         <Card className="w-full sm:w-80">
           <CardHeader>
-            <CardTitle>{conference.name}</CardTitle>
-            <CardDescription>{conference.ticketDescription}</CardDescription>
+            <CardTitle>{event.name}</CardTitle>
+            <CardDescription>{event.ticketDescription}</CardDescription>
             <CardDescription>
-              {dayjs(conference.startDate).format("MMMM D, YYYY")}
+              {dayjs(event.startDate).format("MMMM D, YYYY")}
               {" - "}
-              {dayjs(conference.endDate).format("MMMM D, YYYY")}
+              {dayjs(event.endDate).format("MMMM D, YYYY")}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="mb-2 font-bold">Price:</div>
-            <div>
-              {formatCurrency(
-                conference.ticketPrice,
-                conference.ticketCurrency,
-              )}
-            </div>
+            <div>{formatCurrency(event.ticketPrice, event.ticketCurrency)}</div>
           </CardContent>
           <CardFooter className="space-x-2">
             <Button
@@ -134,15 +129,9 @@ export default function Conference({ conference }: ConferenceProps) {
           }}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>
-                Purchase ticket(s) for {conference?.name}
-              </DialogTitle>
+              <DialogTitle>Purchase ticket(s) for {event?.name}</DialogTitle>
               <DialogDescription>
-                Price:{" "}
-                {formatCurrency(
-                  conference.ticketPrice,
-                  conference.ticketCurrency,
-                )}
+                Price: {formatCurrency(event.ticketPrice, event.ticketCurrency)}
               </DialogDescription>
             </DialogHeader>
             <div>
