@@ -20,10 +20,9 @@ export default function Tickets() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { data: tickets, refetch } = api.ticket.list.useQuery()
-  const { data: events, isLoading } = api.event.list.useQuery()
+  const { data: events } = api.event.list.useQuery()
   const [selectedTickets, setSelectedTickets] = useState<string[]>([])
-  const { eventId, setEventId, setEventName, setEventStartDate } =
-    useContext(EventContext)
+  const { eventId, setEventId } = useContext(EventContext)
   const [ticketsCurrentEvent, setTicketsCurrentEvent] = useState<
     typeof tickets
   >([])

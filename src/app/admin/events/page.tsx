@@ -3,8 +3,8 @@
 import { useAuth } from "@clerk/nextjs"
 import { useState } from "react"
 
-import { Event } from "@/app/admin/events/event.component"
 import { CreateEventForm } from "@/app/admin/events/create-event.form"
+import { Event } from "@/app/admin/events/event.component"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { api } from "@/trpc/react"
