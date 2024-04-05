@@ -17,9 +17,7 @@ export default function Home() {
     // Show the public page
     return (
       <div className="mx-auto w-full p-4 md:p-6">
-        <div className="text-center text-slate-400">
-          Welcome to Luttaka Cloud!
-        </div>
+        <div className="text-center text-slate-400">Luttaka Cloud</div>
       </div>
     )
   }
