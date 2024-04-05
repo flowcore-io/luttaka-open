@@ -1,7 +1,7 @@
 const REGEX_FIND_HTTP_PROTOCOL_AND_WWW = /^(?:https?:\/\/)?(?:www\.)?/
 
 export const convertUrlToSlugWithDomain = (url: string) => {
-  if (url) {
+  if (!url) {
     return ""
   }
 
