@@ -1,7 +1,7 @@
 import { and, eq, type SQL } from "drizzle-orm"
 
-import { UpdateNewsitemInputDto } from "@/contracts/newsitem/newsitem"
 import { sendNewsitemUpdatedEvent } from "@/contracts/events/newsitem"
+import { UpdateNewsitemInputDto } from "@/contracts/newsitem/newsitem"
 import { db } from "@/database"
 import { newsitems } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"

@@ -5,8 +5,8 @@ import { z } from "zod"
 export const NewsitemProfileDto = z.object({
   id: z.string(),
   title: z.string(),
-  introText: z.string(),
-  fullText: z.string(),
+  introText: z.string().optional(),
+  fullText: z.string().optional(),
   publicVisibility: z.boolean(),
   publishedAt: z.string(),
   archived: z.boolean(),

@@ -1,11 +1,11 @@
 import { and, eq } from "drizzle-orm"
 import shortUuid from "short-uuid"
 
-import { CreateNewsitemInputDto } from "@/contracts/newsitem/newsitem"
 import {
   sendNewsitemArchivedEvent,
   sendNewsitemCreatedEvent,
 } from "@/contracts/events/newsitem"
+import { CreateNewsitemInputDto } from "@/contracts/newsitem/newsitem"
 import { db } from "@/database"
 import { newsitems } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
@@ -29,7 +29,12 @@ export const createNewsitemProcedure = protectedProcedure
 
     const id = shortUuid.generate()
 
-    await sendNewsitemCreatedEvent({ ...input, id })
+    await sendNewsitemCreatedEvent({
+      ...input,
+      id,
+      introText: input.introText ?? "",
+      fullText: input.fullText ?? "",
+    })
     try {
       await waitForPredicate(
         () =>

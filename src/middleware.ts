@@ -9,6 +9,7 @@ export default authMiddleware({
     "/api/transform/profile.0",
     "/api/transform/event.0",
     "/api/transform/company.0",
+    "/api/transform/newsitem.0",
   ],
 })
 

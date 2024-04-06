@@ -1,20 +1,7 @@
 import { sql } from "drizzle-orm"
-import {
-  boolean,
-  customType,
-  decimal,
-  pgTable,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core"
-const bytea = customType<{ data: Buffer; notNull: false; default: false }>({
-  dataType() {
-    return "bytea"
-  },
-})
+import { boolean, decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
 import { UserRole } from "@/contracts/user/user-role"
-import { image } from "@uiw/react-md-editor"
 
 export const tickets = pgTable("tickets", {
   id: text("id").primaryKey(),
