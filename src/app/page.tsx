@@ -14,11 +14,11 @@ export default function Home() {
   const { isLoaded, userId } = useAuth()
   const { eventId } = useContext(EventContext)
   if (!isLoaded || !userId) {
-    // Show the public page
     return (
       <div className="mx-auto w-full p-4 md:p-6">
+        <div className="text-center text-white">Luttaka Open Source</div>
         <div className="text-center text-slate-400">
-          Welcome to Luttaka Cloud!
+          Event Experience Application
         </div>
       </div>
     )
