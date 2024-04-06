@@ -1,7 +1,20 @@
 import { sql } from "drizzle-orm"
-import { boolean, decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core"
+import {
+  boolean,
+  customType,
+  decimal,
+  pgTable,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core"
+const bytea = customType<{ data: Buffer; notNull: false; default: false }>({
+  dataType() {
+    return "bytea"
+  },
+})
 
 import { UserRole } from "@/contracts/user/user-role"
+import { image } from "@uiw/react-md-editor"
 
 export const tickets = pgTable("tickets", {
   id: text("id").primaryKey(),
@@ -58,6 +71,17 @@ export const companies = pgTable("companies", {
   name: text("name").notNull(),
   description: text("description"),
   ownerId: text("owner_id").notNull(),
+  archived: boolean("archived").notNull().default(false),
+  reason: text("reason"),
+})
+
+export const newsitems = pgTable("newsitems", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  introText: text("intro_text"),
+  fullText: text("full_text"),
+  publicVisibility: boolean("public_visibility").notNull().default(false),
+  publishedAt: text("published_at"),
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
 })

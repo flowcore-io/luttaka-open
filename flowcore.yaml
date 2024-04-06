@@ -48,6 +48,15 @@ dataCore:
           description: "a ticket transfer has been accepted"
         ticket.transfer-cancelled.0:
           description: "a ticket transfer has been cancelled"
+    newsitem.0:
+      description: "actions and events related to a news item"
+      eventTypes:
+        newsitem.created.0:
+          description: "a new news item has been created"
+        newsitem.updated.0:
+          description: "a news item has been updated"
+        newsitem.archived.0:
+          description: "a news item has been archived"
 scenario:
   name: luttaka
   description: "This scenario contains the transformers for Luttaka"
@@ -119,6 +128,23 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://luttaka.com/api/transform/user.0"
+        - name: PROXY_HEADER_SECRET
+          type: secret
+          value: open-source-luttaka-secret
+      blueprint:
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
+    newsitems:
+      description: "transformer for news items"
+      dataCore: luttaka
+      flowType: newsitem.0
+      events:
+        - newsitem.created.0
+        - newsitem.updated.0
+        - newsitem.archived.0
+      parameters:
+        - name: PROXY_ENDPOINT
+          type: manual
+          value: "https://luttaka.com/api/transform/newsitem.0"
         - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-luttaka-secret
