@@ -46,4 +46,3 @@ yarn-error.log*
 
 # ignore the local and preview flowcore config
 flowcore.local.yaml
-flowcore.preview.yaml
