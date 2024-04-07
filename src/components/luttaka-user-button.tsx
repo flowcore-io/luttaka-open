@@ -58,6 +58,11 @@ export const LuttakaUserButton = () => {
                 Manage Events
               </Link>
             </DropdownMenu.Item>
+            <DropdownMenu.Item asChild>
+              <Link href="/admin/newsitems" passHref>
+                Manage News Items
+              </Link>
+            </DropdownMenu.Item>
           </RestrictedToRole>
           <DropdownMenu.DropdownMenuSeparator className="mt-4 w-full border border-slate-200" />
           <DropdownMenu.Item asChild>
