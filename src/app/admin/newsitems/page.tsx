@@ -55,7 +55,7 @@ export default function Newsitems() {
           !open && setCreateNewsitemDialogOpened(open)
         }}>
         <DialogContent className={"max-w-4xl"}>
-          <DialogHeader>Create new news item</DialogHeader>
+          <DialogHeader>Create news item</DialogHeader>
           <CreateNewsitemForm
             close={() => setCreateNewsitemDialogOpened(false)}
             refetch={() => refetch()}

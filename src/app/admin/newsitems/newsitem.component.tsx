@@ -83,7 +83,7 @@ export function Newsitem({ newsitem, refetch }: NewsitemProps) {
             !open && setUpdateNewsitemDialogOpened(open)
           }}>
           <DialogContent className={"max-w-4xl"}>
-            <DialogHeader>Create News Item</DialogHeader>
+            <DialogHeader>Edit News Item</DialogHeader>
             <UpdateNewsitemForm
               newsitem={{
                 ...newsitem,
