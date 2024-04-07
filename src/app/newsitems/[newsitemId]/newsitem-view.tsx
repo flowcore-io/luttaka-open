@@ -20,7 +20,15 @@ export const NewsitemView: FC<NewsitemProps> = ({ newsitem }) => {
     <div className={`md:flex md:space-x-4`}>
       <div>
         <div className={`mt-2 text-left`}>
-          <Skeleton className="my-8 h-[125px] w-[250px] rounded-xl" />
+          {newsitem.imageUrl ? (
+            <img
+              src={newsitem.imageUrl}
+              alt={newsitem.title}
+              className="rounded-xl"
+            />
+          ) : (
+            <Skeleton className="h-[250px] w-[250px] rounded-xl" />
+          )}
           <div className={`flex flex-row`}>
             <h1 className={`text-4xl font-bold`}>{newsitem.title}</h1>
           </div>
@@ -34,6 +42,17 @@ export const NewsitemView: FC<NewsitemProps> = ({ newsitem }) => {
               <MarkdownViewer source={newsitem.fullText} className={`mt-2`} />
             </div>
           )}
+        </div>
+        <div className={`mt-4 text-slate-400`}>
+          Published:{" "}
+          {new Date(newsitem.publishedAt ?? "").toLocaleString("fo-FO", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })}
         </div>
       </div>
     </div>

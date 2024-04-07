@@ -38,6 +38,7 @@ export default function Newsitems() {
           key={newsitem.id}
           newsitem={{
             ...newsitem,
+            imageUrl: newsitem.imageUrl ?? "",
             introText: newsitem.introText ?? "",
             fullText: newsitem.fullText ?? "",
             publishedAt: newsitem.publishedAt ?? "",

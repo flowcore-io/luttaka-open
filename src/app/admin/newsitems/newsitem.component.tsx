@@ -11,6 +11,7 @@ export interface NewsitemProps {
   newsitem: {
     id: string
     title: string
+    imageUrl: string | undefined
     introText: string | undefined
     fullText: string | undefined
     publicVisibility: boolean
@@ -82,7 +83,7 @@ export function Newsitem({ newsitem, refetch }: NewsitemProps) {
             !open && setUpdateNewsitemDialogOpened(open)
           }}>
           <DialogContent className={"max-w-4xl"}>
-            <DialogHeader>Create new news item</DialogHeader>
+            <DialogHeader>Create News Item</DialogHeader>
             <UpdateNewsitemForm
               newsitem={{
                 ...newsitem,

@@ -65,6 +65,7 @@ export const companies = pgTable("companies", {
 export const newsitems = pgTable("newsitems", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
+  imageUrl: text("image_url"),
   introText: text("intro_text"),
   fullText: text("full_text"),
   publicVisibility: boolean("public_visibility").notNull().default(false),

@@ -48,6 +48,7 @@ export const UpdateNewsitemForm: FC<UpdateNewsitemProps> = ({
     defaultValues: {
       id: newsitem.id,
       title: newsitem.title,
+      imageUrl: newsitem.imageUrl,
       introText: newsitem.introText,
       fullText: newsitem.fullText,
       publicVisibility: newsitem.publicVisibility,
@@ -62,6 +63,8 @@ export const UpdateNewsitemForm: FC<UpdateNewsitemProps> = ({
       const valuesToSubmit: UpdateNewsitemInput = {
         id: newsitem.id,
         title: newsitem.title !== values.title ? values.title : undefined,
+        imageUrl:
+          newsitem.imageUrl !== values.imageUrl ? values.imageUrl : undefined,
         introText:
           newsitem.introText !== values.introText
             ? values.introText
@@ -103,7 +106,7 @@ export const UpdateNewsitemForm: FC<UpdateNewsitemProps> = ({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder={"news item title"} {...field} />
+                <Input placeholder={"Title"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

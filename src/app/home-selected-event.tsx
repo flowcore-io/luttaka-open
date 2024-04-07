@@ -1,14 +1,15 @@
 import { type inferRouterOutputs } from "@trpc/server"
+import Link from "next/link"
 import { useContext } from "react"
 
 import CountdownBanner from "@/components/countdown-banner"
+import MarkdownViewer from "@/components/md-viewer"
+import { Button } from "@/components/ui/button"
 import { PageTitle } from "@/components/ui/page-title"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EventContext } from "@/context/event-context"
 import { type appRouter } from "@/server/api/root"
 import { api } from "@/trpc/react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
 interface EventProps {
@@ -17,7 +18,7 @@ interface EventProps {
 
 export default function HomeSelectedEvent(props: EventProps) {
   const { eventName, eventStartDate } = useContext(EventContext)
-  const { data: newsitems } = api.newsitem.list.useQuery()
+  const { data: newsitems } = api.newsitem.listPublished.useQuery()
 
   return (
     <div className="mx-auto w-full">
@@ -30,10 +31,18 @@ export default function HomeSelectedEvent(props: EventProps) {
           subtitle={props.event.description ?? ""}
         />
         {newsitems?.map((newsitem) => (
-          <div key={newsitem.id} className="space-y-4">
-            <Skeleton className="mt-8 h-[125px] w-[250px] rounded-xl" />
+          <div key={newsitem.id} className="mb-12 space-y-4">
+            {newsitem.imageUrl ? (
+              <img
+                src={newsitem.imageUrl}
+                alt={newsitem.title}
+                className="max-w-[250px] rounded-xl"
+              />
+            ) : (
+              <Skeleton className="h-[250px] w-[250px] rounded-xl" />
+            )}
             <div className="text-2xl font-bold">{newsitem.title}</div>
-            <div>{newsitem.introText}</div>
+            <MarkdownViewer source={newsitem.introText ?? ""} />
             {newsitem.fullText && (
               <Button asChild>
                 <Link href={`/newsitems/${newsitem.id}`}>Read more</Link>

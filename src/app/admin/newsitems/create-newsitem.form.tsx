@@ -44,6 +44,7 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
     resolver: zodResolver(CreateNewsitemInputDto),
     defaultValues: {
       title: "",
+      imageUrl: "",
       introText: "",
       fullText: "",
       publicVisibility: false,
@@ -76,9 +77,24 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder={"news item name"} {...field} />
+                <Input placeholder={"Title"} {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="imageUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormControl>
+                  <Input placeholder={"imageUrl"} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             </FormItem>
           )}
         />

@@ -11,7 +11,7 @@ export type NewsitemProps = {
 export default async function Newsitem({
   params,
 }: WithUrlParams<NewsitemProps>) {
-  const newsitem = await api.newsitem.get.query({
+  const newsitem = await api.newsitem.getPublished.query({
     id: params.newsitemId,
   })
 
