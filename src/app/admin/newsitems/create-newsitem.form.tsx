@@ -141,7 +141,7 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
           name={"publishedAt"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Start Date</FormLabel>
+              <FormLabel>Published at</FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker
