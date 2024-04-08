@@ -86,7 +86,7 @@ export function Event({ event, refetch }: EventProps) {
             !open && setUpdateEventDialogOpened(open)
           }}>
           <DialogContent className={"max-w-4xl"}>
-            <DialogHeader>Create new event</DialogHeader>
+            <DialogHeader>Edit event</DialogHeader>
             <UpdateEventForm
               event={{
                 ...event,
