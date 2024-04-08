@@ -1,12 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader } from "lucide-react"
-import { type FC, useCallback, useState } from "react"
+import { type FC, useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 import { MarkdownEditor } from "@/components/md-editor"
 import { Button } from "@/components/ui/button"
-import { DateTimePicker } from "@/components/ui/date-time-picker"
 import {
   Form,
   FormControl,
@@ -16,54 +15,53 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
-  type CreateNewsitemInput,
-  CreateNewsitemInputDto,
-} from "@/contracts/newsitem/newsitem"
+  type CreateCompanyInput,
+  CreateCompanyInputDto,
+} from "@/contracts/company/company"
 import { api } from "@/trpc/react"
 
-export type CreateNewsitemProps = {
+import { SelectOwnerField } from "./select-owner-field"
+
+export type CreateCompanyProps = {
   close: () => void
   refetch: () => void
 }
 
-export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
+export const CreateCompanyForm: FC<CreateCompanyProps> = ({
   close,
   refetch,
 }) => {
-  const createNewsitem = api.newsitem.create.useMutation({
+  const createCompany = api.company.create.useMutation({
     onError: (error) => {
       const title =
-        error instanceof Error ? error.message : "Newsitem create failed"
+        error instanceof Error ? error.message : "Company create failed"
       toast.error(title)
       close()
     },
   })
 
-  const form = useForm<CreateNewsitemInput>({
-    resolver: zodResolver(CreateNewsitemInputDto),
+  const form = useForm<CreateCompanyInput>({
+    resolver: zodResolver(CreateCompanyInputDto),
     defaultValues: {
-      title: "",
+      name: "",
       imageUrl: "",
-      introText: "",
-      fullText: "",
-      publicVisibility: false,
-      publishedAt: new Date().toISOString(),
-      archived: false,
-      reason: "",
+      description: "",
+      owner: "",
+      companyType: "default",
     },
   })
 
-  const [hasTime, setHasTime] = useState(false)
-
-  const onSubmit = useCallback(async (values: CreateNewsitemInput) => {
+  const onSubmit = useCallback(async (values: CreateCompanyInput) => {
     try {
-      await createNewsitem.mutateAsync(values)
-      toast.success("Newsitem created")
+      await createCompany.mutateAsync(values)
+      toast.success("Company created")
       refetch()
       close()
     } catch (error) {
-      console.error("Error in createNewsitem.mutateAsync", error)
+      console.error("Error in createCompany.mutateAsync", error)
     }
   }, [])
 
@@ -72,7 +70,7 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
       <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-3"}>
         <FormField
           control={form.control}
-          name={"title"}
+          name={"name"}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
@@ -100,11 +98,11 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
         />
         <FormField
           control={form.control}
-          name={"introText"}
+          name={"description"}
           render={({ field }) => (
             <FormItem>
               <FormLabel asChild>
-                <div>Introtext</div>
+                <div>Description</div>
               </FormLabel>
               <FormControl>
                 <div>
@@ -121,20 +119,35 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
         />
         <FormField
           control={form.control}
-          name={"fullText"}
+          name={"companyType"}
           render={({ field }) => (
             <FormItem>
               <FormLabel asChild>
-                <div>Longer text</div>
+                <div>Company type</div>
               </FormLabel>
               <FormControl>
-                <div>
-                  <MarkdownEditor
-                    name={field.name}
-                    value={field.value ?? ""}
-                    onChange={field.onChange}
-                  />
-                </div>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl>
+                      <RadioGroupItem value="default" id="default" />
+                    </FormControl>
+                    <Label htmlFor="default">Default</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl>
+                      <RadioGroupItem value="exhibitor" id="exhibitor" />
+                    </FormControl>
+                    <Label htmlFor="exhibitor">Exhibitor</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl>
+                      <RadioGroupItem value="sponsor" id="sponsor" />
+                    </FormControl>
+                    <Label htmlFor="sponsor">Sponsor</Label>
+                  </FormItem>
+                </RadioGroup>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -142,28 +155,19 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
         />
         <FormField
           control={form.control}
-          name={"publishedAt"}
+          name={"owner"}
           render={({ field }) => (
             <FormItem>
               <FormLabel asChild>
-                <div>Published at</div>
+                <div>Owner</div>
               </FormLabel>
               <FormControl>
                 <div>
-                  <DateTimePicker
-                    onChange={(value) => {
-                      field.onChange({
-                        target: {
-                          value: value.date.toISOString(),
-                          name: field.name,
-                        },
-                      })
-                      setHasTime(value.hasTime)
-                    }}
-                    value={{
-                      date: new Date(field.value),
-                      hasTime: hasTime,
-                    }}
+                  <SelectOwnerField
+                    value={field.value!}
+                    setValue={field.onChange}
+                    label={""}
+                    submit={() => onSubmit(form.getValues())}
                   />
                 </div>
               </FormControl>
@@ -172,9 +176,9 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
           )}
         />
         <div className={"flex justify-end"}>
-          <Button type={"submit"} disabled={createNewsitem.isLoading}>
-            {createNewsitem.isLoading && <Loader className={"animate-spin"} />}
-            Create News Item
+          <Button type={"submit"} disabled={createCompany.isLoading}>
+            {createCompany.isLoading && <Loader className={"animate-spin"} />}
+            Create Company
           </Button>
         </div>
       </form>

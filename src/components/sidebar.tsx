@@ -1,10 +1,10 @@
 import {
   BookmarkCheck,
   BookOpen,
+  BuildingIcon,
   CalendarIcon,
   Home,
   Newspaper,
-  SearchIcon,
   Ticket,
   Users,
 } from "lucide-react"
@@ -35,13 +35,6 @@ const Sidebar = () => {
             icon: Ticket,
           },
           {
-            href: "/networking",
-            title: "Networking",
-            label: "",
-            superuserRequired: false,
-            icon: Users,
-          },
-          {
             href: "/programme",
             title: "Programme",
             label: "",
@@ -49,11 +42,32 @@ const Sidebar = () => {
             icon: CalendarIcon,
           },
           {
-            href: "/search",
-            title: "Search",
+            href: "/networking",
+            title: "Networking",
             label: "",
             superuserRequired: false,
-            icon: SearchIcon,
+            icon: Users,
+          },
+          {
+            href: "/companies",
+            title: "Companies",
+            label: "",
+            superuserRequired: false,
+            icon: BuildingIcon,
+          },
+          {
+            href: "",
+            title: "",
+            label: "",
+            superuserRequired: true,
+            icon: null,
+          },
+          {
+            href: "",
+            title: "Admin",
+            label: "",
+            superuserRequired: true,
+            icon: null,
           },
           {
             href: "/admin/check-in",
@@ -75,6 +89,13 @@ const Sidebar = () => {
             label: "",
             superuserRequired: true,
             icon: Newspaper,
+          },
+          {
+            href: "/admin/companies",
+            title: "Manage Companies",
+            label: "",
+            superuserRequired: true,
+            icon: BuildingIcon,
           },
         ]}
       />

@@ -14,15 +14,19 @@ export const company = {
 export const CompanyEventCreatedPayload = z.object({
   id: z.string(),
   name: z.string(),
+  imageUrl: z.string().optional(),
   description: z.string().optional(),
   ownerId: z.string(),
+  companyType: z.string().optional(),
 })
 
 export const CompanyEventUpdatedPayload = CompanyEventCreatedPayload.pick({
   id: true,
   name: true,
+  imageUrl: true,
   description: true,
   ownerId: true,
+  companyType: true,
 })
   .partial()
   .required({

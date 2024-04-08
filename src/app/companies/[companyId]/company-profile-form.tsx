@@ -40,6 +40,7 @@ export const CompanyProfileForm: FC<CompanyProfileProps> = ({ company }) => {
     defaultValues: {
       id: company.id,
       name: company.name,
+      imageUrl: company.imageUrl ?? "",
       description: company.description ?? "",
     },
   })
@@ -68,10 +69,25 @@ export const CompanyProfileForm: FC<CompanyProfileProps> = ({ company }) => {
         />
         <FormField
           control={form.control}
+          name={"imageUrl"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Image</FormLabel>
+              <FormControl>
+                <Input placeholder={"image url"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name={"description"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel asChild>
+                <div>Description</div>
+              </FormLabel>
               <FormControl>
                 <MarkdownEditor
                   name={field.name}
@@ -87,9 +103,6 @@ export const CompanyProfileForm: FC<CompanyProfileProps> = ({ company }) => {
           )}
         />
         <div className={"flex justify-end"}>
-          <Button onClick={() => router.replace(`/company/${company.id}`)}>
-            View Profile
-          </Button>
           <Button disabled={isLoading} type={"submit"} className={"ml-2"}>
             {isLoading && <Loader className={"animate-spin"} />}
             Update Profile
