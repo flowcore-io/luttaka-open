@@ -51,7 +51,9 @@ export default function RootLayout({
           enableSystem>
           <ClerkProvider>
             <SignedOut>
-              <PublicPage children={children} />
+              <TRPCReactProvider cookies={cookies().toString()}>
+                <PublicPage children={children} />
+              </TRPCReactProvider>
             </SignedOut>
             <SignedIn>
               <TRPCReactProvider cookies={cookies().toString()}>
