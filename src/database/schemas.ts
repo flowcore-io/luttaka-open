@@ -61,3 +61,15 @@ export const companies = pgTable("companies", {
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
 })
+
+export const newsitems = pgTable("newsitems", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  imageUrl: text("image_url"),
+  introText: text("intro_text"),
+  fullText: text("full_text"),
+  publicVisibility: boolean("public_visibility").notNull().default(false),
+  publishedAt: text("published_at"),
+  archived: boolean("archived").notNull().default(false),
+  reason: text("reason"),
+})
