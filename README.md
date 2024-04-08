@@ -162,6 +162,7 @@ You need to create an account with [Clerk](https://clerk.com) and create a new a
 6. `yarn dev`
 7. `yarn local:stream`
 8. Run `yarn stripe:listen` in your terminal to listen webhooks events
+9. You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>). The first user to login gets admin privileges.
 
 # Run in a container
 
