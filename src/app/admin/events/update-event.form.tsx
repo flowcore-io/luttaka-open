@@ -57,6 +57,7 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
     defaultValues: {
       id: event.id,
       name: event.name,
+      slug: event.slug,
       description: event.description,
       ticketDescription: event.ticketDescription,
       ticketCurrency: event.ticketCurrency,
@@ -99,6 +100,7 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
       const valuesToSubmit: UpdateEventInput = {
         id: event.id,
         name: event.name !== values.name ? values.name : undefined,
+        slug: event.slug !== values.slug ? values.slug : undefined,
         description:
           event.description !== values.description
             ? values.description

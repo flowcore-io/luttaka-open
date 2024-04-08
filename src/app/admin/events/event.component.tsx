@@ -11,6 +11,7 @@ export interface EventProps {
   event: {
     id: string
     name: string
+    slug: string
     description: string | null
     ticketDescription: string | null
     ticketPrice: number
