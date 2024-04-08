@@ -157,7 +157,9 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
           name={"description"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel asChild>
+                <div>Description</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <MarkdownEditor
@@ -216,7 +218,9 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
             <FormField
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Currency</FormLabel>
+                  <FormLabel asChild>
+                    <div>Currency</div>
+                  </FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -247,7 +251,9 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
           name={"startDate"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Start Date</FormLabel>
+              <FormLabel asChild>
+                <div>Start Date</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker
@@ -277,7 +283,9 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
           name={"endDate"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>End Date</FormLabel>
+              <FormLabel asChild>
+                <div>End Date</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker

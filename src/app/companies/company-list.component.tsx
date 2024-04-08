@@ -1,6 +1,6 @@
 import React, { type FC, useMemo } from "react"
 
-import { ProfileListItem } from "@/app/networking/profile-list-item.component"
+import { CompanyListItem } from "@/app/companies/company-list-item.component"
 import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
 import { MissingText } from "@/components/ui/messages/missing-text"
 import {
@@ -14,15 +14,15 @@ import { api } from "@/trpc/react"
 
 const PAGE_SIZE = 8
 
-export type ProfileListProps = {
+export type CompanyListProps = {
   eventId: string
 }
 
-export const ProfileList: FC<ProfileListProps> = ({ eventId }) => {
+export const CompanyList: FC<CompanyListProps> = ({ eventId }) => {
   const pager = usePagination()
 
-  const profileCountRequest = api.profile.count.useQuery()
-  const profilesRequest = api.attendance.page.useQuery(
+  const companyCountRequest = api.company.count.useQuery({ eventId })
+  const companyRequest = api.company.page.useQuery(
     {
       page: pager.page,
       pageSize: PAGE_SIZE,
@@ -32,43 +32,42 @@ export const ProfileList: FC<ProfileListProps> = ({ eventId }) => {
       enabled: !!eventId,
     },
   )
-
   const pageNumbers = useMemo(() => {
-    if (!profileCountRequest.data) {
+    if (!companyCountRequest.data) {
       return []
     }
-
     const previousPages = [pager.page - 2, pager.page - 1].filter(
       (page) => page > 0,
     )
     const nextPages = [pager.page + 1, pager.page + 2].filter(
-      (page) => page <= profileCountRequest.data / PAGE_SIZE + 1,
+      (page) => page <= companyCountRequest.data / PAGE_SIZE + 1,
     )
-    return [...previousPages, pager.page, ...nextPages]
-  }, [profileCountRequest.data, pager.page])
 
-  const profiles = useMemo(
-    () => profilesRequest.data?.items ?? [],
-    [profilesRequest.data],
+    return [...previousPages, pager.page, ...nextPages]
+  }, [companyCountRequest.data, pager.page])
+
+  const companies = useMemo(
+    () => companyRequest.data?.items ?? [],
+    [companyRequest.data],
   )
 
   // todo: encapsulate this into a trpc fetching component
-  if (profilesRequest.isLoading) {
+  if (companyRequest.isLoading) {
     return <SkeletonList count={PAGE_SIZE} />
   }
-  if (profilesRequest.error) {
-    return <p>Failed to load profiles</p>
+  if (companyRequest.error) {
+    return <p>Failed to load companies</p>
   }
 
-  if (profiles.length < 1) {
-    return <MissingText text={"No profiles found"} />
+  if (companies.length < 1) {
+    return <MissingText text={"No companies found"} />
   }
 
   return (
     <div>
       <ul className={"space-y-2"}>
-        {profiles.map((profile) => {
-          return <ProfileListItem key={profile.id} profile={profile} />
+        {companies.map((company) => {
+          return <CompanyListItem key={company.id} company={company} />
         })}
       </ul>
       <div
