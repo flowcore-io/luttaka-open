@@ -106,7 +106,9 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
           name={"description"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel asChild>
+                <div>Description</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <MarkdownEditor
@@ -167,7 +169,9 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
               name={"ticketCurrency"}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Currency</FormLabel>
+                  <FormLabel asChild>
+                    <div>Currency</div>
+                  </FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -190,13 +194,14 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
             />
           </div>
         </div>
-
         <FormField
           control={form.control}
           name={"startDate"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Start Date</FormLabel>
+              <FormLabel asChild>
+                <div>Start Date</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker
@@ -228,7 +233,9 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
           name={"endDate"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>End Date</FormLabel>
+              <FormLabel asChild>
+                <div>End Date</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker

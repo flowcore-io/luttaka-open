@@ -2,7 +2,6 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { Loader, XIcon } from "lucide-react"
 import Link from "next/link"
 import { type FC, useState } from "react"
-import { toast } from "sonner"
 import { useDebouncedCallback } from "use-debounce"
 
 import { Button } from "@/components/ui/button"
@@ -21,29 +20,24 @@ import {
 import { cn } from "@/lib/utils"
 import { api } from "@/trpc/react"
 
-export type SelectCompanyFieldProps = {
+export type SelectOwnerFieldProps = {
   value: string
   label: string
   setValue: (value: string) => void
   submit: () => void
 }
 
-export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
+export const SelectOwnerField: FC<SelectOwnerFieldProps> = ({
   value,
   label,
   setValue,
-  submit,
 }) => {
   const [search, setSearch] = useState(label)
   const [currentLabel, setCurrentLabel] = useState<string>(label)
   const [fetchQuery, setFetchQuery] = useState<string>("")
 
-  const {
-    isLoading,
-    data: results,
-    refetch,
-  } = api.company.search.useQuery({
-    name: fetchQuery,
+  const { isLoading, data: results } = api.profile.search.useQuery({
+    firstName: fetchQuery,
   })
 
   const handleResultsQuery = useDebouncedCallback(
@@ -54,16 +48,6 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
     // delay in ms
     300,
   )
-
-  const { isLoading: isCreating, mutateAsync: createCompany } =
-    api.company.create.useMutation({
-      onSuccess: () => {
-        void refetch()
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      },
-    })
 
   return (
     <Popover>
@@ -77,11 +61,11 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
               !value && "text-muted-foreground",
             )}>
             {currentLabel ? (
-              <Link href={`/companies/${value}`} className={"underline"}>
+              <Link href={`/profile/${value}`} className={"underline"}>
                 {currentLabel}
               </Link>
             ) : (
-              "Select Company"
+              "Select User"
             )}
             {currentLabel && (
               <XIcon
@@ -99,7 +83,7 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
       <PopoverContent className="w-[300px] p-0">
         <Command>
           <CommandInput
-            placeholder="Search for company..."
+            placeholder="Search for profile..."
             value={search}
             onValueChange={(value) => {
               setSearch(value)
@@ -111,42 +95,25 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
             {isLoading ? (
               <Loader className={"animate-spin"} />
             ) : (
-              (results ?? []).map((company) => (
+              (results ?? []).map((profile) => (
                 <CommandItem
-                  value={company.name}
-                  key={company.id}
+                  value={profile.firstName ?? ""}
+                  key={profile.id}
                   onSelect={() => {
-                    setCurrentLabel(company.name)
-                    setValue(company.id)
+                    setCurrentLabel(profile.firstName ?? "")
+                    setValue(profile.id)
                   }}>
-                  {company.name}
+                  {profile.firstName}
                   <CheckIcon
                     className={cn(
                       "ml-auto h-4 w-4",
-                      company.id === value ? "opacity-100" : "opacity-0",
+                      profile.id === value ? "opacity-100" : "opacity-0",
                     )}
                   />
                 </CommandItem>
               ))
             )}
           </CommandGroup>
-          {!isLoading && (results ?? []).length === 0 && (
-            <CommandGroup>
-              <CommandItem
-                value={search}
-                key={"create"}
-                onSelect={async () => {
-                  const id = await createCompany({ name: search })
-                  toast.success("Company created")
-                  setCurrentLabel(search)
-                  setValue(id)
-                  submit()
-                }}>
-                {isCreating && <Loader className={"animate-spin"} />}
-                Create {search}
-              </CommandItem>
-            </CommandGroup>
-          )}
         </Command>
       </PopoverContent>
     </Popover>
