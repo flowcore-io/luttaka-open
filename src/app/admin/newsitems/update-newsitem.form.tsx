@@ -114,6 +114,21 @@ export const UpdateNewsitemForm: FC<UpdateNewsitemProps> = ({
         />
         <FormField
           control={form.control}
+          name="imageUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormControl>
+                  <Input placeholder={"imageUrl"} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name={"introText"}
           render={({ field }) => (
             <FormItem>
