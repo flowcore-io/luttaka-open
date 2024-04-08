@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
           price: price.id,
         },
       ],
+      allow_promotion_codes: true,
       client_reference_id: user.id,
       customer_email: clerkUser.emailAddresses[0]?.emailAddress,
       metadata: {
