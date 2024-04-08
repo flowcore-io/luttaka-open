@@ -43,6 +43,7 @@ export const profiles = pgTable("profiles", {
 export const events = pgTable("events", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  slug: text("slug"),
   description: text("description"),
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),

@@ -49,6 +49,7 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
     resolver: zodResolver(CreateEventInputDto),
     defaultValues: {
       name: "",
+      slug: "",
       description: "",
       ticketDescription: "",
       ticketCurrency: "USD",
@@ -86,6 +87,19 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
               <FormLabel>Event Name</FormLabel>
               <FormControl>
                 <Input placeholder={"event name"} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"slug"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input placeholder={"slug"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
