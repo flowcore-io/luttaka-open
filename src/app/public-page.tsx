@@ -3,7 +3,7 @@ import PublicHeader from "@/components/public-header"
 
 const PublicPage = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex h-full min-h-screen flex-row overflow-hidden bg-slate-700">
+    <div className="flex h-full min-h-screen flex-row overflow-hidden">
       <div className="relative flex w-96 flex-1 flex-col overflow-y-auto overflow-x-hidden">
         <PublicHeader />
         <main>
