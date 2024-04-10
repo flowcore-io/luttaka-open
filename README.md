@@ -120,8 +120,6 @@ npm install -g @flowcore/cli
 The application uses [Clerk](https://clerk.com) for authentication. Therefor you need to create an account and create a new Clerk application, followed by [obtaining the environment credentials that connects this project to your clerk application](https://clerk.com/docs/quickstarts/nextjs#set-your-environment-variables).
 You need the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to be set in your `.env` file.)
 
-### Setup Stripe CLI
-
 # Tenants
 
 Your tenant is part of the url when you go to your organization in the Flowcore Platform. For example, if you go to `https://flowcore.io/flowcore`, then `flowcore` is your tenant.
@@ -157,7 +155,7 @@ Because of how Flowcore works, we do not need to consider database migrations. T
 - Copy the file `.env.example` as `.env` and fill in the missing information
 - Run `yarn dev` to start the development server
 - Run `yarn local:stream` to start streaming data from Flowcore to your local database
-- **You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)**:
+- **You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)**
 
 The first user to login gets admin privileges.
 
