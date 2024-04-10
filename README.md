@@ -141,16 +141,6 @@ To setup a test stripe account without providing bank information
 7. Paste the `Publishable Key` as `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in the `.env` file
 8. Run `yarn stripe:listen` in your terminal and then fill the `WEBHOOK_SECRET` directly from the terminal
 
-```shell
-yarn flowcore:dev
-```
-
-this will create the required resources in the Flowcore Platform, inside your tenant.
-
-> Requires the Flowcore CLI version 2.5.0 or higher.
-> Production can be created with `yarn flowcore:prod`
-> The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
-
 ---
 
 # Tenants
@@ -172,6 +162,12 @@ can run the following command to spin up an environment for development:
 ```shell
 yarn flowcore:dev
 ```
+
+this will create the required resources in the Flowcore Platform, inside your tenant.
+
+> Requires the Flowcore CLI version 2.5.0 or higher.
+> Production can be created with `yarn flowcore:prod`
+> The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
 
 - Run `yarn` to install the dependencies
 - Start a PostgreSQL server. You can run `yarn docker:db` (_requires Docker_)
