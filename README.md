@@ -90,45 +90,45 @@ If you have any questions, concerns, or suggestions, please reach out to us thro
 
 # Prerequisites
 
-To run the application locally, you will need to create the datacore and scenarios required for the application to work.
-You can use the Flowcore CLI to create the datacore and scenarios, or you can use the Flowcore Platform to create them manually.
+To run the application locally, there are a couple of things that you need to have installed:
 
-To create the datacores use the following commands:
+### Node.js
+
+In order to run the project, you will need to have [Node.js](https://nodejs.org/en) installed. We recommend installing it through [nvm](https://github.com/nvm-sh/nvm).
+You will need Node.js version `20.11.0` or higher.
+
+### yarn
+
+We use [yarn](https://yarnpkg.com) as our package manager. You can install it by running `npm install -g yarn`.
+
+### Docker Desktop (optional, but recommended)
+
+We utilise docker to run the Postgres database locally. You can install Docker Desktop from [here](https://www.docker.com/products/docker-desktop).
+This is not a requirement, but we recommend always running a database in a container - and as such, we assume that you have Docker installed in the instructions below.
+
+### Flowcore Account
+
+Because the app uses Flowcore as its backend, you will need to set up a free account at [Flowcore](https://flowcore.io). You can read up on the basics [here](https://docs.flowcore.io/guides/1-account/1create-an-account/)
+
+### Flowcore CLI
+
+To improve the development experience, we use the [Flowcore CLI](https://www.npmjs.com/package/@flowcore/cli). This tool is used for both scaffolding the project on your flowcore account, as well as stream the data from flowcore to your local database.
+Run the following to install the flowcore cli:
 
 ```shell
 npm install -g @flowcore/cli
 ```
 
-then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fill in the missing information. Then you
-can run the following command to spin up an environment for development:
+# Clerk
 
-```shell
-yarn flowcore:dev
-```
+The application uses [Clerk](https://clerk.com) for authentication. Therefor you need to create an account and create a new Clerk application, followed by [obtaining the environment credentials that connects this project to your clerk application](https://clerk.com/docs/quickstarts/nextjs#set-your-environment-variables).
+You need the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to be set in your `.env` file.)
 
-this will create the required resources in the Flowcore Platform, inside your tenant.
-
-> Requires the Flowcore CLI version 2.5.0 or higher.
-> Production can be created with `yarn flowcore:prod`
-> The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
-
-## Setup Stripe CLI
+### Setup Stripe CLI
 
 Follow this [Link](https://docs.stripe.com/stripe-cli), To setup Stripe CLI on your machine. So you can easily interact with Stripe Webhooks
 
----
-
-## Node Version Requirement
-
-When running `yarn install`, you may get an error saying your Node.js version is outdated and you need to upgrade.
-
-To run this app, you need Node.js version `20.11.0` or higher.
-
-If you need to install a different Node.js version, you can use a version manager like [nvm](https://github.com/nvm-sh/nvm) to switch between versions easily.
-
----
-
-## Setting up Stripe Account
+### Setting up Stripe Account
 
 To setup a test stripe account without providing bank information
 
@@ -148,21 +148,40 @@ To setup a test stripe account without providing bank information
 Your tenant is part of the url when you go to your organization in the Flowcore Platform. For example, if you go to `https://flowcore.io/flowcore`, then `flowcore` is your tenant.
 You can also see the tenant where you select between your active organizations in the top left corner of the UI.
 
-# Clerk
+# Run the project locally
 
-You need to create an account with [Clerk](https://clerk.com) and create a new application. You need the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to be set in your `.env` file.
+- Clone the repository
+- **Scaffold the project into your flowcore account:**
 
-# Run locally
+To run the application locally, you will need to create the datacore and scenarios required for the application to work.
+You can use the Flowcore CLI to create the datacore and scenarios, or you can use the Flowcore Platform to create them manually.
 
-1. Clone the repository (or fork it if you intend to contribute)
-2. `yarn`
-3. Start a PostgreSQL server. You can run `yarn docker:db`
-4. Run `yarn db:push` to create the database tables
-5. Copy the file `.env.example` as `.env` and fill in the missing information
-6. `yarn dev`
-7. `yarn local:stream`
-8. Run `yarn stripe:listen` in your terminal to listen webhooks events
-9. You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>). The first user to login gets admin privileges.
+then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fill in the missing information. Then you
+can run the following command to spin up an environment for development:
+
+```shell
+yarn flowcore:dev
+```
+
+this will create the required resources in the Flowcore Platform, inside your tenant.
+
+> Requires the Flowcore CLI version 2.5.0 or higher.
+> Production can be created with `yarn flowcore:prod`
+> The command that is run under the hood for dev is `flowcore create -f flowcore.yaml -f flowcore.local.yaml`
+
+- Run `yarn` to install the dependencies
+- Start a PostgreSQL server. You can run `yarn docker:db` (_requires Docker_)
+- **Run `yarn db:push` to create the database tables**:
+
+Because of how Flowcore works, we do not need to consider database migrations. The databases are purely populated from the flowcore platform, hence why we can wipe the database whenever we want to make a change with no worry.
+
+- Copy the file `.env.example` as `.env` and fill in the missing information
+- Run `yarn dev` to start the development server
+- Run `yarn local:stream` to start streaming data from Flowcore to your local database
+- Run `yarn stripe:listen` in your terminal to listen webhooks events
+- **You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)**:
+
+The first user to login gets admin privileges.
 
 # Run in a container
 
