@@ -150,7 +150,7 @@ You can also see the tenant where you select between your active organizations i
 
 # Run the project locally
 
-- Clone the repository (or fork it if you intend to contribute)
+- Clone the repository
 - **Scaffold the project into your flowcore account:**
 
 To run the application locally, you will need to create the datacore and scenarios required for the application to work.
