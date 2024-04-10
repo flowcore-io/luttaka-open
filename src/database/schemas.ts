@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm"
-import { boolean, decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core"
+import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
 import { CompanyType } from "@/contracts/company/company-type"
 import { UserRole } from "@/contracts/user/user-role"

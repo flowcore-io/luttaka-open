@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import currencyCodes from "currency-codes"
 import { Loader } from "lucide-react"
-import { type FC, useCallback, useMemo, useState } from "react"
+import { type FC, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { NumericFormat } from "react-number-format"
 import { toast } from "sonner"
@@ -74,15 +73,6 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
     toast.success("Event created")
     refetch()
     close()
-  }, [])
-
-  const codes = useMemo(() => {
-    return currencyCodes.data.map((code) => {
-      return {
-        label: `${code.code} - ${code.currency}`,
-        value: code.code,
-      }
-    })
   }, [])
 
   return (
