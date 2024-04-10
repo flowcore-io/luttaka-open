@@ -2,9 +2,9 @@
 
 import { type IconProp } from "@fortawesome/fontawesome-svg-core"
 import {
+  faBuilding,
   faCalendarDays,
   faHouse,
-  faMagnifyingGlass,
   faPeopleGroup,
   faTicket,
 } from "@fortawesome/free-solid-svg-icons"
@@ -27,17 +27,17 @@ export const BottomBar = () => {
         <Link href="/me/tickets" className={`${linkClass("/me/tickets")}`}>
           <FontAwesomeIcon icon={faTicket as IconProp} />
         </Link>
-        <Link href="/networking" className={`${linkClass("/networking")}`}>
-          <FontAwesomeIcon icon={faPeopleGroup as IconProp} />
+        <Link href="/programme" className={`${linkClass("/programme")}`}>
+          <FontAwesomeIcon icon={faCalendarDays as IconProp} />
         </Link>
         <Link href="/" className={`${linkClass("/")}`}>
           <FontAwesomeIcon icon={faHouse as IconProp} />
         </Link>
-        <Link href="/programme" className={`${linkClass("/programme")}`}>
-          <FontAwesomeIcon icon={faCalendarDays as IconProp} />
+        <Link href="/networking" className={`${linkClass("/networking")}`}>
+          <FontAwesomeIcon icon={faPeopleGroup as IconProp} />
         </Link>
-        <Link href="/search" className={`${linkClass("/search")}`}>
-          <FontAwesomeIcon icon={faMagnifyingGlass as IconProp} />
+        <Link href="/companies" className={`${linkClass("/companies")}`}>
+          <FontAwesomeIcon icon={faBuilding as IconProp} />
         </Link>
       </div>
     </div>

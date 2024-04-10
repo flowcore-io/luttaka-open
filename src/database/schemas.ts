@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm"
 import { boolean, decimal, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
+import { CompanyType } from "@/contracts/company/company-type"
 import { UserRole } from "@/contracts/user/user-role"
 
 export const tickets = pgTable("tickets", {
@@ -56,8 +57,10 @@ export const events = pgTable("events", {
 export const companies = pgTable("companies", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  imageUrl: text("image_url"),
   description: text("description"),
-  ownerId: text("owner_id").notNull(),
+  ownerId: text("owner_id"),
+  companyType: text("company_type").notNull().default(CompanyType.default),
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
 })

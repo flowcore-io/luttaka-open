@@ -46,7 +46,7 @@ export const UserProfileView: FC<UserProfileProps> = ({ profile }) => {
           <h2 className={"text-2xl font-bold"}>Company</h2>
           {profile.company ? (
             <div>
-              <Link href={`/company/${profile.companyId}`}>
+              <Link href={`/companies/${profile.companyId}`}>
                 {profile.company}
               </Link>
             </div>

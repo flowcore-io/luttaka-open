@@ -100,7 +100,9 @@ export const UserProfileForm: FC<UserProfileProps> = ({ user }) => {
           name={"description"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel asChild>
+                <div>Description</div>
+              </FormLabel>
               <FormControl>
                 <Textarea placeholder={"description"} {...field} />
               </FormControl>
@@ -114,7 +116,9 @@ export const UserProfileForm: FC<UserProfileProps> = ({ user }) => {
           name={"company"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Company</FormLabel>
+              <FormLabel asChild>
+                <div>Company</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <SelectCompanyField
@@ -135,7 +139,9 @@ export const UserProfileForm: FC<UserProfileProps> = ({ user }) => {
           name={"socials"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Socials</FormLabel>
+              <FormLabel asChild>
+                <div>Socials</div>
+              </FormLabel>
               <FormControl>
                 <Input placeholder={"social media link"} {...field} />
               </FormControl>

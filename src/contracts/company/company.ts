@@ -5,14 +5,18 @@ import { z } from "zod"
 export const CompanyProfileDto = z.object({
   id: z.string(),
   name: z.string(),
+  imageUrl: z.string().optional(),
   description: z.string().optional(),
-  owner: z.string(),
+  owner: z.string().optional(),
+  companyType: z.string().optional(),
 })
 
 export const CreateCompanyInputDto = CompanyProfileDto.pick({
   name: true,
+  imageUrl: true,
   description: true,
   owner: true,
+  companyType: true,
 })
 
 export const UpdateCompanyInputDto = CompanyProfileDto.partial().required({
