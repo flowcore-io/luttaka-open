@@ -3,7 +3,6 @@ import currencyCodes from "currency-codes"
 import { Loader } from "lucide-react"
 import { type FC, useCallback, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
-import { NumericFormat } from "react-number-format"
 import { toast } from "sonner"
 
 import { MarkdownEditor } from "@/components/md-editor"
@@ -18,13 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import {
   type CreateEventInput,
   CreateEventInputDto,
@@ -52,11 +44,8 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
       name: "",
       description: "",
       ticketDescription: "",
-      ticketCurrency: "USD",
-      ticketPrice: 0.0,
       startDate: new Date().toISOString(),
       endDate: new Date().toISOString(),
-      stripeId: "",
     },
   })
 
@@ -135,65 +124,6 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
             </FormItem>
           )}
         />
-        <div className="flex space-x-2">
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name={"ticketPrice"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <NumericFormat
-                      placeholder={"price"}
-                      value={field.value}
-                      onValueChange={(value) =>
-                        field.onChange({
-                          target: {
-                            value: value.floatValue,
-                            name: field.name,
-                          },
-                        })
-                      }
-                      customInput={Input}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name={"ticketCurrency"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel asChild>
-                    <div>Currency</div>
-                  </FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}>
-                      <SelectTrigger className="w-[280px]">
-                        <SelectValue placeholder="Select currency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {codes.map((code) => (
-                          <SelectItem value={code.value} key={code.value}>
-                            {code.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
         <FormField
           control={form.control}
           name={"startDate"}
