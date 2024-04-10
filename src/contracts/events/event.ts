@@ -16,11 +16,8 @@ export const EventEventCreatedPayload = z.object({
   name: z.string(),
   description: z.string(),
   ticketDescription: z.string(),
-  ticketPrice: z.number(),
-  ticketCurrency: z.string(),
   startDate: z.string(),
   endDate: z.string(),
-  stripeId: z.string(),
 })
 
 export const EventEventUpdatedPayload = EventEventCreatedPayload.pick({
@@ -28,8 +25,6 @@ export const EventEventUpdatedPayload = EventEventCreatedPayload.pick({
   name: true,
   description: true,
   ticketDescription: true,
-  ticketPrice: true,
-  ticketCurrency: true,
   startDate: true,
   endDate: true,
 })

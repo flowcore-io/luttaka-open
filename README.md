@@ -70,9 +70,8 @@ can either use the official instance at luttaka.com, or deploy your own instance
 - Next.js for the web application
 - TailwindCSS for the styling
 - shadcn/UI for the UI components
+- Clerk for authentication
 - Drizzle to access the database
-- Vercel for hosting (application and database)
-- Stripe for payment processing
 - Flowcore for data infrastructure
 
 # Contribute
@@ -126,23 +125,6 @@ You need the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and
 
 ### Setup Stripe CLI
 
-Follow this [Link](https://docs.stripe.com/stripe-cli), To setup Stripe CLI on your machine. So you can easily interact with Stripe Webhooks
-
-### Setting up Stripe Account
-
-To setup a test stripe account without providing bank information
-
-1. Go to [Stripe](https://stripe.com) and create an account
-2. Go to [Dashboard](https://dashboard.stripe.com/test/dashboard) and click on `Developers`
-3. Click on `API keys` and copy the `Secret key` and `Publishable key`
-4. Create `.env` file in your root folder
-5. Copy the content inside the `.env.example` and paste it inside newly created `.env` file
-6. Paste the `Secret key` as `STRIPE_SECRET_KEY`
-7. Paste the `Publishable Key` as `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in the `.env` file
-8. Run `yarn stripe:listen` in your terminal and then fill the `WEBHOOK_SECRET` directly from the terminal
-
----
-
 # Tenants
 
 Your tenant is part of the url when you go to your organization in the Flowcore Platform. For example, if you go to `https://flowcore.io/flowcore`, then `flowcore` is your tenant.
@@ -178,7 +160,6 @@ Because of how Flowcore works, we do not need to consider database migrations. T
 - Copy the file `.env.example` as `.env` and fill in the missing information
 - Run `yarn dev` to start the development server
 - Run `yarn local:stream` to start streaming data from Flowcore to your local database
-- Run `yarn stripe:listen` in your terminal to listen webhooks events
 - **You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)**:
 
 The first user to login gets admin privileges.

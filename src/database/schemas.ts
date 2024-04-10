@@ -47,11 +47,8 @@ export const events = pgTable("events", {
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
   ticketDescription: text("ticket_description"),
-  ticketPrice: decimal("ticket_price").notNull().$type<number>(),
-  ticketCurrency: text("ticket_currency").notNull(),
   startDate: text("start_date").notNull(),
   endDate: text("end_date").notNull(),
-  stripeId: text("stripe_id").notNull(),
 })
 
 export const companies = pgTable("companies", {
