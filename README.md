@@ -4,35 +4,32 @@ can either use the official instance at luttaka.com, or deploy your own instance
 # Basic features for event participants
 
 - Tickets
-- [ ] Buy ticket with credit/debit cards
-- [ ] See which tickets have been bought
-- [ ] Assign tickets to others
-- [ ] Show QR-code during check-in
+- [x] Assign tickets to others
+- [x] Show QR-code during check-in
 - Networking
+- [x] List participants
 - [ ] Search for participants
 - [ ] Mark favourites
 - Content
+- [x] List companies
 - [ ] Search for companies
 - [ ] Mark favourites
-- [ ] event program
+- [ ] Event program
 - Settings
-- [ ] Edit participant profile
-- [ ] Edit company profile
+- [x] Edit participant profile
+- [x] Edit company profile
 
 # Basic features for event administrators
 
 - Tickets
-- [ ] Manual registration of sold tickets
-- [ ] See which tickets have been bought
-- [ ] Assign tickets that have been bought
+- [x] Generate tickets
+- [x] Assign tickets that have been bought
 - [ ] Print participant label
-- [ ] Check-in participant (scan QR-code)
+- [x] Check-in participant (scan QR-code)
 - Networking
-- [ ] Search for participants
 - [ ] Edit participant information
 - [ ] Hide participant
 - Content
-- [ ] Search for companies
 - [ ] Edit company information
 - [ ] Hide company
 - [ ] Edit event program
@@ -69,7 +66,7 @@ can either use the official instance at luttaka.com, or deploy your own instance
 
 - Next.js for the web application
 - TailwindCSS for the styling
-- shadcn/UI for the UI components
+- Shadcn/UI for the UI components
 - Clerk for authentication
 - Drizzle to access the database
 - Flowcore for data infrastructure
@@ -163,13 +160,6 @@ Because of how Flowcore works, we do not need to consider database migrations. T
 - **You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)**:
 
 The first user to login gets admin privileges.
-
-# Run in a container
-
-1. Run `yarn build-image` to build the docker image from the Dockerfile
-2. Copy the file `.env.example` as `.container.env` and adjust the values to match the container environment
-3. Run `yarn docker:app` to start the postgres and the app containers
-4. You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)
 
 # License
 
