@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { UserRole } from "@/contracts/user/user-role"
-import getStripe from "@/lib/stripe/get"
 import { type appRouter } from "@/server/api/root"
 import { api } from "@/trpc/react"
 
@@ -71,31 +70,6 @@ export default function Event({ event }: EventProps) {
     setPurchaseLoading(false)
   }, [ticketQuantity, event.id])
 
-  const purchaseTicket = useCallback(async () => {
-    setPurchaseLoading(true)
-    const stripe = await getStripe()
-    if (!stripe) {
-      toast.error("Failed to redirect to checkout")
-      return
-    }
-    const response = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      body: JSON.stringify({
-        eventId: event.id,
-        quantity: ticketQuantity,
-      }),
-    })
-    const session = CheckoutResponse.parse(await response.json())
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.sessionId,
-    })
-    if (result.error) {
-      toast.error("Failed to redirect to checkout")
-      setPurchaseLoading(false)
-      return
-    }
-  }, [ticketQuantity, event.id])
-
   return (
     <div key={event.id} className={`mb-6 p-2`}>
       <div>
@@ -109,16 +83,12 @@ export default function Event({ event }: EventProps) {
               {dayjs(event.endDate).format("MMMM D, YYYY")}
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="mb-2 font-bold">Price:</div>
-            <div>{formatCurrency(event.ticketPrice, event.ticketCurrency)}</div>
-          </CardContent>
           <CardFooter className="space-x-2">
             <Button
               type="button"
               className="flex-1"
               onClick={() => setPurchaseTicketDialogOpened(true)}>
-              Buy
+              Generate
             </Button>
           </CardFooter>
         </Card>
@@ -129,10 +99,7 @@ export default function Event({ event }: EventProps) {
           }}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Purchase ticket(s) for {event?.name}</DialogTitle>
-              <DialogDescription>
-                Price: {formatCurrency(event.ticketPrice, event.ticketCurrency)}
-              </DialogDescription>
+              <DialogTitle>Generate ticket(s) for {event?.name}</DialogTitle>
             </DialogHeader>
             <div>
               <Input
@@ -154,11 +121,6 @@ export default function Event({ event }: EventProps) {
                   {ticketQuantity > 1 ? "s" : ""}
                 </Button>
               </RestrictedToRole>
-              <Button
-                onClick={() => purchaseTicket()}
-                disabled={purchaseLoading}>
-                Purchase {ticketQuantity} ticket{ticketQuantity > 1 ? "s" : ""}
-              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

@@ -60,8 +60,6 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
       slug: event.slug,
       description: event.description,
       ticketDescription: event.ticketDescription,
-      ticketCurrency: event.ticketCurrency,
-      ticketPrice: event.ticketPrice,
       startDate: event.startDate,
       endDate: event.endDate,
     },
@@ -87,16 +85,6 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
         }
       }
 
-      let ticketPrice: number | undefined = undefined
-      let ticketCurrency: string | undefined = undefined
-      if (
-        values.ticketPrice !== event.ticketPrice ||
-        values.ticketCurrency !== event.ticketCurrency
-      ) {
-        ticketPrice = values.ticketPrice ?? event.ticketPrice
-        ticketCurrency = values.ticketCurrency ?? event.ticketCurrency
-      }
-
       const valuesToSubmit: UpdateEventInput = {
         id: event.id,
         name: event.name !== values.name ? values.name : undefined,
@@ -109,8 +97,6 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
           event.ticketDescription !== values.ticketDescription
             ? values.ticketDescription
             : undefined,
-        ticketPrice: ticketPrice,
-        ticketCurrency: ticketCurrency,
         startDate:
           event.startDate !== values.startDate ? values.startDate : undefined,
         endDate: event.endDate !== values.endDate ? values.endDate : undefined,
@@ -188,65 +174,6 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
             </FormItem>
           )}
         />
-        <div className={"flex space-x-2"}>
-          <div className={"flex-1"}>
-            <FormField
-              control={form.control}
-              name={"ticketPrice"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <NumericFormat
-                      placeholder={"price"}
-                      value={field.value}
-                      onValueChange={(value) =>
-                        field.onChange({
-                          target: {
-                            value: value.floatValue,
-                            name: field.name,
-                          },
-                        })
-                      }
-                      customInput={Input}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className={"flex-1"}>
-            <FormField
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel asChild>
-                    <div>Currency</div>
-                  </FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}>
-                      <SelectTrigger className="w-[280px]">
-                        <SelectValue placeholder="Select currency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {codes.map((code) => (
-                          <SelectItem value={code.value} key={code.value}>
-                            {code.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-              name={"ticketCurrency"}
-              control={form.control}
-            />
-          </div>
-        </div>
 
         <FormField
           control={form.control}

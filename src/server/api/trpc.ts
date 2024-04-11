@@ -73,7 +73,7 @@ export const createTRPCContext = async (opts: {
       ...opts,
     }
   }
-
+  const userCount = (await db.query.users.findMany()).length
   const externalUser = await clerkClient.users.getUser(externalId)
   const userId = shortUUID.generate()
   await sendWebhook<z.infer<typeof UserCreatedEventPayload>>(
@@ -81,7 +81,7 @@ export const createTRPCContext = async (opts: {
     userEvent.eventType.created,
     {
       userId: userId,
-      role: UserRole.user,
+      role: userCount === 0 ? UserRole.admin : UserRole.user,
       externalId,
       firstName: externalUser.firstName ?? "",
       lastName: externalUser.lastName ?? "",
