@@ -3,7 +3,6 @@ import currencyCodes from "currency-codes"
 import { Loader } from "lucide-react"
 import { type FC, useCallback, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
-import { NumericFormat } from "react-number-format"
 import { toast } from "sonner"
 
 import { MarkdownEditor } from "@/components/md-editor"
@@ -18,13 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import {
   type EventProfile,
   type UpdateEventInput,
@@ -88,7 +80,10 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
       const valuesToSubmit: UpdateEventInput = {
         id: event.id,
         name: event.name !== values.name ? values.name : undefined,
-        slug: event.slug !== values.slug ? values.slug : undefined,
+        slug:
+          event.slug !== values.slug
+            ? createSlug(values.slug ?? "")
+            : undefined,
         description:
           event.description !== values.description
             ? values.description
@@ -119,6 +114,13 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
     })
   }, [])
 
+  const createSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+  }
+
   return (
     <Form {...form}>
       <form
@@ -134,7 +136,34 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
             <FormItem>
               <FormLabel>Event Name</FormLabel>
               <FormControl>
-                <Input placeholder={"event name"} {...field} />
+                <Input
+                  placeholder={"event name"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"slug"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder={"slug"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
