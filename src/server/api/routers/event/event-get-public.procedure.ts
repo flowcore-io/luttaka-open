@@ -11,8 +11,14 @@ const GetEventInput = z.object({
 
 export const getEventPublicProcedure = publicProcedure
   .input(GetEventInput)
-  .query(({ input }) => {
-    return db.query.events.findFirst({
+  .query(async ({ input }) => {
+    const event = await db.query.events.findFirst({
       where: eq(events.slug, input.slug),
     })
+
+    if (!event) {
+      return { noResults: true }
+    }
+
+    return event
   })
