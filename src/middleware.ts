@@ -5,6 +5,7 @@ export default authMiddleware({
     "/",
     "/event/:slug*",
     "/api/trpc/event.getPublic",
+    "/api/trpc/event.getPublicList",
     "/api/stripe/webhook",
     "/api/transform/ticket.0",
     "/api/transform/user.0",
