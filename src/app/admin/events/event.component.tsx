@@ -11,7 +11,7 @@ export interface EventProps {
   event: {
     id: string
     name: string
-    slug: string
+    slug: string | null
     description: string | null
     ticketDescription: string | null
     startDate: string
@@ -82,6 +82,7 @@ export function Event({ event, refetch }: EventProps) {
             <UpdateEventForm
               event={{
                 ...event,
+                slug: event.slug ?? "",
                 ticketDescription: event.ticketDescription ?? "",
                 description: event.description ?? "",
               }}
