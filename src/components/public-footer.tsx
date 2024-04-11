@@ -1,5 +1,3 @@
-import Link from "next/link"
-
 const PublicFooter = () => {
   return (
     <footer className="flex min-h-12 items-center justify-center">
