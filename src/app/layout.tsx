@@ -3,13 +3,13 @@ import "@/styles/globals.css"
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
 import { Dongle, Inter, Lato } from "next/font/google"
 import { cookies } from "next/headers"
-
+import PublicFooter from "@/components/public-footer"
+import PublicHeader from "@/components/public-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TRPCReactProvider } from "@/trpc/react"
 
 import ProtectedPage from "./protected-page"
-import PublicPage from "./public-page"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -51,7 +51,19 @@ export default function RootLayout({
           enableSystem>
           <ClerkProvider>
             <SignedOut>
-              <PublicPage children={children} />
+              <TRPCReactProvider cookies={cookies().toString()}>
+                <div className="flex h-full min-h-screen flex-row overflow-hidden">
+                  <div className="relative flex w-96 flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                    <PublicHeader />
+                    <main>
+                      <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                        {children}
+                      </div>
+                    </main>
+                    <PublicFooter />
+                  </div>
+                </div>
+              </TRPCReactProvider>
             </SignedOut>
             <SignedIn>
               <TRPCReactProvider cookies={cookies().toString()}>

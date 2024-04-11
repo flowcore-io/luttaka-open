@@ -5,6 +5,7 @@ import { z } from "zod"
 export const EventProfileDto = z.object({
   id: z.string(),
   name: z.string(),
+  slug: z.string(),
   description: z.string(),
   ticketDescription: z.string(),
   startDate: z.string(),
@@ -18,6 +19,7 @@ export const EventPreviewDto = EventProfileDto.pick({
 
 export const CreateEventInputDto = EventProfileDto.pick({
   name: true,
+  slug: true,
   description: true,
   ticketDescription: true,
   startDate: true,

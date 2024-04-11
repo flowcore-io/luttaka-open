@@ -48,6 +48,7 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
     defaultValues: {
       id: event.id,
       name: event.name,
+      slug: event.slug,
       description: event.description,
       ticketDescription: event.ticketDescription,
       startDate: event.startDate,
@@ -78,6 +79,10 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
       const valuesToSubmit: UpdateEventInput = {
         id: event.id,
         name: event.name !== values.name ? values.name : undefined,
+        slug:
+          event.slug !== values.slug
+            ? createSlug(values.slug ?? "")
+            : undefined,
         description:
           event.description !== values.description
             ? values.description
@@ -99,6 +104,13 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
     [event],
   )
 
+  const createSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+  }
+
   return (
     <Form {...form}>
       <form
@@ -114,7 +126,34 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
             <FormItem>
               <FormLabel>Event Name</FormLabel>
               <FormControl>
-                <Input placeholder={"event name"} {...field} />
+                <Input
+                  placeholder={"event name"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"slug"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder={"slug"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

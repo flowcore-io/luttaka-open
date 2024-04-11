@@ -11,6 +11,7 @@ export interface EventProps {
   event: {
     id: string
     name: string
+    slug: string | null
     description: string | null
     ticketDescription: string | null
     startDate: string
@@ -77,10 +78,11 @@ export function Event({ event, refetch }: EventProps) {
             !open && setUpdateEventDialogOpened(open)
           }}>
           <DialogContent className={"max-w-4xl"}>
-            <DialogHeader>Create new event</DialogHeader>
+            <DialogHeader>Edit event</DialogHeader>
             <UpdateEventForm
               event={{
                 ...event,
+                slug: event.slug ?? "",
                 ticketDescription: event.ticketDescription ?? "",
                 description: event.description ?? "",
               }}

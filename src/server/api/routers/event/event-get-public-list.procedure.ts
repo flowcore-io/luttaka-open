@@ -2,9 +2,9 @@ import { eq } from "drizzle-orm"
 
 import { db } from "@/database"
 import { events } from "@/database/schemas"
-import { protectedProcedure } from "@/server/api/trpc"
+import { publicProcedure } from "@/server/api/trpc"
 
-export const getEventsProcedure = protectedProcedure.query(async () => {
+export const getEventPublicListProcedure = publicProcedure.query(async () => {
   return (
     (await db
       .select({
