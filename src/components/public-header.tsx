@@ -1,4 +1,3 @@
-import { SignInButton } from "@clerk/nextjs"
 import Image from "next/image"
 
 import tonikLogo from "../../public/images/tonik-logo.jpg"
