@@ -3,6 +3,7 @@ import "@/styles/globals.css"
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
 import { Dongle, Inter, Lato } from "next/font/google"
 import { cookies } from "next/headers"
+
 import PublicFooter from "@/components/public-footer"
 import PublicHeader from "@/components/public-header"
 import { ThemeProvider } from "@/components/theme-provider"

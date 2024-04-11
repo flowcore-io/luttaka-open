@@ -5,7 +5,6 @@ import { TicketIcon } from "lucide-react"
 import Link from "next/link"
 
 import RedeemTicketsDialog from "@/app/me/tickets/redeem-ticket.dialog"
-import { Ticket } from "@/app/me/tickets/ticket.component"
 import MarkdownViewer from "@/components/md-viewer"
 import { Button } from "@/components/ui/button"
 import { PageTitle } from "@/components/ui/page-title"
