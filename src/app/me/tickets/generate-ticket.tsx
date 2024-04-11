@@ -6,13 +6,11 @@ import dayjs from "dayjs"
 import { useRouter } from "next/navigation"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
-import { z } from "zod"
 
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -21,7 +19,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog"
@@ -32,29 +29,23 @@ import { api } from "@/trpc/react"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
 
-const CheckoutResponse = z.object({
-  sessionId: z.string(),
-})
-
-interface EventProps {
+interface GenerateTicketProps {
   event: RouterOutput["event"]["list"][0]
+  refetch: () => Promise<void>
 }
-export default function Event({ event }: EventProps) {
-  const [purchaseTicketDialogOpened, setPurchaseTicketDialogOpened] =
+export default function GenerateTicket({
+  event,
+  refetch,
+}: GenerateTicketProps) {
+  const [generateTicketDialogOpened, setGenerateTicketDialogOpened] =
     useState(false)
   const [ticketQuantity, setTicketQuantity] = useState(1)
-  const [purchaseLoading, setPurchaseLoading] = useState(false)
+  const [generateLoading, setGenerateLoading] = useState(false)
   const router = useRouter()
-
-  const formatCurrency = (value: number, currency: string, locale = "da-DK") =>
-    new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency: currency,
-    }).format(value)
 
   const apiCreateTicket = api.ticket.create.useMutation()
   const generateTicket = useCallback(async () => {
-    setPurchaseLoading(true)
+    setGenerateLoading(true)
     try {
       await apiCreateTicket.mutateAsync({
         eventId: event.id,
@@ -67,7 +58,9 @@ export default function Event({ event }: EventProps) {
         error instanceof Error ? error.message : "Ticket create failed"
       toast.error(title)
     }
-    setPurchaseLoading(false)
+    setGenerateLoading(false)
+    setGenerateTicketDialogOpened(false)
+    await refetch()
   }, [ticketQuantity, event.id])
 
   return (
@@ -87,15 +80,15 @@ export default function Event({ event }: EventProps) {
             <Button
               type="button"
               className="flex-1"
-              onClick={() => setPurchaseTicketDialogOpened(true)}>
+              onClick={() => setGenerateTicketDialogOpened(true)}>
               Generate
             </Button>
           </CardFooter>
         </Card>
         <Dialog
-          open={purchaseTicketDialogOpened}
+          open={generateTicketDialogOpened}
           onOpenChange={(open) => {
-            !open && setPurchaseTicketDialogOpened(open)
+            !open && setGenerateTicketDialogOpened(open)
           }}>
           <DialogContent>
             <DialogHeader>
@@ -105,7 +98,7 @@ export default function Event({ event }: EventProps) {
               <Input
                 type={"number"}
                 value={ticketQuantity}
-                disabled={purchaseLoading}
+                disabled={generateLoading}
                 onChange={(e) =>
                   setTicketQuantity(parseInt(e.currentTarget.value, 10))
                 }
@@ -116,7 +109,7 @@ export default function Event({ event }: EventProps) {
                 <Button
                   variant={"outline"}
                   onClick={() => generateTicket()}
-                  disabled={purchaseLoading}>
+                  disabled={generateLoading}>
                   Generate {ticketQuantity} ticket
                   {ticketQuantity > 1 ? "s" : ""}
                 </Button>
