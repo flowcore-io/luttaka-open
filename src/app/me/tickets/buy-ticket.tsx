@@ -40,7 +40,7 @@ const CheckoutResponse = z.object({
 interface EventProps {
   event: RouterOutput["event"]["list"][0]
 }
-export default function Event({ event }: EventProps) {
+export default function BuyTicket({ event }: EventProps) {
   const [purchaseTicketDialogOpened, setPurchaseTicketDialogOpened] =
     useState(false)
   const [ticketQuantity, setTicketQuantity] = useState(1)
