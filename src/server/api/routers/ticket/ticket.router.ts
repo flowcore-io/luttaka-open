@@ -8,7 +8,7 @@ import { cancelTicketTransferProcedure } from "@/server/api/routers/ticket/ticke
 import { createTicketTransferProcedure } from "@/server/api/routers/ticket/ticket-transfer-create.procedure"
 import { createTRPCRouter } from "@/server/api/trpc"
 
-export default createTRPCRouter({
+export const ticketRouter = createTRPCRouter({
   get: getTicketProcedure,
   list: getTicketsProcedure,
   create: createTicketProcedure,
