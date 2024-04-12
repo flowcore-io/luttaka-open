@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
         ticketIds: ticketIds.join(","),
       },
       mode: "payment",
-      success_url: `${request.headers.get("origin")}/me/tickets?success=true&tickets=${ticketIds.join(",")}`,
+      success_url: `${request.headers.get("origin")}/me/tickets?success=true&eventid=${body.eventId}&tickets=${ticketIds.join(",")}`,
       cancel_url: `${request.headers.get("origin")}/me/tickets?success=false`,
     })
     return NextResponse.json({ sessionId: session.id })
