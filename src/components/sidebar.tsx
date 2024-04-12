@@ -3,6 +3,7 @@ import {
   BookOpen,
   BuildingIcon,
   CalendarIcon,
+  CalendarCheckIcon,
   Home,
   Newspaper,
   Ticket,
@@ -35,8 +36,8 @@ const Sidebar = () => {
             icon: Ticket,
           },
           {
-            href: "/program",
-            title: "Program",
+            href: "/activities",
+            title: "Activities",
             label: "",
             superuserRequired: false,
             icon: CalendarIcon,
@@ -82,6 +83,13 @@ const Sidebar = () => {
             label: "",
             superuserRequired: true,
             icon: BookOpen,
+          },
+          {
+            href: "/admin/activities",
+            title: "Manage Activities",
+            label: "",
+            superuserRequired: true,
+            icon: CalendarCheckIcon,
           },
           {
             href: "/admin/newsitems",
