@@ -10,9 +10,9 @@ export const getEventsProcedure = protectedProcedure.query(async () => {
       .select({
         id: events.id,
         name: events.name,
-        slug: events.slug,
-        description: events.description,
-        ticketDescription: events.ticketDescription,
+        slug: events.slug ?? "",
+        description: events.description ?? "",
+        ticketDescription: events.ticketDescription ?? "",
         ticketPrice: events.ticketPrice,
         ticketCurrency: events.ticketCurrency,
         startDate: events.startDate,
