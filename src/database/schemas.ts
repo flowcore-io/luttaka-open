@@ -74,3 +74,18 @@ export const newsitems = pgTable("newsitems", {
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
 })
+
+export const activities = pgTable("activities", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  imageUrl: text("image_url"),
+  introText: text("intro_text"),
+  fullText: text("full_text"),
+  stageName: text("stage_name"),
+  startTime: text("start_time"),
+  endTime: text("end_time"),
+  publicVisibility: boolean("public_visibility").notNull().default(false),
+  publishedAt: text("published_at"),
+  archived: boolean("archived").notNull().default(false),
+  reason: text("reason"),
+})

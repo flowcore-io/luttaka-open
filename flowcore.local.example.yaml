@@ -15,3 +15,5 @@ scenario:
       dataCore: luttaka-open-dev
     newsitems:
       dataCore: luttaka-open-dev
+    activities:
+      dataCore: luttaka-open-dev
