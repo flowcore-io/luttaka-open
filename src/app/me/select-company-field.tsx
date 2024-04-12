@@ -42,7 +42,7 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
     isLoading,
     data: results,
     refetch,
-  } = api.company.list.useQuery({
+  } = api.company.search.useQuery({
     name: fetchQuery,
   })
 
@@ -77,7 +77,7 @@ export const SelectCompanyField: FC<SelectCompanyFieldProps> = ({
               !value && "text-muted-foreground",
             )}>
             {currentLabel ? (
-              <Link href={`/company/${value}`} className={"underline"}>
+              <Link href={`/companies/${value}`} className={"underline"}>
                 {currentLabel}
               </Link>
             ) : (

@@ -1,9 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import currencyCodes from "currency-codes"
 import { Loader } from "lucide-react"
-import { type FC, useCallback, useMemo, useState } from "react"
+import { type FC, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
-import { NumericFormat } from "react-number-format"
 import { toast } from "sonner"
 
 import { MarkdownEditor } from "@/components/md-editor"
@@ -18,13 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import {
   type CreateEventInput,
   CreateEventInputDto,
@@ -50,19 +41,18 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
     resolver: zodResolver(CreateEventInputDto),
     defaultValues: {
       name: "",
+      slug: "",
       description: "",
       ticketDescription: "",
-      ticketCurrency: "USD",
-      ticketPrice: 0.0,
       startDate: new Date().toISOString(),
       endDate: new Date().toISOString(),
-      stripeId: "",
     },
   })
 
   const [hasTime, setHasTime] = useState(false)
 
   const onSubmit = useCallback(async (values: CreateEventInput) => {
+    form.setValue("slug", createSlug(values.slug))
     if (new Date(values.startDate) > new Date(values.endDate)) {
       form.setError("startDate", {
         type: "manual",
@@ -76,14 +66,12 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
     close()
   }, [])
 
-  const codes = useMemo(() => {
-    return currencyCodes.data.map((code) => {
-      return {
-        label: `${code.code} - ${code.currency}`,
-        value: code.code,
-      }
-    })
-  }, [])
+  const createSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+  }
 
   return (
     <Form {...form}>
@@ -95,7 +83,34 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
             <FormItem>
               <FormLabel>Event Name</FormLabel>
               <FormControl>
-                <Input placeholder={"event name"} {...field} />
+                <Input
+                  placeholder={"event name"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"slug"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder={"slug"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,7 +121,9 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
           name={"description"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel asChild>
+                <div>Description</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <MarkdownEditor
@@ -133,70 +150,14 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
             </FormItem>
           )}
         />
-        <div className="flex space-x-2">
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name={"ticketPrice"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <NumericFormat
-                      placeholder={"price"}
-                      value={field.value}
-                      onValueChange={(value) =>
-                        field.onChange({
-                          target: {
-                            value: value.floatValue,
-                            name: field.name,
-                          },
-                        })
-                      }
-                      customInput={Input}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name={"ticketCurrency"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Currency</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}>
-                      <SelectTrigger className="w-[280px]">
-                        <SelectValue placeholder="Select currency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {codes.map((code) => (
-                          <SelectItem value={code.value} key={code.value}>
-                            {code.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
         <FormField
           control={form.control}
           name={"startDate"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Start Date</FormLabel>
+              <FormLabel asChild>
+                <div>Start Date</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker
@@ -228,7 +189,9 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
           name={"endDate"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>End Date</FormLabel>
+              <FormLabel asChild>
+                <div>End Date</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker

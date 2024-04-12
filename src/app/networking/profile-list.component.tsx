@@ -42,7 +42,7 @@ export const ProfileList: FC<ProfileListProps> = ({ eventId }) => {
       (page) => page > 0,
     )
     const nextPages = [pager.page + 1, pager.page + 2].filter(
-      (page) => page <= profileCountRequest.data / PAGE_SIZE,
+      (page) => page <= profileCountRequest.data / PAGE_SIZE + 1,
     )
     return [...previousPages, pager.page, ...nextPages]
   }, [profileCountRequest.data, pager.page])

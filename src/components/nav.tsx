@@ -16,7 +16,7 @@ interface NavProps {
     title: string
     label?: string
     superuserRequired: boolean
-    icon: LucideIcon
+    icon: LucideIcon | null
   }[]
 }
 
@@ -39,7 +39,7 @@ export function Nav({ links }: NavProps) {
               asChild
               variant={isCurrent ? "default" : "ghost"}>
               <Link href={link.href ?? "/"}>
-                <link.icon className="mr-2 h-5 w-5" />
+                {link.icon && <link.icon className="mr-2 h-5 w-5" />}
                 {link.title}
                 {link.label && (
                   <span

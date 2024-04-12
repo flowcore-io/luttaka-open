@@ -11,13 +11,11 @@ export interface EventProps {
   event: {
     id: string
     name: string
+    slug: string | null
     description: string | null
     ticketDescription: string | null
-    ticketPrice: number
-    ticketCurrency: string
     startDate: string
     endDate: string
-    stripeId: string
   }
   refetch: () => Promise<void>
 }
@@ -52,12 +50,6 @@ export function Event({ event, refetch }: EventProps) {
           <div className={"text-sm text-gray-500"}>{event.description}</div>
           <div className={"text-sm text-gray-500"}>Event ID: {event.id}</div>
           <div className={"text-sm text-gray-500"}>
-            Stripe ID: {event.stripeId}
-          </div>
-          <div className={"text-sm text-gray-500"}>
-            Price: {event.ticketPrice} {event.ticketCurrency}
-          </div>
-          <div className={"text-sm text-gray-500"}>
             Start: {event.startDate}
           </div>
           <div className={"text-sm text-gray-500"}>End: {event.endDate}</div>
@@ -86,10 +78,11 @@ export function Event({ event, refetch }: EventProps) {
             !open && setUpdateEventDialogOpened(open)
           }}>
           <DialogContent className={"max-w-4xl"}>
-            <DialogHeader>Create new event</DialogHeader>
+            <DialogHeader>Edit event</DialogHeader>
             <UpdateEventForm
               event={{
                 ...event,
+                slug: event.slug ?? "",
                 ticketDescription: event.ticketDescription ?? "",
                 description: event.description ?? "",
               }}

@@ -103,7 +103,9 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
           name={"introText"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Introtext</FormLabel>
+              <FormLabel asChild>
+                <div>Introtext</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <MarkdownEditor
@@ -122,7 +124,9 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
           name={"fullText"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full text</FormLabel>
+              <FormLabel asChild>
+                <div>Longer text</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <MarkdownEditor
@@ -141,7 +145,9 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
           name={"publishedAt"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Published at</FormLabel>
+              <FormLabel asChild>
+                <div>Published at</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker

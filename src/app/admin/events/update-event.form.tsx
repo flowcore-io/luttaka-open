@@ -1,9 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import currencyCodes from "currency-codes"
 import { Loader } from "lucide-react"
-import { type FC, useCallback, useMemo, useState } from "react"
+import { type FC, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
-import { NumericFormat } from "react-number-format"
 import { toast } from "sonner"
 
 import { MarkdownEditor } from "@/components/md-editor"
@@ -18,13 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import {
   type EventProfile,
   type UpdateEventInput,
@@ -57,10 +48,9 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
     defaultValues: {
       id: event.id,
       name: event.name,
+      slug: event.slug,
       description: event.description,
       ticketDescription: event.ticketDescription,
-      ticketCurrency: event.ticketCurrency,
-      ticketPrice: event.ticketPrice,
       startDate: event.startDate,
       endDate: event.endDate,
     },
@@ -86,19 +76,13 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
         }
       }
 
-      let ticketPrice: number | undefined = undefined
-      let ticketCurrency: string | undefined = undefined
-      if (
-        values.ticketPrice !== event.ticketPrice ||
-        values.ticketCurrency !== event.ticketCurrency
-      ) {
-        ticketPrice = values.ticketPrice ?? event.ticketPrice
-        ticketCurrency = values.ticketCurrency ?? event.ticketCurrency
-      }
-
       const valuesToSubmit: UpdateEventInput = {
         id: event.id,
         name: event.name !== values.name ? values.name : undefined,
+        slug:
+          event.slug !== values.slug
+            ? createSlug(values.slug ?? "")
+            : undefined,
         description:
           event.description !== values.description
             ? values.description
@@ -107,8 +91,6 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
           event.ticketDescription !== values.ticketDescription
             ? values.ticketDescription
             : undefined,
-        ticketPrice: ticketPrice,
-        ticketCurrency: ticketCurrency,
         startDate:
           event.startDate !== values.startDate ? values.startDate : undefined,
         endDate: event.endDate !== values.endDate ? values.endDate : undefined,
@@ -122,14 +104,12 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
     [event],
   )
 
-  const codes = useMemo(() => {
-    return currencyCodes.data.map((code) => {
-      return {
-        label: `${code.code} - ${code.currency}`,
-        value: code.code,
-      }
-    })
-  }, [])
+  const createSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+  }
 
   return (
     <Form {...form}>
@@ -146,7 +126,34 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
             <FormItem>
               <FormLabel>Event Name</FormLabel>
               <FormControl>
-                <Input placeholder={"event name"} {...field} />
+                <Input
+                  placeholder={"event name"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"slug"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder={"slug"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -157,7 +164,9 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
           name={"description"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel asChild>
+                <div>Description</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <MarkdownEditor
@@ -184,70 +193,15 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
             </FormItem>
           )}
         />
-        <div className={"flex space-x-2"}>
-          <div className={"flex-1"}>
-            <FormField
-              control={form.control}
-              name={"ticketPrice"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <NumericFormat
-                      placeholder={"price"}
-                      value={field.value}
-                      onValueChange={(value) =>
-                        field.onChange({
-                          target: {
-                            value: value.floatValue,
-                            name: field.name,
-                          },
-                        })
-                      }
-                      customInput={Input}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className={"flex-1"}>
-            <FormField
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Currency</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}>
-                      <SelectTrigger className="w-[280px]">
-                        <SelectValue placeholder="Select currency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {codes.map((code) => (
-                          <SelectItem value={code.value} key={code.value}>
-                            {code.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-              name={"ticketCurrency"}
-              control={form.control}
-            />
-          </div>
-        </div>
 
         <FormField
           control={form.control}
           name={"startDate"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Start Date</FormLabel>
+              <FormLabel asChild>
+                <div>Start Date</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker
@@ -277,7 +231,9 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
           name={"endDate"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>End Date</FormLabel>
+              <FormLabel asChild>
+                <div>End Date</div>
+              </FormLabel>
               <FormControl>
                 <div>
                   <DateTimePicker
