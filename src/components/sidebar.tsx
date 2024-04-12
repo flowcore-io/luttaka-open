@@ -35,8 +35,8 @@ const Sidebar = () => {
             icon: Ticket,
           },
           {
-            href: "/programme",
-            title: "Programme",
+            href: "/program",
+            title: "Program",
             label: "",
             superuserRequired: false,
             icon: CalendarIcon,

@@ -27,7 +27,7 @@ export const BottomBar = () => {
         <Link href="/me/tickets" className={`${linkClass("/me/tickets")}`}>
           <FontAwesomeIcon icon={faTicket as IconProp} />
         </Link>
-        <Link href="/programme" className={`${linkClass("/programme")}`}>
+        <Link href="/program" className={`${linkClass("/program")}`}>
           <FontAwesomeIcon icon={faCalendarDays as IconProp} />
         </Link>
         <Link href="/" className={`${linkClass("/")}`}>
