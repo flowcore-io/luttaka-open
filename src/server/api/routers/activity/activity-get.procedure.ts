@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 
 import { db } from "@/database"
@@ -13,6 +13,6 @@ export const getActivityProcedure = protectedProcedure
   .input(GetActivityInput)
   .query(({ input }) => {
     return db.query.activities.findFirst({
-      where: eq(activities.id, input.id),
+      where: and(eq(activities.id, input.id), eq(activities.archived, false)),
     })
   })

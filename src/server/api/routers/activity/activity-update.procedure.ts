@@ -24,16 +24,14 @@ export const updateActivityProcedure = protectedProcedure
         eq(activities.id, input.id),
         ...(input.title ? [eq(activities.title, input.title)] : []),
         ...(input.imageUrl ? [eq(activities.imageUrl, input.imageUrl)] : []),
-        ...(input.introText ? [eq(activities.introText, input.introText)] : []),
-        ...(input.fullText ? [eq(activities.fullText, input.fullText)] : []),
+        ...(input.description
+          ? [eq(activities.description, input.description)]
+          : []),
         ...(input.stageName ? [eq(activities.stageName, input.stageName)] : []),
         ...(input.startTime ? [eq(activities.startTime, input.startTime)] : []),
         ...(input.endTime ? [eq(activities.endTime, input.endTime)] : []),
         ...(input.publicVisibility
           ? [eq(activities.publicVisibility, input.publicVisibility)]
-          : []),
-        ...(input.publishedAt
-          ? [eq(activities.publishedAt, input.publishedAt)]
           : []),
         eq(activities.archived, false),
         ...(input.reason ? [eq(activities.reason, input.reason)] : []),

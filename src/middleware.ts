@@ -13,6 +13,7 @@ export default authMiddleware({
     "/api/transform/event.0",
     "/api/transform/company.0",
     "/api/transform/newsitem.0",
+    "/api/transform/activity.0",
   ],
 })
 

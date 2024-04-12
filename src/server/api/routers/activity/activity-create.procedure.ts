@@ -33,11 +33,8 @@ export const createActivityProcedure = protectedProcedure
       ...input,
       id,
       imageUrl: input.imageUrl ?? "",
-      introText: input.introText ?? "",
-      fullText: input.fullText ?? "",
+      description: input.description ?? "",
       stageName: input.stageName ?? "",
-      startTime: input.startTime ?? "",
-      endTime: input.endTime ?? "",
     })
     try {
       await waitForPredicate(
