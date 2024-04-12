@@ -1,5 +1,6 @@
-import Image from "next/image"
 import { SignInButton } from "@clerk/nextjs"
+import Image from "next/image"
+
 import { Button } from "./ui/button"
 
 const PublicHeader = () => {

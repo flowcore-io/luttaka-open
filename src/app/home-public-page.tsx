@@ -3,7 +3,6 @@
 import dayjs from "dayjs"
 import Link from "next/link"
 
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardDescription,
@@ -11,8 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { api } from "@/trpc/react"
 import { PageTitle } from "@/components/ui/page-title"
+import { api } from "@/trpc/react"
 
 export default function HomePublicPage() {
   const { data: events } = api.event.getPublicList.useQuery()
