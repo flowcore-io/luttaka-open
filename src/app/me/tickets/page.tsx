@@ -13,7 +13,7 @@ import { PageTitle } from "@/components/ui/page-title"
 import { EventContext } from "@/context/event-context"
 import { api } from "@/trpc/react"
 
-import Event from "./buy-ticket"
+import BuyTicket from "./buy-ticket"
 
 export default function Tickets() {
   const router = useRouter()
@@ -116,7 +116,7 @@ export default function Tickets() {
           </div>
         ))}
         <h3 className={"mb-4 mt-16 text-2xl font-bold"}>Buy more tickets</h3>
-        {events?.map((event) => <Event key={event.id} event={event} />)}
+        {events?.map((event) => <BuyTicket key={event.id} event={event} />)}
       </div>
     </div>
   )

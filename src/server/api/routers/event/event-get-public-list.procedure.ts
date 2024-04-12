@@ -2,9 +2,9 @@ import { eq } from "drizzle-orm"
 
 import { db } from "@/database"
 import { events } from "@/database/schemas"
-import { protectedProcedure } from "@/server/api/trpc"
+import { publicProcedure } from "@/server/api/trpc"
 
-export const getEventsProcedure = protectedProcedure.query(async () => {
+export const getEventPublicListProcedure = publicProcedure.query(async () => {
   return (
     (await db
       .select({
@@ -13,11 +13,8 @@ export const getEventsProcedure = protectedProcedure.query(async () => {
         slug: events.slug ?? "",
         description: events.description ?? "",
         ticketDescription: events.ticketDescription ?? "",
-        ticketPrice: events.ticketPrice,
-        ticketCurrency: events.ticketCurrency,
         startDate: events.startDate,
         endDate: events.endDate,
-        stripeId: events.stripeId,
       })
       .from(events)
       .where(eq(events.archived, false))

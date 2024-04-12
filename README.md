@@ -99,6 +99,41 @@ To create the datacores use the following commands:
 npm install -g @flowcore/cli
 ```
 
+# Clerk
+
+The application uses [Clerk](https://clerk.com) for authentication. Therefor you need to create an account and create a new Clerk application, followed by [obtaining the environment credentials that connects this project to your clerk application](https://clerk.com/docs/quickstarts/nextjs#set-your-environment-variables).
+You need the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to be set in your `.env` file.)
+
+Follow this [Link](https://docs.stripe.com/stripe-cli), To setup Stripe CLI on your machine. So you can easily interact with Stripe Webhooks
+
+### Setting up Stripe Account
+
+To setup a test stripe account without providing bank information
+
+1. Go to [Stripe](https://stripe.com) and create an account
+2. Go to [Dashboard](https://dashboard.stripe.com/test/dashboard) and click on `Developers`
+3. Click on `API keys` and copy the `Secret key` and `Publishable key`
+4. Create `.env` file in your root folder
+5. Copy the content inside the `.env.example` and paste it inside newly created `.env` file
+6. Paste the `Secret key` as `STRIPE_SECRET_KEY`
+7. Paste the `Publishable Key` as `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in the `.env` file
+8. Run `yarn stripe:listen` in your terminal and then fill the `WEBHOOK_SECRET` directly from the terminal
+
+---
+
+# Tenants
+
+Your tenant is part of the url when you go to your organization in the Flowcore Platform. For example, if you go to `https://flowcore.io/flowcore`, then `flowcore` is your tenant.
+You can also see the tenant where you select between your active organizations in the top left corner of the UI.
+
+# Run the project locally
+
+- Clone the repository
+- **Scaffold the project into your flowcore account:**
+
+To run the application locally, you will need to create the datacore and scenarios required for the application to work.
+You can use the Flowcore CLI to create the datacore and scenarios, or you can use the Flowcore Platform to create them manually.
+
 then copy the `flowcore.local.example.yaml` file to `flowcore.local.yaml` and fill in the missing information. Then you
 can run the following command to spin up an environment for development:
 
@@ -116,7 +151,11 @@ this will create the required resources in the Flowcore Platform, inside your te
 
 Follow this [Link](https://docs.stripe.com/stripe-cli), To setup Stripe CLI on your machine. So you can easily interact with Stripe Webhooks
 
----
+- Copy the file `.env.example` as `.env` and fill in the missing information
+- Run `yarn dev` to start the development server
+- Run `yarn local:stream` to start streaming data from Flowcore to your local database
+- Run `yarn stripe:listen` in your terminal to listen webhooks events
+- **You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)**:
 
 ## Node Version Requirement
 
