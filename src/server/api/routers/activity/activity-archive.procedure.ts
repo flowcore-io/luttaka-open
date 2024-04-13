@@ -1,28 +1,31 @@
 import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 
-import { sendNewsitemArchivedEvent } from "@/contracts/events/newsitem"
+import { sendActivityArchivedEvent } from "@/contracts/events/activity"
 import { db } from "@/database"
-import { newsitems } from "@/database/schemas"
+import { activities } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
 import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
-const ArchiveNewsitemInputDto = z.object({
+const ArchiveActivityInputDto = z.object({
   id: z.string(),
 })
-export const archiveNewsitemProcedure = protectedProcedure
-  .input(ArchiveNewsitemInputDto)
+
+export type ArchiveActivityInput = z.infer<typeof ArchiveActivityInputDto>
+
+export const archiveActivityProcedure = protectedProcedure
+  .input(ArchiveActivityInputDto)
   .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
-    await sendNewsitemArchivedEvent({ id: input.id })
+    await sendActivityArchivedEvent({ id: input.id })
     try {
       await waitForPredicate(
         () =>
-          db.query.newsitems.findFirst({
+          db.query.activities.findFirst({
             where: and(
-              eq(newsitems.id, input.id),
-              eq(newsitems.archived, true),
+              eq(activities.id, input.id),
+              eq(activities.archived, true),
             ),
           }),
         (result) => !!result,

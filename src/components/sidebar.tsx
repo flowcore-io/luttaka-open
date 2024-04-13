@@ -2,6 +2,7 @@ import {
   BookmarkCheck,
   BookOpen,
   BuildingIcon,
+  CalendarCheckIcon,
   CalendarIcon,
   Home,
   Newspaper,
@@ -35,8 +36,8 @@ const Sidebar = () => {
             icon: Ticket,
           },
           {
-            href: "/programme",
-            title: "Programme",
+            href: "/activities",
+            title: "Activities",
             label: "",
             superuserRequired: false,
             icon: CalendarIcon,
@@ -82,6 +83,13 @@ const Sidebar = () => {
             label: "",
             superuserRequired: true,
             icon: BookOpen,
+          },
+          {
+            href: "/admin/activities",
+            title: "Manage Activities",
+            label: "",
+            superuserRequired: true,
+            icon: CalendarCheckIcon,
           },
           {
             href: "/admin/newsitems",
