@@ -55,7 +55,7 @@ export const events = pgTable("events", {
 export const companies = pgTable("companies", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  imageBase64: text("image_url"),
+  imageBase64: text("image_base64"),
   description: text("description"),
   ownerId: text("owner_id"),
   companyType: text("company_type").notNull().default(CompanyType.default),
@@ -66,7 +66,7 @@ export const companies = pgTable("companies", {
 export const newsitems = pgTable("newsitems", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
-  imageBase64: text("image_url"),
+  imageBase64: text("image_base64"),
   introText: text("intro_text"),
   fullText: text("full_text"),
   publicVisibility: boolean("public_visibility").notNull().default(false),
