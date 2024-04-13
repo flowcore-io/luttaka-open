@@ -22,7 +22,7 @@ export const LuttakaLogoAndTitle = () => {
         width={50}
         priority
       />
-      <div className="pt-2 font-dongle text-5xl text-[#48556E]">
+      <div className="text-forground pt-2 font-dongle text-5xl">
         {showEventName}
       </div>
     </Link>
