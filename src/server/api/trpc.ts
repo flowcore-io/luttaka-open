@@ -27,7 +27,7 @@ import { UserRole } from "@/contracts/user/user-role"
 import { db } from "@/database"
 import { profiles, users } from "@/database/schemas"
 import { sendWebhook } from "@/lib/webhook"
-import { waitFor } from "@/server/lib/delay/wait-for"
+import waitForPredicate from "@/lib/wait-for-predicate"
 
 /**
  * 1. CONTEXT
@@ -92,14 +92,13 @@ export const createTRPCContext = async (opts: {
       avatarUrl: externalUser.imageUrl ?? "",
     },
   )
-
-  const result = await waitFor(
-    async () =>
-      db.query.profiles.findFirst({ where: eq(profiles.userId, userId) }),
-    (result) => !!result,
-  )
-
-  if (!result) {
+  try {
+    await waitForPredicate(
+      async () =>
+        db.query.profiles.findFirst({ where: eq(profiles.userId, userId) }),
+      (result) => !!result,
+    )
+  } catch (error) {
     throw new Error("Failed to generate internal user")
   }
 
