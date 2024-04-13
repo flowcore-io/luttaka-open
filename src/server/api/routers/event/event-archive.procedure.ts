@@ -5,6 +5,7 @@ import { sendEventArchivedEvent } from "@/contracts/events/event"
 import { db } from "@/database"
 import { events } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 const ArchiveEventInputDto = z.object({
@@ -15,6 +16,7 @@ export type ArchiveEventInput = z.infer<typeof ArchiveEventInputDto>
 
 export const archiveEventProcedure = protectedProcedure
   .input(ArchiveEventInputDto)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
     await sendEventArchivedEvent({ id: input.id })
     try {

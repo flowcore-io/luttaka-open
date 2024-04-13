@@ -9,13 +9,13 @@ import { CreateNewsitemInputDto } from "@/contracts/newsitem/newsitem"
 import { db } from "@/database"
 import { newsitems } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 export const createNewsitemProcedure = protectedProcedure
   .input(CreateNewsitemInputDto)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
-    // TODO: make sure user has correct permissions
-
     if (
       await db.query.newsitems.findFirst({
         where: and(
