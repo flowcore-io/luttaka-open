@@ -149,6 +149,7 @@ this will create the required resources in the Flowcore Platform, inside your te
 - Start a PostgreSQL server. You can run `yarn docker:db` (_requires Docker_)
 - Copy the file `.env.example` as `.env` and fill in the missing information
 - Add the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to the `.env` file.
+  You can find the instructions [here](https://clerk.com/docs/quickstarts/nextjs#set-your-environment-variables).
 
 - **Run `yarn db:push` to create the database tables**:
   Because of how Flowcore works, we do not need to consider database migrations. The databases are purely populated from the flowcore platform, hence why we can wipe the database whenever we want to make a change with no worry.
