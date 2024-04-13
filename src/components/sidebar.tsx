@@ -14,7 +14,7 @@ import { Nav } from "./nav"
 
 const Sidebar = () => {
   return (
-    <aside className="w-42 flex h-screen flex-col bg-card p-4">
+    <aside className="w-42 flex h-screen flex-col bg-sidebar p-4">
       <div className="mb-8 flex flex-col items-start">
         <LuttakaLogoAndTitle />
       </div>
