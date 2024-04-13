@@ -5,10 +5,12 @@ import { sendActivityUpdatedEvent } from "@/contracts/events/activity"
 import { db } from "@/database"
 import { activities } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 export const updateActivityProcedure = protectedProcedure
   .input(UpdateActivityInputDto)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
     if (
       !(await db.query.activities.findFirst({

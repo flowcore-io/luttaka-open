@@ -9,13 +9,13 @@ import {
 import { db } from "@/database"
 import { activities } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 export const createActivityProcedure = protectedProcedure
   .input(CreateActivityInputDto)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
-    // TODO: make sure user has correct permissions
-
     if (
       await db.query.activities.findFirst({
         where: and(
