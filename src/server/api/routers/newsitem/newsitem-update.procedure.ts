@@ -25,7 +25,9 @@ export const updateNewsitemProcedure = protectedProcedure
       const condition: SQL<unknown>[] = [
         eq(newsitems.id, input.id),
         ...(input.title ? [eq(newsitems.title, input.title)] : []),
-        ...(input.imageUrl ? [eq(newsitems.imageUrl, input.imageUrl)] : []),
+        ...(input.imageBase64
+          ? [eq(newsitems.imageBase64, input.imageBase64)]
+          : []),
         ...(input.introText ? [eq(newsitems.introText, input.introText)] : []),
         ...(input.fullText ? [eq(newsitems.fullText, input.fullText)] : []),
         ...(input.publicVisibility
