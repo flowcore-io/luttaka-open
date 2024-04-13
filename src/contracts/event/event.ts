@@ -1,3 +1,4 @@
+import { image } from "@uiw/react-md-editor"
 import { z } from "zod"
 
 // DTOs
@@ -6,6 +7,7 @@ export const EventProfileDto = z.object({
   id: z.string(),
   name: z.string(),
   slug: z.string(),
+  imageBase64: z.string(),
   description: z.string(),
   ticketDescription: z.string(),
   startDate: z.string(),
@@ -20,6 +22,7 @@ export const EventPreviewDto = EventProfileDto.pick({
 export const CreateEventInputDto = EventProfileDto.pick({
   name: true,
   slug: true,
+  imageBase64: true,
   description: true,
   ticketDescription: true,
   startDate: true,

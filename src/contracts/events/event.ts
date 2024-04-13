@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { webhookFactory } from "@/lib/webhook"
+import { image } from "@uiw/react-md-editor"
 
 export const event = {
   flowType: "event.0",
@@ -15,6 +16,7 @@ export const EventEventCreatedPayload = z.object({
   id: z.string(),
   name: z.string(),
   slug: z.string(),
+  imageBase64: z.string(),
   description: z.string(),
   ticketDescription: z.string(),
   startDate: z.string(),
@@ -25,6 +27,7 @@ export const EventEventUpdatedPayload = EventEventCreatedPayload.pick({
   id: true,
   name: true,
   slug: true,
+  imageBase64: true,
   description: true,
   ticketDescription: true,
   startDate: true,
