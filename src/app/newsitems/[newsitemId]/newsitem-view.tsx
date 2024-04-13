@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import React, { type FC } from "react"
 
 import MarkdownViewer from "@/components/md-viewer"
@@ -20,11 +21,13 @@ export const NewsitemView: FC<NewsitemProps> = ({ newsitem }) => {
     <div className={`md:flex md:space-x-4`}>
       <div>
         <div className={`mt-2 text-left`}>
-          {newsitem.imageUrl ? (
-            <img
-              src={newsitem.imageUrl}
+          {newsitem.imageBase64 ? (
+            <Image
+              src={newsitem.imageBase64}
               alt={newsitem.title}
               className="rounded-xl"
+              width={250}
+              height={250}
             />
           ) : (
             <Skeleton className="h-[250px] w-[250px] rounded-xl" />

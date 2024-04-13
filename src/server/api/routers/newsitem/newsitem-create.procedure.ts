@@ -32,7 +32,7 @@ export const createNewsitemProcedure = protectedProcedure
     await sendNewsitemCreatedEvent({
       ...input,
       id,
-      imageUrl: input.imageUrl ?? "",
+      imageBase64: input.imageBase64 ?? "",
       introText: input.introText ?? "",
       fullText: input.fullText ?? "",
     })
