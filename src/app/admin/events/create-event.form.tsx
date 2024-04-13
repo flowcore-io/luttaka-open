@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader } from "lucide-react"
+import Image from "next/image"
 import { type FC, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -21,7 +22,6 @@ import {
   CreateEventInputDto,
 } from "@/contracts/event/event"
 import { api } from "@/trpc/react"
-import Image from "next/image"
 
 export type CreateEventProps = {
   close: () => void

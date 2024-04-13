@@ -3,7 +3,6 @@ import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
 import { CompanyType } from "@/contracts/company/company-type"
 import { UserRole } from "@/contracts/user/user-role"
-import { image } from "@uiw/react-md-editor"
 
 export const tickets = pgTable("tickets", {
   id: text("id").primaryKey(),

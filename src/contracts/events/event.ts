@@ -1,7 +1,6 @@
 import { z } from "zod"
 
 import { webhookFactory } from "@/lib/webhook"
-import { image } from "@uiw/react-md-editor"
 
 export const event = {
   flowType: "event.0",
