@@ -25,7 +25,7 @@ export function Nav({ links }: NavProps) {
   const pathname = usePathname()
 
   return (
-    <div className="group flex flex-col gap-4 py-4 data-[collapsed=true]:py-4">
+    <div className="group flex flex-col gap-4 py-5 data-[collapsed=true]:py-5">
       <nav className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {links.map((link, index) => {
           const isCurrent = link.href === pathname
