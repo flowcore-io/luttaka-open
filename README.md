@@ -148,13 +148,13 @@ this will create the required resources in the Flowcore Platform, inside your te
 
 - Run `yarn` to install the dependencies
 - Start a PostgreSQL server. You can run `yarn docker:db` (_requires Docker_)
-
-Because of how Flowcore works, we do not need to consider database migrations. The databases are purely populated from the flowcore platform, hence why we can wipe the database whenever we want to make a change with no worry.
-
 - Copy the file `.env.example` as `.env` and fill in the missing information
+
+- **Run `yarn db:push` to create the database tables**:
+  Because of how Flowcore works, we do not need to consider database migrations. The databases are purely populated from the flowcore platform, hence why we can wipe the database whenever we want to make a change with no worry.
+
 - Run `yarn dev` to start the development server
 - Run `yarn local:stream` to start streaming data from Flowcore to your local database
-- **Run `yarn db:push` to create the database tables**:
 - **You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)**
 
 The first user to login gets admin privileges.
