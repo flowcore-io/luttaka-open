@@ -92,15 +92,14 @@ export const createTRPCContext = async (opts: {
       avatarUrl: externalUser.imageUrl ?? "",
     },
   )
-
-  const result = await waitFor(
-    async () =>
-      db.query.profiles.findFirst({ where: eq(profiles.userId, userId) }),
-    (result) => !!result,
-  )
-
-  if (!result) {
-    throw new Error("Failed to generate internal user")
+  try {
+    await waitFor(
+      async () =>
+        db.query.profiles.findFirst({ where: eq(profiles.userId, userId) }),
+      (result) => !!result,
+    )
+  } catch(error) {
+    throw new Error("Failed to generate internal user");
   }
 
   return {
