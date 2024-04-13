@@ -117,8 +117,7 @@ npm install -g @flowcore/cli
 
 # Clerk
 
-The application uses [Clerk](https://clerk.com) for authentication. Therefor you need to create an account and create a new Clerk application, followed by [obtaining the environment credentials that connects this project to your clerk application](https://clerk.com/docs/quickstarts/nextjs#set-your-environment-variables).
-You need the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to be set in your `.env` file.)
+The application uses [Clerk](https://clerk.com) for authentication. Therefore, you need to create an account and create a new Clerk application, followed by [obtaining the environment credentials that connects this project to your clerk application](https://clerk.com/docs/quickstarts/nextjs#set-your-environment-variables).
 
 # Tenants
 
@@ -149,6 +148,7 @@ this will create the required resources in the Flowcore Platform, inside your te
 - Run `yarn` to install the dependencies
 - Start a PostgreSQL server. You can run `yarn docker:db` (_requires Docker_)
 - Copy the file `.env.example` as `.env` and fill in the missing information
+- Add the two environmental variables `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to the `.env` file.
 
 - **Run `yarn db:push` to create the database tables**:
   Because of how Flowcore works, we do not need to consider database migrations. The databases are purely populated from the flowcore platform, hence why we can wipe the database whenever we want to make a change with no worry.
