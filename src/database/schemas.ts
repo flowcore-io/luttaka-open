@@ -78,7 +78,7 @@ export const newsitems = pgTable("newsitems", {
 export const activities = pgTable("activities", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
-  imageUrl: text("image_url"),
+  imageBase64: text("image_base64"),
   description: text("description"),
   stageName: text("stage_name"),
   startTime: text("start_time"),

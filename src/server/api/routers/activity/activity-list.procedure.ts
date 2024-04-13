@@ -10,7 +10,7 @@ export const listActivitiesProcedure = protectedProcedure.query(async () => {
       .select({
         id: activities.id,
         title: activities.title,
-        imageUrl: activities.imageUrl,
+        imageBase64: activities.imageBase64,
         description: activities.description,
         stageName: activities.stageName,
         startTime: activities.startTime,

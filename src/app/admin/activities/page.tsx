@@ -39,7 +39,7 @@ export default function Activities() {
           key={activity.id}
           activity={{
             ...activity,
-            imageUrl: activity.imageUrl ?? "",
+            imageBase64: activity.imageBase64 ?? "",
             description: activity.description ?? "",
             stageName: activity.stageName ?? "",
             startTime: activity.startTime ?? "",

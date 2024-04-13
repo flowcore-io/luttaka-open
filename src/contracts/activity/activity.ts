@@ -5,7 +5,7 @@ import { z } from "zod"
 export const ActivityProfileDto = z.object({
   id: z.string(),
   title: z.string(),
-  imageUrl: z.string().optional(),
+  imageBase64: z.string().optional(),
   description: z.string().optional(),
   stageName: z.string().optional(),
   startTime: z.string(),
@@ -22,7 +22,7 @@ export const ActivityPreviewDto = ActivityProfileDto.pick({
 
 export const CreateActivityInputDto = ActivityProfileDto.pick({
   title: true,
-  imageUrl: true,
+  imageBase64: true,
   description: true,
   stageName: true,
   startTime: true,

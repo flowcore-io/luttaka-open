@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import React, { type FC } from "react"
 
 import MarkdownViewer from "@/components/md-viewer"
@@ -20,11 +21,13 @@ export const ActivityView: FC<ActivityProps> = ({ activity }) => {
     <div className={`md:flex md:space-x-4`}>
       <div>
         <div className={`mt-2 text-left`}>
-          {activity.imageUrl ? (
-            <img
-              src={activity.imageUrl}
+          {activity.imageBase64 ? (
+            <Image
+              src={activity.imageBase64}
               alt={activity.title}
               className="rounded-xl"
+              width={250}
+              height={250}
             />
           ) : (
             <Skeleton className="h-[250px] w-[250px] rounded-xl" />

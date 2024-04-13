@@ -23,7 +23,9 @@ export const updateActivityProcedure = protectedProcedure
       const condition: SQL<unknown>[] = [
         eq(activities.id, input.id),
         ...(input.title ? [eq(activities.title, input.title)] : []),
-        ...(input.imageUrl ? [eq(activities.imageUrl, input.imageUrl)] : []),
+        ...(input.imageBase64
+          ? [eq(activities.imageBase64, input.imageBase64)]
+          : []),
         ...(input.description
           ? [eq(activities.description, input.description)]
           : []),

@@ -32,7 +32,7 @@ export const createActivityProcedure = protectedProcedure
     await sendActivityCreatedEvent({
       ...input,
       id,
-      imageUrl: input.imageUrl ?? "",
+      imageBase64: input.imageBase64 ?? "",
       description: input.description ?? "",
       stageName: input.stageName ?? "",
     })

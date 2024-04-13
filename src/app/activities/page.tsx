@@ -1,6 +1,7 @@
 "use client"
 
 import { format } from "date-fns"
+import Image from "next/image"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
@@ -18,11 +19,13 @@ export default function ActivitiesPage() {
       <div className="flex flex-col gap-4 px-6">
         {activities?.map((activity) => (
           <div key={activity.id} className="flex flex-row items-center gap-4">
-            {activity.imageUrl ? (
-              <img
-                src={activity.imageUrl}
+            {activity.imageBase64 ? (
+              <Image
+                src={activity.imageBase64}
                 alt={activity.title}
-                className="max-w-[50px] rounded-xl"
+                className="rounded-xl"
+                width={50}
+                height={50}
               />
             ) : (
               <Skeleton className="h-[50px] w-[50px] rounded-xl" />

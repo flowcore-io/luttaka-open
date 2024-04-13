@@ -1,4 +1,5 @@
 import { Loader, PenIcon, Trash } from "lucide-react"
+import Image from "next/image"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
@@ -12,7 +13,7 @@ export interface ActivityProps {
   activity: {
     id: string
     title: string
-    imageUrl: string | undefined
+    imageBase64: string | undefined
     description: string | undefined
     stageName: string | undefined
     startTime: string
@@ -50,11 +51,13 @@ export function Activity({ activity, refetch }: ActivityProps) {
       <div
         key={activity.id}
         className="mb-2 flex cursor-pointer items-center gap-4 rounded-lg border p-4 shadow transition hover:scale-101 hover:shadow-lg">
-        {activity.imageUrl ? (
-          <img
-            src={activity.imageUrl}
+        {activity.imageBase64 ? (
+          <Image
+            src={activity.imageBase64}
             alt={activity.title}
-            className={"max-w-[50px] rounded-xl"}
+            className={"rounded-xl"}
+            width={50}
+            height={50}
           />
         ) : (
           <div className={"h-[50px] w-[50px] rounded-xl bg-gray-300"} />

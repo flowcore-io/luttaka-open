@@ -14,7 +14,7 @@ export const activity = {
 export const ActivityEventCreatedPayload = z.object({
   id: z.string(),
   title: z.string(),
-  imageUrl: z.string(),
+  imageBase64: z.string(),
   description: z.string().nullable(),
   stageName: z.string().nullable(),
   startTime: z.string().nullable(),
@@ -27,7 +27,7 @@ export const ActivityEventCreatedPayload = z.object({
 export const ActivityEventUpdatedPayload = ActivityEventCreatedPayload.pick({
   id: true,
   title: true,
-  imageUrl: true,
+  imageBase64: true,
   description: true,
   stageName: true,
   startTime: true,
