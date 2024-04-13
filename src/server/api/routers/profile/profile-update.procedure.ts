@@ -9,10 +9,10 @@ import { UpdateUserProfileInput } from "@/contracts/profile/update-profile-input
 import { UserByIdInput } from "@/contracts/user/user-by-id-input"
 import { db } from "@/database"
 import { profiles } from "@/database/schemas"
+import waitForPredicate from "@/lib/wait-for-predicate"
 import { sendWebhook } from "@/lib/webhook"
 import { getProfileAndCompany } from "@/server/api/services/profile/get-profile-and-company"
 import { protectedProcedure } from "@/server/api/trpc"
-import { waitFor } from "@/server/lib/delay/wait-for"
 
 export const updateProfileProcedure = protectedProcedure
   .input(UpdateUserProfileInput)
@@ -36,7 +36,7 @@ export const updateProfileProcedure = protectedProcedure
       },
     )
 
-    const result = await waitFor(
+    await waitForPredicate(
       () => db.query.profiles.findFirst({ where: eq(profiles.id, profileId) }),
       (profile) => {
         if (!profile) {
@@ -55,9 +55,5 @@ export const updateProfileProcedure = protectedProcedure
       },
     )
 
-    if (!result) {
-      throw new Error(`Profile not found`)
-    }
-
-    return result.id
+    return profile.id
   })
