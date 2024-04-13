@@ -5,7 +5,7 @@ import { z } from "zod"
 export const NewsitemProfileDto = z.object({
   id: z.string(),
   title: z.string(),
-  imageUrl: z.string().optional(),
+  imageBase64: z.string().optional(),
   introText: z.string().optional(),
   fullText: z.string().optional(),
   publicVisibility: z.boolean(),
@@ -21,7 +21,7 @@ export const NewsitemPreviewDto = NewsitemProfileDto.pick({
 
 export const CreateNewsitemInputDto = NewsitemProfileDto.pick({
   title: true,
-  imageUrl: true,
+  imageBase64: true,
   introText: true,
   fullText: true,
   publicVisibility: true,

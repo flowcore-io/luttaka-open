@@ -12,6 +12,7 @@ export interface EventProps {
     id: string
     name: string
     slug: string | null
+    imageBase64: string | null
     description: string | null
     ticketDescription: string | null
     startDate: string
@@ -83,6 +84,7 @@ export function Event({ event, refetch }: EventProps) {
               event={{
                 ...event,
                 slug: event.slug ?? "",
+                imageBase64: event.imageBase64 ?? "",
                 ticketDescription: event.ticketDescription ?? "",
                 description: event.description ?? "",
               }}

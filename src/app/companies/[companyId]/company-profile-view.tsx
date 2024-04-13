@@ -28,7 +28,7 @@ export const CompanyProfileView: FC<CompanyProfileProps> = ({ profile }) => {
         className={`flex flex-row items-center gap-12 md:flex md:flex-col md:space-x-4`}>
         <Avatar className={`h-auto w-[125px] rounded-full md:h-56 md:w-56`}>
           <AvatarImage
-            src={profile.imageUrl ?? ""}
+            src={profile.imageBase64 ?? ""}
             alt={`Company Profile Picture`}
           />
           <AvatarFallback className={`rounded-full`}>
