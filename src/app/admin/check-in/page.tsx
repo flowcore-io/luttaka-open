@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { api } from "@/trpc/react"
+import Script from "next/script"
 
 export default function CheckInPage() {
   const [pristine, setPristine] = useState(true)
@@ -43,6 +44,7 @@ export default function CheckInPage() {
 
   const onScanSuccess = async (result: string) => {
     const ticketScan = result.split(",")
+    console.log("ticket scan: ", ticketScan)
     const ticketId = ticketScan[0]?.split(":")[1]
     const userId = ticketScan[1]?.split(":")[1]
 
@@ -92,6 +94,138 @@ export default function CheckInPage() {
     } catch (error) {
       const title = error instanceof Error ? error.message : "Check In failed"
       toast.error(title)
+    }
+  }
+
+  interface Printer {
+    name: string
+    // Add other properties as known, such as:
+    // model: string;
+    // isConnected: boolean;
+    // etc.
+  }
+
+  const [printers, setPrinters] = useState<Printer[]>([])
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.dymo) {
+      const timeoutId = setTimeout(() => {
+        dymo.label.framework.init(() => {
+          console.log("DYMO SDK initialized successfully.")
+          // Further actions...
+        })
+      }, 1000) // Delay initialization by 1000 ms
+
+      return () => clearTimeout(timeoutId) // Clean up timeout
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.dymo) {
+      const initDymo = () => {
+        console.log("Initializing DYMO SDK...")
+        dymo.label.framework.init(() => {
+          console.log("DYMO SDK initialized successfully.")
+          const environment = dymo.label.framework.checkEnvironment()
+          console.log("Environment Check:", environment)
+
+          if (
+            environment.isFrameworkInstalled &&
+            environment.isBrowserSupported
+          ) {
+            const availablePrinters = dymo.label.framework.getPrinters()
+            console.log("Available printers:", availablePrinters)
+            if (availablePrinters.length > 0) {
+              setPrinters(availablePrinters)
+            } else {
+              console.error("No DYMO printers are installed.")
+              toast.error("No DYMO printers detected.")
+            }
+          } else {
+            console.error(
+              "DYMO environment is not properly set up.",
+              environment,
+            )
+            toast.error("DYMO environment setup issue.")
+          }
+        })
+      }
+
+      if (!(window.dymo as any).initiated) {
+        ;(window.dymo as any).initiated = true
+        initDymo()
+      }
+    } else {
+      console.error("DYMO SDK not loaded.")
+      toast.error("DYMO SDK not loaded.")
+    }
+  }, [])
+
+  function createLabelXml(profile: {
+    displayName: string
+    company: string | null
+  }) {
+    return `<?xml version="1.0" encoding="utf-8"?>
+    <DieCutLabel Version="8.0" Units="twips">
+      <PaperName>30252 Address</PaperName>
+      <DrawCommands>
+        <RoundRectangle X="0" Y="0" Width="3060" Height="1440" Rx="180" Ry="180" />
+      </DrawCommands>
+      <ObjectInfo>
+        <TextObject>
+          <Name>Text</Name>
+          <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+          <BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+          <LinkedObjectName />
+          <Rotation>Rotation0</Rotation>
+          <IsMirrored>False</IsMirrored>
+          <IsVariable>False</IsVariable>
+          <HorizontalAlignment>Center</HorizontalAlignment>
+          <VerticalAlignment>Middle</VerticalAlignment>
+          <TextFitMode>None</TextFitMode>
+          <UseFullFontHeight>True</UseFullFontHeight>
+          <Verticalized>False</Verticalized>
+          <StyledText>
+            <Element>
+              <String>Óðin</String>
+              <Attributes>
+                <Font Family="Arial" Size="14" Bold="True" Italic="False" Underline="False" StrikeOut="False" />
+                <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+              </Attributes>
+            </Element>
+            <Element>
+              <String>FLOWCORE</String>
+              <Attributes>
+                <Font Family="Arial" Size="14" Bold="True" Italic="False" Underline="False" StrikeOut="False" />
+                <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+              </Attributes>
+            </Element>
+          </StyledText>
+        </TextObject>
+        <Bounds X="332" Y="150" Width="4455" Height="1260" />
+      </ObjectInfo>
+    </DieCutLabel>
+    `
+  }
+
+  const printLabel = async (profile: any) => {
+    if (printers.length > 0) {
+      const labelXml = createLabelXml(profile)
+      console.log("Generated Label XML:", labelXml)
+      const printerName = printers[0] ? printers[0].name : ""
+
+      try {
+        dymo.label.framework.printLabel(printerName, null, labelXml, null)
+        console.log("Label sent to printer.")
+        toast.success("Printing label...")
+      } catch (error: any) {
+        console.error("Failed to print label:", error)
+        console.error("Error printing label: " + error.message)
+      }
+    } else {
+      toast.error(
+        "No printers detected. Please ensure a DYMO printer is connected.",
+      )
     }
   }
 
@@ -147,7 +281,19 @@ export default function CheckInPage() {
             </Button>
             <Button
               disabled={!!warning || apiCheckInTicket.isLoading}
-              onClick={checkInTicket}>
+              onClick={() => {
+                if (!warning && ticket && profile) {
+                  checkInTicket()
+                  printLabel(profile)
+                } else {
+                  console.error("Cannot proceed: ", {
+                    warning,
+                    ticket,
+                    profile,
+                  })
+                  toast.error("Check-in or printing prerequisites not met.")
+                }
+              }}>
               {apiCheckInTicket.isLoading ? "Checking In..." : "Check In"}
             </Button>
           </CardFooter>
@@ -169,6 +315,9 @@ export default function CheckInPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <Script
+        src="/dymo/dymo.connect.framework.js"
+        strategy="beforeInteractive"></Script>
     </div>
   )
 }
