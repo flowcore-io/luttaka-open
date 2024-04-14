@@ -151,7 +151,7 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel asChild>
-                <div>Introtext</div>
+                <div>Intro text</div>
               </FormLabel>
               <FormControl>
                 <div>
