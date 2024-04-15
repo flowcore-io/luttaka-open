@@ -21,6 +21,7 @@ export const UpdateUserProfileEventPayload = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
   socials: z.string().optional(),
+  emails: z.string().optional(),
   company: z.string().optional(),
   avatarUrl: z.string().optional(),
 })
