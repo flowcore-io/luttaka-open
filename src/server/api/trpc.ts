@@ -26,8 +26,8 @@ import { type User } from "@/contracts/user/user"
 import { UserRole } from "@/contracts/user/user-role"
 import { db } from "@/database"
 import { profiles, users } from "@/database/schemas"
-import { sendWebhook } from "@/lib/webhook"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { sendWebhook } from "@/lib/webhook"
 
 /**
  * 1. CONTEXT
@@ -88,6 +88,9 @@ export const createTRPCContext = async (opts: {
       title: "",
       description: "",
       socials: "",
+      emails: externalUser.emailAddresses
+        .map((address) => address.emailAddress)
+        .join(", "),
       company: "",
       avatarUrl: externalUser.imageUrl ?? "",
     },
