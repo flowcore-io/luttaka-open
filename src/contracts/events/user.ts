@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { UserRole } from "@/contracts/user/user-role"
+import { webhookFactory } from "@/lib/webhook"
 
 export const userEvent = {
   flowType: "user.0",
@@ -40,3 +41,7 @@ export const UserArchivedEventPayload = z.object({
   userId: z.string(),
   reason: z.string().optional(),
 })
+
+export const sendUserUpdatedEvent = webhookFactory<
+  z.infer<typeof UserUpdatedEventPayload>
+>(userEvent.flowType, userEvent.eventType.updated)
