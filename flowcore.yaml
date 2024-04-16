@@ -1,6 +1,6 @@
-tenant: luttaka
+tenant: luttaka-open
 dataCore:
-  name: luttaka
+  name: luttaka-open
   deleteProtection: true
   description: "This data core contains the data for Luttaka"
   flowTypes:
@@ -57,13 +57,22 @@ dataCore:
           description: "a news item has been updated"
         newsitem.archived.0:
           description: "a news item has been archived"
+    activity.0:
+      description: "actions and events related to an activity"
+      eventTypes:
+        activity.created.0:
+          description: "a new activity has been created"
+        activity.updated.0:
+          description: "an activity has been updated"
+        activity.archived.0:
+          description: "an activity has been archived"
 scenario:
-  name: luttaka
+  name: luttaka-open
   description: "This scenario contains the transformers for Luttaka"
   transformers:
     companies:
       description: "transformer for company management"
-      dataCore: luttaka
+      dataCore: luttaka-open
       flowType: company.0
       events:
         - company.created.0
@@ -80,7 +89,7 @@ scenario:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
     events:
       description: "transformer for event management"
-      dataCore: luttaka
+      dataCore: luttaka-open
       flowType: event.0
       events:
         - event.created.0
@@ -97,7 +106,7 @@ scenario:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
     tickets:
       description: "transformer for tickets"
-      dataCore: luttaka
+      dataCore: luttaka-open
       flowType: ticket.0
       events:
         - ticket.created.0
@@ -117,7 +126,7 @@ scenario:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
     users:
       description: "transformer for users"
-      dataCore: luttaka
+      dataCore: luttaka-open
       flowType: user.0
       events:
         - user.created.0
@@ -135,7 +144,7 @@ scenario:
         artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
     newsitems:
       description: "transformer for news items"
-      dataCore: luttaka
+      dataCore: luttaka-open
       flowType: newsitem.0
       events:
         - newsitem.created.0
@@ -145,6 +154,23 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://luttaka.com/api/transform/newsitem.0"
+        - name: PROXY_HEADER_SECRET
+          type: secret
+          value: open-source-luttaka-secret
+      blueprint:
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
+    activities:
+      description: "transformer for activities"
+      dataCore: luttaka-open
+      flowType: activity.0
+      events:
+        - activity.created.0
+        - activity.updated.0
+        - activity.archived.0
+      parameters:
+        - name: PROXY_ENDPOINT
+          type: manual
+          value: "https://luttaka.com/api/transform/activity.0"
         - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-luttaka-secret

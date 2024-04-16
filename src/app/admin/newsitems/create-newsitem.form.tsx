@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader } from "lucide-react"
+import Image from "next/image"
 import { type FC, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -44,7 +45,7 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
     resolver: zodResolver(CreateNewsitemInputDto),
     defaultValues: {
       title: "",
-      imageUrl: "",
+      imageBase64: "",
       introText: "",
       fullText: "",
       publicVisibility: false,
@@ -85,13 +86,59 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
         />
         <FormField
           control={form.control}
-          name="imageUrl"
+          name="imageBase64"
           render={({ field }) => (
             <FormItem>
               <FormItem>
                 <FormLabel>Image</FormLabel>
+                <FormMessage>
+                  {field.value && (
+                    <Image
+                      src={field.value}
+                      width="250"
+                      height="250"
+                      alt="Decorative"
+                    />
+                  )}
+                </FormMessage>
                 <FormControl>
-                  <Input placeholder={"imageUrl"} {...field} />
+                  <Input
+                    type="file"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        const file = e.target.files[0]
+                        if (file) {
+                          if (file.size > 4 * 1024 * 1024) {
+                            toast.error(
+                              "The size of the file must be less than 4MB",
+                            )
+                            return
+                          }
+                          const allowedFileTypes = [
+                            "image/jpeg",
+                            "image/png",
+                            "image/gif",
+                            "image/webp",
+                            "image/svg+xml",
+                          ]
+                          if (!allowedFileTypes.includes(file.type)) {
+                            toast.error(
+                              "The file must be an image (jpg, png, gif, webp, svg)",
+                            )
+                            return
+                          }
+                          const reader = new FileReader()
+                          reader.onloadend = () => {
+                            const base64 = reader.result
+                            field.onChange(base64)
+                          }
+                          reader.readAsDataURL(file)
+                        } else {
+                          toast.error("No file found")
+                        }
+                      }
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,7 +151,7 @@ export const CreateNewsitemForm: FC<CreateNewsitemProps> = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel asChild>
-                <div>Introtext</div>
+                <div>Intro text</div>
               </FormLabel>
               <FormControl>
                 <div>

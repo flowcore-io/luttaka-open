@@ -45,6 +45,7 @@ export const getProfilePaginatedProcedure = protectedProcedure
           title: row.profiles.title ?? "",
           description: row.profiles.description ?? "",
           socials: row.profiles.socials ?? "",
+          emails: row.profiles.emails ?? "",
           company: row.companies?.name ?? "",
           companyId: row.profiles.company ?? "",
           avatarUrl: row.profiles.avatarUrl ?? "",

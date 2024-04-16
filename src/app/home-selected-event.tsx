@@ -1,4 +1,5 @@
 import { type inferRouterOutputs } from "@trpc/server"
+import Image from "next/image"
 import Link from "next/link"
 import { useContext } from "react"
 
@@ -32,11 +33,13 @@ export default function HomeSelectedEvent(props: EventProps) {
         />
         {newsitems?.map((newsitem) => (
           <div key={newsitem.id} className="mb-12 space-y-4">
-            {newsitem.imageUrl ? (
-              <img
-                src={newsitem.imageUrl}
+            {newsitem.imageBase64 ? (
+              <Image
+                src={newsitem.imageBase64}
                 alt={newsitem.title}
-                className="max-w-[250px] rounded-xl"
+                className="rounded-xl"
+                width={250}
+                height={250}
               />
             ) : (
               <Skeleton className="h-[250px] w-[250px] rounded-xl" />

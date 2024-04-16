@@ -40,6 +40,7 @@ export const UserProfileForm: FC<UserProfileProps> = ({ user }) => {
       company: user.companyId,
       description: user.description,
       socials: user.socials,
+      emails: user.emails,
       avatarUrl: user.avatarUrl,
     },
   })

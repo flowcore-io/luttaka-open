@@ -2,8 +2,10 @@ import {
   BookmarkCheck,
   BookOpen,
   BuildingIcon,
+  CalendarCheckIcon,
   CalendarIcon,
   Home,
+  KeyRoundIcon,
   Newspaper,
   Ticket,
   Users,
@@ -14,7 +16,7 @@ import { Nav } from "./nav"
 
 const Sidebar = () => {
   return (
-    <aside className="w-42 flex h-screen flex-col bg-card p-4">
+    <aside className="w-42 flex h-screen flex-col bg-sidebar p-4">
       <div className="mb-8 flex flex-col items-start">
         <LuttakaLogoAndTitle />
       </div>
@@ -35,8 +37,8 @@ const Sidebar = () => {
             icon: Ticket,
           },
           {
-            href: "/programme",
-            title: "Programme",
+            href: "/activities",
+            title: "Activities",
             label: "",
             superuserRequired: false,
             icon: CalendarIcon,
@@ -84,6 +86,13 @@ const Sidebar = () => {
             icon: BookOpen,
           },
           {
+            href: "/admin/activities",
+            title: "Manage Activities",
+            label: "",
+            superuserRequired: true,
+            icon: CalendarCheckIcon,
+          },
+          {
             href: "/admin/newsitems",
             title: "Manage News Items",
             label: "",
@@ -96,6 +105,13 @@ const Sidebar = () => {
             label: "",
             superuserRequired: true,
             icon: BuildingIcon,
+          },
+          {
+            href: "/admin/permissions",
+            title: "Manage Permissions",
+            label: "",
+            superuserRequired: true,
+            icon: KeyRoundIcon,
           },
         ]}
       />

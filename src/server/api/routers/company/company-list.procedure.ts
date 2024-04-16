@@ -10,7 +10,7 @@ export const listCompanyProcedure = protectedProcedure.query(async () => {
       .select({
         id: companies.id,
         name: companies.name,
-        imageUrl: companies.imageUrl,
+        imageBase64: companies.imageBase64,
         description: companies.description,
         ownerId: companies.ownerId,
         companyType: companies.companyType,

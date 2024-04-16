@@ -38,7 +38,7 @@ export default function Newsitems() {
           key={newsitem.id}
           newsitem={{
             ...newsitem,
-            imageUrl: newsitem.imageUrl ?? "",
+            imageBase64: newsitem.imageBase64 ?? "",
             introText: newsitem.introText ?? "",
             fullText: newsitem.fullText ?? "",
             publishedAt: newsitem.publishedAt ?? "",

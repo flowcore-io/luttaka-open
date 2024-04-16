@@ -11,6 +11,7 @@ export const getEventsProcedure = protectedProcedure.query(async () => {
         id: events.id,
         name: events.name,
         slug: events.slug ?? "",
+        imageBase64: events.imageBase64 ?? "",
         description: events.description ?? "",
         ticketDescription: events.ticketDescription ?? "",
         startDate: events.startDate,

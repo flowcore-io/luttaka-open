@@ -40,7 +40,7 @@ export const CompanyProfileForm: FC<CompanyProfileProps> = ({ company }) => {
     defaultValues: {
       id: company.id,
       name: company.name,
-      imageUrl: company.imageUrl ?? "",
+      imageBase64: company.imageBase64 ?? "",
       description: company.description ?? "",
     },
   })
@@ -69,7 +69,7 @@ export const CompanyProfileForm: FC<CompanyProfileProps> = ({ company }) => {
         />
         <FormField
           control={form.control}
-          name={"imageUrl"}
+          name={"imageBase64"}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Image</FormLabel>

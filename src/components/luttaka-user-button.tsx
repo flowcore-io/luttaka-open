@@ -59,6 +59,11 @@ export const LuttakaUserButton = () => {
               </Link>
             </DropdownMenu.Item>
             <DropdownMenu.Item asChild>
+              <Link href="/admin/activities" passHref>
+                Manage Activities
+              </Link>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item asChild>
               <Link href="/admin/newsitems" passHref>
                 Manage News Items
               </Link>
@@ -66,6 +71,11 @@ export const LuttakaUserButton = () => {
             <DropdownMenu.Item asChild>
               <Link href="/admin/companies" passHref>
                 Manage Companies
+              </Link>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item asChild>
+              <Link href="/admin/permissions" passHref>
+                Manage Permissions
               </Link>
             </DropdownMenu.Item>
           </RestrictedToRole>

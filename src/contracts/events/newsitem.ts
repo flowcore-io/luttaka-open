@@ -14,7 +14,7 @@ export const newsitem = {
 export const NewsitemEventCreatedPayload = z.object({
   id: z.string(),
   title: z.string(),
-  imageUrl: z.string(),
+  imageBase64: z.string(),
   introText: z.string(),
   fullText: z.string().nullable(),
   publicVisibility: z.boolean(),
@@ -26,7 +26,7 @@ export const NewsitemEventCreatedPayload = z.object({
 export const NewsitemEventUpdatedPayload = NewsitemEventCreatedPayload.pick({
   id: true,
   title: true,
-  imageUrl: true,
+  imageBase64: true,
   introText: true,
   fullText: true,
   publicVisibility: true,

@@ -5,10 +5,12 @@ import { UpdateNewsitemInputDto } from "@/contracts/newsitem/newsitem"
 import { db } from "@/database"
 import { newsitems } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 export const updateNewsitemProcedure = protectedProcedure
   .input(UpdateNewsitemInputDto)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
     if (
       !(await db.query.newsitems.findFirst({
@@ -23,7 +25,9 @@ export const updateNewsitemProcedure = protectedProcedure
       const condition: SQL<unknown>[] = [
         eq(newsitems.id, input.id),
         ...(input.title ? [eq(newsitems.title, input.title)] : []),
-        ...(input.imageUrl ? [eq(newsitems.imageUrl, input.imageUrl)] : []),
+        ...(input.imageBase64
+          ? [eq(newsitems.imageBase64, input.imageBase64)]
+          : []),
         ...(input.introText ? [eq(newsitems.introText, input.introText)] : []),
         ...(input.fullText ? [eq(newsitems.fullText, input.fullText)] : []),
         ...(input.publicVisibility

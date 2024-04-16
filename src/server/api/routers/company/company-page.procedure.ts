@@ -47,7 +47,7 @@ export const companyPageProcedure = protectedProcedure
         return {
           id: company.id,
           name: company.name,
-          imageUrl: company.imageUrl ?? "",
+          imageBase64: company.imageBase64 ?? "",
           description: company.description ?? "",
           companyType: company.companyType,
         }

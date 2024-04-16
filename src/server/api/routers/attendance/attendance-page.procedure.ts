@@ -45,6 +45,7 @@ export const attendancePageProcedure = protectedProcedure
           title: profile.title ?? "",
           description: profile.description ?? "",
           socials: profile.socials ?? "",
+          emails: profile.emails ?? "",
           company: companyName ?? "Individual",
           companyId: profile.company ?? "",
           avatarUrl: profile.avatarUrl ?? "",
