@@ -34,6 +34,7 @@ export const profiles = pgTable("profiles", {
   title: text("title"),
   description: text("description"),
   socials: text("socials"),
+  emails: text("emails"),
   company: text("company"),
   avatarUrl: text("avatar_url"),
   archived: boolean("archived").notNull().default(false),
@@ -44,6 +45,7 @@ export const events = pgTable("events", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   slug: text("slug"),
+  imageBase64: text("image_base64"),
   description: text("description"),
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
@@ -58,7 +60,7 @@ export const events = pgTable("events", {
 export const companies = pgTable("companies", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  imageUrl: text("image_url"),
+  imageBase64: text("image_base64"),
   description: text("description"),
   ownerId: text("owner_id"),
   companyType: text("company_type").notNull().default(CompanyType.default),
@@ -69,11 +71,24 @@ export const companies = pgTable("companies", {
 export const newsitems = pgTable("newsitems", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
-  imageUrl: text("image_url"),
+  imageBase64: text("image_base64"),
   introText: text("intro_text"),
   fullText: text("full_text"),
   publicVisibility: boolean("public_visibility").notNull().default(false),
   publishedAt: text("published_at"),
+  archived: boolean("archived").notNull().default(false),
+  reason: text("reason"),
+})
+
+export const activities = pgTable("activities", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  imageBase64: text("image_base64"),
+  description: text("description"),
+  stageName: text("stage_name"),
+  startTime: text("start_time"),
+  endTime: text("end_time"),
+  publicVisibility: boolean("public_visibility").notNull().default(false),
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
 })

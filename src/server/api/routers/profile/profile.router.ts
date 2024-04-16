@@ -1,11 +1,16 @@
-import { getProfileProcedure } from "@/server/api/routers/profile/profile-get.procedure"
-import { getProfileByUserProcedure } from "@/server/api/routers/profile/profile-get-by-user.procedure"
-import { getMyProfileProcedure } from "@/server/api/routers/profile/profile-me.procedure"
-import { getProfilePaginatedProcedure } from "@/server/api/routers/profile/profile-paginated.procedure"
-import { searchProfileProcedure } from "@/server/api/routers/profile/profile-search.procedure"
-import { getProfileMeProcedure } from "@/server/api/routers/profile/profile-total-count.procedure"
-import { updateProfileProcedure } from "@/server/api/routers/profile/profile-update.procedure"
 import { createTRPCRouter } from "@/server/api/trpc"
+
+import { addProfileAdminProcedure } from "./profile-add-admin.procedure"
+import { getProfileAdminsProcedure } from "./profile-admins.procedure"
+import { getProfileProcedure } from "./profile-get.procedure"
+import { getProfileByUserProcedure } from "./profile-get-by-user.procedure"
+import { getMyProfileProcedure } from "./profile-me.procedure"
+import { getProfilePaginatedProcedure } from "./profile-paginated.procedure"
+import { removeProfileAdminProcedure } from "./profile-remove-admin.procedure"
+import { searchProfileProcedure } from "./profile-search.procedure"
+import { searchProfileEmailProcedure } from "./profile-search-email.procedure"
+import { getProfileMeProcedure } from "./profile-total-count.procedure"
+import { updateProfileProcedure } from "./profile-update.procedure"
 
 export const profileRouter = createTRPCRouter({
   get: getProfileProcedure,
@@ -15,4 +20,8 @@ export const profileRouter = createTRPCRouter({
   count: getProfileMeProcedure,
   update: updateProfileProcedure,
   search: searchProfileProcedure,
+  searchEmail: searchProfileEmailProcedure,
+  admins: getProfileAdminsProcedure,
+  addAdmin: addProfileAdminProcedure,
+  removeAdmin: removeProfileAdminProcedure,
 })

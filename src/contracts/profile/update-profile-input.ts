@@ -6,6 +6,7 @@ export const UpdateUserProfileInput = z.object({
   title: z.string().optional(),
   description: z.string().optional().default(""),
   socials: z.string().optional(),
+  emails: z.string().optional(),
   company: z.string().optional(),
   avatarUrl: z.string().optional(),
 })

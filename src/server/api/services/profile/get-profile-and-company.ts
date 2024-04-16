@@ -42,6 +42,7 @@ export const getProfileAndCompany = async ({
     description: profileData.profiles.description ?? "",
     title: profileData.profiles.title ?? "",
     socials: profileData.profiles.socials ?? "",
+    emails: profileData.profiles.emails ?? "",
     company: profileData.companies?.name ?? "",
     companyId: profileData.profiles.company ?? "",
     avatarUrl: profileData.profiles.avatarUrl ?? "",

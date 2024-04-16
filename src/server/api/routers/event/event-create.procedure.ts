@@ -9,13 +9,13 @@ import {
 import { db } from "@/database"
 import { events } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 export const createEventProcedure = protectedProcedure
   .input(CreateEventInputDto)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
-    // TODO: make sure user has correct permissions
-
     if (
       await db.query.events.findFirst({
         where: and(eq(events.name, input.name), eq(events.archived, false)),

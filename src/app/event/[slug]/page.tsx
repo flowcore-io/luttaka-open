@@ -25,6 +25,7 @@ type EventData =
       reason: string | null
       description: string | null
       slug: string | null
+      imageBase64: string | null
       ticketDescription: string | null
       ticketPrice: number
       ticketCurrency: string

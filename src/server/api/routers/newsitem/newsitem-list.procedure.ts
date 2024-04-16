@@ -10,7 +10,7 @@ export const getNewsitemsProcedure = protectedProcedure.query(async () => {
       .select({
         id: newsitems.id,
         title: newsitems.title,
-        imageUrl: newsitems.imageUrl,
+        imageBase64: newsitems.imageBase64,
         introText: newsitems.introText,
         fullText: newsitems.fullText,
         publicVisibility: newsitems.publicVisibility,

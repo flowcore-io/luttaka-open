@@ -21,13 +21,14 @@ export const BottomBar = () => {
     }
     return "w-[86px] h-[86px] flex justify-center items-center"
   }
+  //219, 20%, 19.61%
   return (
-    <div className="fixed bottom-0 w-full bg-[#48556E] text-white sm:hidden">
+    <div className="fixed bottom-0 w-full bg-navigation sm:hidden">
       <div className="flex flex-row justify-between text-5xl">
         <Link href="/me/tickets" className={`${linkClass("/me/tickets")}`}>
           <FontAwesomeIcon icon={faTicket as IconProp} />
         </Link>
-        <Link href="/programme" className={`${linkClass("/programme")}`}>
+        <Link href="/activities" className={`${linkClass("/activities")}`}>
           <FontAwesomeIcon icon={faCalendarDays as IconProp} />
         </Link>
         <Link href="/" className={`${linkClass("/")}`}>

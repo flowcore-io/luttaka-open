@@ -5,10 +5,12 @@ import { sendEventUpdatedEvent } from "@/contracts/events/event"
 import { db } from "@/database"
 import { events } from "@/database/schemas"
 import waitForPredicate from "@/lib/wait-for-predicate"
+import { adminsOnlyMiddleware } from "@/server/api/routers/middlewares/admins-only.middleware"
 import { protectedProcedure } from "@/server/api/trpc"
 
 export const updateEventProcedure = protectedProcedure
   .input(UpdateEventInputDto)
+  .use(adminsOnlyMiddleware)
   .mutation(async ({ input }) => {
     if (
       !(await db.query.events.findFirst({

@@ -15,7 +15,7 @@ export const CompanyListItem: FC<CompanyListItemProps> = ({ company }) => {
         key={company.id}
         className={"flex items-center space-x-3 border-b border-accent py-3"}>
         <Avatar className={"h-12 w-12 flex-grow-0 rounded-full"}>
-          <AvatarImage src={company.imageUrl} alt={company.name} />
+          <AvatarImage src={company.imageBase64} alt={company.name} />
           <AvatarFallback className={"rounded"}>
             {company.name.substring(0, 2)}
           </AvatarFallback>

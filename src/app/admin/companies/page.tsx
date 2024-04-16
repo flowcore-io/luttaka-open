@@ -38,7 +38,7 @@ export default function Companies() {
           key={company.id}
           company={{
             ...company,
-            imageUrl: company.imageUrl ?? "",
+            imageBase64: company.imageBase64 ?? "",
             description: company.description ?? "",
             ownerId: company.ownerId ?? "",
             companyType: company.companyType ?? "",

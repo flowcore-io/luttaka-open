@@ -11,7 +11,7 @@ export interface NewsitemProps {
   newsitem: {
     id: string
     title: string
-    imageUrl: string | undefined
+    imageBase64: string | undefined
     introText: string | undefined
     fullText: string | undefined
     publicVisibility: boolean

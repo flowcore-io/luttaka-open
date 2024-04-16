@@ -44,6 +44,7 @@ export const routeUserUpdatedProfile = async (payload: unknown) => {
       title: data.title ?? existingProfile.title,
       description: data.description ?? existingProfile.description,
       socials: data.socials ?? existingProfile.socials,
+      emails: data.emails ?? existingProfile.emails,
       company: data.company ?? existingProfile.company,
       avatarUrl: data.avatarUrl ?? existingProfile.avatarUrl,
     })

@@ -11,7 +11,7 @@ export interface CompanyProps {
   company: {
     id: string
     name: string
-    imageUrl: string | undefined
+    imageBase64: string | undefined
     description: string | undefined
     ownerId: string | undefined
     companyType: string | undefined
@@ -49,7 +49,7 @@ export function Company({ company, refetch }: CompanyProps) {
         className="mb-2 flex cursor-pointer items-center rounded-lg border p-4 shadow transition hover:scale-101 hover:shadow-lg">
         <div className={"flex-1 self-stretch"}>
           <div className={"pb-2 font-bold"}>{company.name}</div>
-          <div className={"text-sm text-gray-500"}>{company.imageUrl}</div>
+          <div className={"text-sm text-gray-500"}>{company.imageBase64}</div>
           <div className={"text-sm text-gray-500"}>{company.description}</div>
           <div className={"text-sm text-gray-500"}>
             {company.companyType === "sponsor"

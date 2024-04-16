@@ -66,6 +66,7 @@ const createProfile = async (data: z.infer<typeof UserCreatedEventPayload>) => {
     title: data.title,
     description: data.description,
     socials: data.socials,
+    emails: data.emails,
     company: data.company,
     avatarUrl: data.avatarUrl,
   })
