@@ -3,14 +3,15 @@
 import { format } from "date-fns"
 import Image from "next/image"
 import Link from "next/link"
-import { PageTitle } from "@/components/ui/page-title"
-import { Skeleton } from "@/components/ui/skeleton"
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { PageTitle } from "@/components/ui/page-title"
+import { Skeleton } from "@/components/ui/skeleton"
 import { api } from "@/trpc/react"
 
 export default function ActivitiesPage() {
