@@ -31,6 +31,7 @@ export const updateProfileProcedure = protectedProcedure
         title: input.title,
         description: input.description,
         socials: input.socials,
+        emails: input.emails,
         company: input.company,
         avatarUrl: input.avatarUrl,
       },
@@ -49,6 +50,7 @@ export const updateProfileProcedure = protectedProcedure
           profile.title === input.title &&
           profile.description === input.description &&
           profile.socials === input.socials &&
+          profile.emails === input.emails &&
           profile.company === input.company &&
           profile.avatarUrl === input.avatarUrl
         )

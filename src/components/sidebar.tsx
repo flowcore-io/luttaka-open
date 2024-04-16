@@ -5,6 +5,7 @@ import {
   CalendarCheckIcon,
   CalendarIcon,
   Home,
+  KeyRoundIcon,
   Newspaper,
   Ticket,
   Users,
@@ -104,6 +105,13 @@ const Sidebar = () => {
             label: "",
             superuserRequired: true,
             icon: BuildingIcon,
+          },
+          {
+            href: "/admin/permissions",
+            title: "Manage Permissions",
+            label: "",
+            superuserRequired: true,
+            icon: KeyRoundIcon,
           },
         ]}
       />

@@ -34,6 +34,7 @@ export const profiles = pgTable("profiles", {
   title: text("title"),
   description: text("description"),
   socials: text("socials"),
+  emails: text("emails"),
   company: text("company"),
   avatarUrl: text("avatar_url"),
   archived: boolean("archived").notNull().default(false),
