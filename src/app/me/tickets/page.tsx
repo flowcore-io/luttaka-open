@@ -13,7 +13,7 @@ import { PageTitle } from "@/components/ui/page-title"
 import { EventContext } from "@/context/event-context"
 import { api } from "@/trpc/react"
 
-import GenerateTicket from "./generate-ticket"
+import BuyTicket from "./buy-ticket"
 
 export default function Tickets() {
   const router = useRouter()
@@ -119,15 +119,7 @@ export default function Tickets() {
           </div>
         ))}
         <h3 className={"mb-4 mt-16 text-2xl font-bold"}>Get more tickets</h3>
-        {events?.map((event) => (
-          <GenerateTicket
-            key={event.id}
-            event={event}
-            refetch={async () => {
-              await refetch()
-            }}
-          />
-        ))}
+        {events?.map((event) => <BuyTicket key={event.id} event={event} />)}
       </div>
     </div>
   )
