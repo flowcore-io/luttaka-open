@@ -15,8 +15,11 @@ export interface EventProps {
     imageBase64: string | null
     description: string | null
     ticketDescription: string | null
+    ticketPrice: number
+    ticketCurrency: string
     startDate: string
     endDate: string
+    stripeId: string
   }
   refetch: () => Promise<void>
 }
@@ -50,6 +53,12 @@ export function Event({ event, refetch }: EventProps) {
           <div className={"pb-2 font-bold"}>{event.name}</div>
           <div className={"text-sm text-gray-500"}>{event.description}</div>
           <div className={"text-sm text-gray-500"}>Event ID: {event.id}</div>
+          <div className={"text-sm text-gray-500"}>
+            Stripe ID: {event.stripeId}
+          </div>
+          <div className={"text-sm text-gray-500"}>
+            Price: {event.ticketPrice} {event.ticketCurrency}
+          </div>
           <div className={"text-sm text-gray-500"}>
             Start: {event.startDate}
           </div>

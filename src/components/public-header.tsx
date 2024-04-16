@@ -1,16 +1,26 @@
+import { SignInButton } from "@clerk/nextjs"
 import Image from "next/image"
-import Link from "next/link"
+
+import { Button } from "./ui/button"
+
 const PublicHeader = () => {
   return (
-    <header className="mt-12 flex min-h-12 items-center justify-center">
-      <Link href="/">
+    <header className="flex min-h-12 flex-row items-center justify-between p-6">
+      <div className="flex flex-row items-center justify-start">
         <Image
           src="/images/luttaka_logo.png"
-          alt="logo"
-          width={150}
-          height={150}
+          width={40}
+          height={40}
+          alt="Luttaka Logo"
+          className="m-auto"
         />
-      </Link>
+        <div>LUTTAKA</div>
+      </div>
+      <div className="text-center">
+        <SignInButton redirectUrl={`/`} mode="modal">
+          <Button>Sign In</Button>
+        </SignInButton>
+      </div>
     </header>
   )
 }

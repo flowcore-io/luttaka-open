@@ -35,6 +35,9 @@ export default function Events() {
           key={event.id}
           event={{
             ...event,
+            ...(typeof event.ticketPrice === "string" && {
+              ticketPrice: parseFloat(event.ticketPrice),
+            }),
           }}
           refetch={async () => {
             await refetch()

@@ -25,8 +25,9 @@ export const createEventProcedure = protectedProcedure
     }
 
     const id = shortUuid.generate()
+    const stripeId = shortUuid.generate()
 
-    await sendEventCreatedEvent({ ...input, id })
+    await sendEventCreatedEvent({ ...input, stripeId, id })
     try {
       await waitForPredicate(
         () =>

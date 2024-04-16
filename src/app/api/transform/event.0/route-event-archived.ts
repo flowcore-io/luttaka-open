@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm"
 import { EventEventArchivedPayload } from "@/contracts/events/event"
 import { db } from "@/database"
 import { events } from "@/database/schemas"
+import { archiveProduct } from "@/lib/stripe/product"
 
 export default async function eventArchived(payload: unknown) {
   console.log("Got archived event", payload)
@@ -13,6 +14,8 @@ export default async function eventArchived(payload: unknown) {
   if (!exists) {
     return
   }
+
+  await archiveProduct(exists.stripeId)
 
   await db
     .update(events)

@@ -29,6 +29,12 @@ export const updateEventProcedure = protectedProcedure
         ...(input.description
           ? [eq(events.description, input.description)]
           : []),
+        ...(input.ticketPrice
+          ? [eq(events.ticketPrice, input.ticketPrice)]
+          : []),
+        ...(input.ticketCurrency
+          ? [eq(events.ticketCurrency, input.ticketCurrency)]
+          : []),
         ...(input.startDate ? [eq(events.startDate, input.startDate)] : []),
         ...(input.endDate ? [eq(events.endDate, input.endDate)] : []),
       ]

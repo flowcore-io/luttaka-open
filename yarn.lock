@@ -3384,6 +3384,11 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@stripe/stripe-js@^3.0.6":
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-3.0.10.tgz#279b014db9bd3168589aebf0c5fbb768649db828"
+  integrity sha512-CFRNha+aPXR8GrqJss2TbK1j4aSGZXQY8gx0hvaYiSp+dU7EK/Zs5uwFTSAgV+t8H4+jcZ/iBGajAvoMYOwy+A==
+
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@surma/rollup-plugin-off-main-thread/-/rollup-plugin-off-main-thread-2.2.3.tgz#ee34985952ca21558ab0d952f00298ad2190c053"
@@ -3678,7 +3683,7 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*":
+"@types/node@*", "@types/node@>=8.1.0":
   version "20.11.30"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.30.tgz#9c33467fc23167a347e73834f788f4b9f399d66f"
   integrity sha512-dHM6ZxwlmuZaRmUPfv1p+KrdD1Dci04FbdEm/9wEMouFqxYoFl5aMkt0VMAUtYRQDyYvD41WJLukhq/ha3YuTw==
@@ -7678,6 +7683,13 @@ qrcode@^1.5.3:
     pngjs "^5.0.0"
     yargs "^15.3.1"
 
+qs@^6.11.0:
+  version "6.12.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.12.0.tgz#edd40c3b823995946a8a0b1f208669c7a200db77"
+  integrity sha512-trVZiI6RMOkO476zLGaBIzszOdFPnCCXHPG9kn0yuS1uz6xdVxPfZdB3vUig9pxPFDM9BRAgz/YUIVQ1/vuiUg==
+  dependencies:
+    side-channel "^1.0.6"
+
 queue-microtask@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
@@ -8603,6 +8615,14 @@ strip-json-comments@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
+
+stripe@^14.18.0:
+  version "14.22.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-14.22.0.tgz#0c3ace9e1b39976bb2b5f6b7b43674d6756e6f71"
+  integrity sha512-Pj8SAdTNjMq42UnWzBTTy8KMQ8qbQoVemPHbw3x+rHvwq1Psg9UFPT58j54F5os/SCgUAOZSEMcUedvzIDuqvw==
+  dependencies:
+    "@types/node" ">=8.1.0"
+    qs "^6.11.0"
 
 style-to-object@^1.0.0:
   version "1.0.5"
