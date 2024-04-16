@@ -54,7 +54,9 @@ export default function Newsitems() {
         onOpenChange={(open) => {
           !open && setCreateNewsitemDialogOpened(open)
         }}>
-        <DialogContent className={"max-w-4xl"}>
+        <DialogContent
+          className={"max-w-4xl"}
+          onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
           <DialogHeader>Create news item</DialogHeader>
           <CreateNewsitemForm
             close={() => setCreateNewsitemDialogOpened(false)}

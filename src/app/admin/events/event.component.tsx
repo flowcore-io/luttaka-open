@@ -87,7 +87,9 @@ export function Event({ event, refetch }: EventProps) {
           onOpenChange={(open) => {
             !open && setUpdateEventDialogOpened(open)
           }}>
-          <DialogContent className={"max-w-4xl"}>
+          <DialogContent
+            className={"max-w-4xl"}
+            onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
             <DialogHeader>Edit event</DialogHeader>
             <UpdateEventForm
               event={{
