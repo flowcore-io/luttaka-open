@@ -4,6 +4,7 @@ import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs"
 import { TicketIcon } from "lucide-react"
 import Link from "next/link"
 
+import BuyTicket from "@/app/me/tickets/buy-ticket"
 import RedeemTicketsDialog from "@/app/me/tickets/redeem-ticket.dialog"
 import MarkdownViewer from "@/components/md-viewer"
 import { Button } from "@/components/ui/button"
@@ -26,8 +27,11 @@ type EventData =
       slug: string | null
       imageBase64: string | null
       ticketDescription: string | null
+      ticketPrice: number
+      ticketCurrency: string
       startDate: string
       endDate: string
+      stripeId: string
       noResults?: boolean
     }
   | {
@@ -81,6 +85,7 @@ export default function EventPage({ params }: WithUrlParams<EventProps>) {
         </SignInButton>
       </SignedOut>
       <SignedIn>
+        <BuyTicket key={event.id} event={event} />
         <RedeemTicketsDialog onDone={() => refetch()}>
           <Button variant={"secondary"}>
             <TicketIcon className={"mr-2"} /> Redeem ticket

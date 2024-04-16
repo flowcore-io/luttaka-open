@@ -149,6 +149,13 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
       .replace(/[^a-z0-9-]/g, "")
   }
 
+  const createSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+  }
+
   return (
     <Form {...form}>
       <form
@@ -164,6 +171,34 @@ export const UpdateEventForm: FC<UpdateEventProps> = ({
             <FormItem>
               <FormLabel>Event Name</FormLabel>
               <FormControl>
+                <Input
+                  placeholder={"event name"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"slug"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder={"slug"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
                 <Input
                   placeholder={"event name"}
                   {...field}

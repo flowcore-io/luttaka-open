@@ -31,6 +31,7 @@ export default function Tickets() {
     const success = searchParams.get("success")
     if (success === "true") {
       toast.success("Ticket purchased")
+      setEventId(searchParams.get("eventid") ?? "")
       router.replace(pathname)
     } else if (success === "false") {
       toast.info("Ticket purchase cancelled")
@@ -91,11 +92,7 @@ export default function Tickets() {
             </Button>
           </RedeemTicketsDialog>
         </div>
-        {ticketsOtherEvents?.length > 0 && (
-          <h3 className={"mb-4 mt-16 text-2xl font-bold"}>
-            My tickets to other events
-          </h3>
-        )}
+        {ticketsOtherEvents?.length > 0 && <h3 className={"mb-4 mt-16"} />}
         {ticketsOtherEvents?.map((ticket) => (
           <div key={ticket.id}>
             <Ticket
@@ -118,7 +115,7 @@ export default function Tickets() {
             </Button>
           </div>
         ))}
-        <h3 className={"mb-4 mt-16 text-2xl font-bold"}>Get more tickets</h3>
+        <h3 className={"mb-4 mt-16 text-2xl font-bold"}>Buy more tickets</h3>
         {events?.map((event) => <BuyTicket key={event.id} event={event} />)}
       </div>
     </div>

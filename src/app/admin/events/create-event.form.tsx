@@ -67,6 +67,7 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
 
   const onSubmit = useCallback(async (values: CreateEventInput) => {
     form.setValue("slug", createSlug(values.slug))
+    form.setValue("slug", createSlug(values.slug))
     if (new Date(values.startDate) > new Date(values.endDate)) {
       form.setError("startDate", {
         type: "manual",
@@ -96,6 +97,13 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
       .replace(/[^a-z0-9-]/g, "")
   }
 
+  const createSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-3"}>
@@ -106,6 +114,34 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
             <FormItem>
               <FormLabel>Event Name</FormLabel>
               <FormControl>
+                <Input
+                  placeholder={"event name"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"slug"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder={"slug"}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    form.setValue("slug", createSlug(e.target.value))
+                  }}
+                />
                 <Input
                   placeholder={"event name"}
                   {...field}
