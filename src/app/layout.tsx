@@ -53,8 +53,8 @@ export default function RootLayout({
           <ClerkProvider>
             <SignedOut>
               <TRPCReactProvider cookies={cookies().toString()}>
-                <div className="flex h-full min-h-screen flex-row overflow-hidden">
-                  <div className="relative flex w-96 flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                <div className="flex h-full min-h-screen flex-row">
+                  <div className="relative flex w-96 flex-1 flex-col">
                     <PublicHeader />
                     <main>
                       <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
