@@ -82,7 +82,9 @@ export function Company({ company, refetch }: CompanyProps) {
           onOpenChange={(open) => {
             !open && setUpdateCompanyDialogOpened(open)
           }}>
-          <DialogContent className={"max-w-4xl"}>
+          <DialogContent
+            className={"max-w-4xl"}
+            onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
             <DialogHeader>Edit Company</DialogHeader>
             <UpdateCompanyForm
               company={{

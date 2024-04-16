@@ -43,7 +43,9 @@ export default function AdminPermissionPage() {
         onOpenChange={(open) => {
           !open && setAddAdminDialogOpened(open)
         }}>
-        <DialogContent className={"max-w-4xl"}>
+        <DialogContent
+          className={"max-w-4xl"}
+          onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
           <DialogHeader>Add administrator</DialogHeader>
           <AddAdminForm
             close={() => setAddAdminDialogOpened(false)}

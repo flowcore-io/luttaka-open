@@ -56,7 +56,9 @@ export default function Activities() {
         onOpenChange={(open) => {
           !open && setCreateActivityDialogOpened(open)
         }}>
-        <DialogContent className={"max-w-4xl"}>
+        <DialogContent
+          className={"max-w-4xl"}
+          onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
           <DialogHeader>Create activity</DialogHeader>
           <CreateActivityForm
             close={() => setCreateActivityDialogOpened(false)}
