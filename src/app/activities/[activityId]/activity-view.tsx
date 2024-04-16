@@ -1,5 +1,6 @@
 "use client"
 
+import { format } from "date-fns"
 import Image from "next/image"
 import React, { type FC } from "react"
 
@@ -25,12 +26,12 @@ export const ActivityView: FC<ActivityProps> = ({ activity }) => {
             <Image
               src={activity.imageBase64}
               alt={activity.title}
-              className="rounded-xl"
+              className="mb-6 rounded-xl"
               width={250}
               height={250}
             />
           ) : (
-            <Skeleton className="h-[250px] w-[250px] rounded-xl" />
+            <Skeleton className="mb-6 h-[250px] w-[250px] rounded-xl" />
           )}
           <div className={`flex flex-row`}>
             <h1 className={`text-4xl font-bold`}>{activity.title}</h1>
@@ -43,6 +44,12 @@ export const ActivityView: FC<ActivityProps> = ({ activity }) => {
               />
             </div>
           )}
+          <br />
+          <div className="">
+            {format(activity.startTime ?? "", `HH:mm`)}-
+            {format(activity.endTime ?? "", `HH:mm`)}{" "}
+            {activity.stageName ? `@ ${activity.stageName}` : ""}
+          </div>
         </div>
       </div>
     </div>
