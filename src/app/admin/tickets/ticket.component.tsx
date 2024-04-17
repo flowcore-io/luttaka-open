@@ -10,6 +10,7 @@ import { Loader } from "lucide-react"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
+import { EditTicketDialog } from "@/app/admin/tickets/edit-ticket.dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -105,16 +106,21 @@ export function Ticket({ ticket, refetch }: TicketProps) {
 
         {/* Ticket Controls */}
         <div className={"flex flex-grow justify-end space-x-2"}>
-          <Button size={"sm"} disabled={loading} variant={"secondary"}>
-            {loading ? (
-              <Loader className={"animate-spin"} />
-            ) : (
-              <span className={"flex items-center gap-2"}>
-                <p>Edit</p>
-                <FontAwesomeIcon icon={faPencil} />
-              </span>
-            )}
-          </Button>
+          <EditTicketDialog
+            eventId={ticket.eventId}
+            ticketId={ticket.id}
+            note={ticket.note}>
+            <Button size={"sm"} disabled={loading} variant={"secondary"}>
+              {loading ? (
+                <Loader className={"animate-spin"} />
+              ) : (
+                <span className={"flex items-center gap-2"}>
+                  <p>Edit</p>
+                  <FontAwesomeIcon icon={faPencil} />
+                </span>
+              )}
+            </Button>
+          </EditTicketDialog>
           <Button
             variant={"destructive"}
             size={"sm"}
