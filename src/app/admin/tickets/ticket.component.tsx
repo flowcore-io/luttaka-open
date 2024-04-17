@@ -117,7 +117,11 @@ export function Ticket({ ticket, refetch, selected, onSelected }: TicketProps) {
             ticketId={ticket.id}
             note={ticket.note}
             onComplete={refetch}>
-            <Button size={"sm"} disabled={loading} variant={"secondary"}>
+            <Button
+              asChild
+              size={"sm"}
+              disabled={loading}
+              variant={"secondary"}>
               {loading ? (
                 <Loader className={"animate-spin"} />
               ) : (
@@ -132,7 +136,11 @@ export function Ticket({ ticket, refetch, selected, onSelected }: TicketProps) {
             title={"Are you sure you want to archive the ticket"}
             description={"Doing so will remove the ticket for the user"}
             onConfirm={archiveTicket}>
-            <Button variant={"destructive"} size={"sm"} disabled={loading}>
+            <Button
+              asChild
+              variant={"destructive"}
+              size={"sm"}
+              disabled={loading}>
               {loading ? (
                 <Loader className={"animate-spin"} />
               ) : (
