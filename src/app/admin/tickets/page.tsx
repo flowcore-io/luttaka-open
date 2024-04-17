@@ -46,6 +46,7 @@ export default function Tickets() {
             eventId: ticket.eventId ?? "",
             state: ticket.state ?? "",
             transferId: ticket.transferId ?? "",
+            note: ticket.ticketNote ?? "",
           }}
           refetch={async () => {
             await refetch()
