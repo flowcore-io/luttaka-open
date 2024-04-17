@@ -52,7 +52,7 @@ export default function GenerateTicket({
         quantity: ticketQuantity,
       })
       toast.success("Ticket(s) created")
-      router.push("/me/tickets")
+      router.push("/admin/tickets")
     } catch (error) {
       const title =
         error instanceof Error ? error.message : "Ticket create failed"
