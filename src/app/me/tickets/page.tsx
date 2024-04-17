@@ -69,7 +69,11 @@ export default function Tickets() {
             key={ticket.id}
             selected={selectedTickets.includes(ticket.id)}
             onSelect={onSelect(ticket.id)}
-            ticket={ticket}
+            ticket={{
+              ...ticket,
+              ticketNote: ticket.ticketNote ?? "",
+              transferNote: ticket.transferNote ?? "",
+            }}
             refetch={async () => {
               await refetch()
             }}
@@ -98,7 +102,11 @@ export default function Tickets() {
             <Ticket
               selected={selectedTickets.includes(ticket.id)}
               onSelect={onSelect(ticket.id)}
-              ticket={ticket}
+              ticket={{
+                ...ticket,
+                ticketNote: ticket.ticketNote ?? "",
+                transferNote: ticket.transferNote ?? "",
+              }}
               refetch={async () => {
                 await refetch()
               }}
