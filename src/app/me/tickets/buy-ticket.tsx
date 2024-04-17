@@ -137,6 +137,7 @@ export default function BuyTicket({ event }: EventProps) {
             <div>
               <Input
                 type={"number"}
+                min={1}
                 value={ticketQuantity}
                 disabled={purchaseLoading}
                 onChange={(e) =>
