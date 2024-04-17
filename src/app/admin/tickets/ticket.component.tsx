@@ -7,15 +7,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Loader } from "lucide-react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { toast } from "sonner"
+
 import { EditTicketDialog } from "@/app/admin/tickets/edit-ticket.dialog"
 import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { api } from "@/trpc/react"
 import { cn } from "@/lib/utils"
+import { api } from "@/trpc/react"
 
 export interface TicketProps {
   ticket: {
