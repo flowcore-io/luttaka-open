@@ -21,7 +21,7 @@ export type ProfileListProps = {
 export const ProfileList: FC<ProfileListProps> = ({ eventId }) => {
   const pager = usePagination()
 
-  const profileCountRequest = api.profile.count.useQuery()
+  const profileCountRequest = api.attendance.count.useQuery({ eventId })
   const profilesRequest = api.attendance.page.useQuery(
     {
       page: pager.page,

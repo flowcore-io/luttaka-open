@@ -17,6 +17,7 @@ import { api } from "@/trpc/react"
 export default function ActivitiesPage() {
   const { data: activities } = api.activity.list.useQuery()
   const stages = [...new Set(activities?.map((activity) => activity.stageName))]
+  stages.sort()
   return (
     <div>
       <div className="mx-auto w-full p-4 md:p-6">
