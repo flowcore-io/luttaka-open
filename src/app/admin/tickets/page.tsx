@@ -2,12 +2,14 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { useContext, useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
-import { api } from "@/trpc/react"
-import { Ticket } from "./ticket.component"
 import { EventContext } from "@/context/event-context"
+import { api } from "@/trpc/react"
+
 import GenerateTicket from "./generate-ticket"
+import { Ticket } from "./ticket.component"
 
 export default function Tickets() {
   const { isLoaded, userId } = useAuth()

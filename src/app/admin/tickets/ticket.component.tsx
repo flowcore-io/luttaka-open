@@ -34,9 +34,6 @@ export function Ticket({ ticket, refetch }: TicketProps) {
     setLoading(false)
   }, [ticket.id])
 
-  const [updateTicketDialogOpened, setUpdateTicketDialogOpened] =
-    useState(false)
-
   return (
     <>
       <div
@@ -46,10 +43,7 @@ export function Ticket({ ticket, refetch }: TicketProps) {
           <div className={"pb-2 font-bold"}>{ticket.id}</div>
         </div>
         <div className={"text-right"}>
-          <Button
-            size={"sm"}
-            onClick={() => setUpdateTicketDialogOpened(true)}
-            disabled={loading}>
+          <Button size={"sm"} disabled={loading}>
             {loading ? <Loader className={"animate-spin"} /> : <PenIcon />}
           </Button>
           <Button
