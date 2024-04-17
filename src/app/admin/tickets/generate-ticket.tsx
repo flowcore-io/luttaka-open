@@ -33,6 +33,8 @@ interface GenerateTicketProps {
   event: RouterOutput["event"]["list"][0]
   refetch: () => Promise<void>
 }
+
+// todo: remove duplicate code by creating a general purpose organism for buy-ticket.tsx and generate-ticket.tsx
 export default function GenerateTicket({
   event,
   refetch,
@@ -40,6 +42,7 @@ export default function GenerateTicket({
   const [generateTicketDialogOpened, setGenerateTicketDialogOpened] =
     useState(false)
   const [ticketQuantity, setTicketQuantity] = useState(1)
+  const [ticketNote, setTicketNote] = useState("")
   const [generateLoading, setGenerateLoading] = useState(false)
   const router = useRouter()
 
@@ -50,6 +53,7 @@ export default function GenerateTicket({
       await apiCreateTicket.mutateAsync({
         eventId: event.id,
         quantity: ticketQuantity,
+        note: ticketNote,
       })
       toast.success("Ticket(s) created")
       router.push("/admin/tickets")
@@ -60,8 +64,9 @@ export default function GenerateTicket({
     }
     setGenerateLoading(false)
     setGenerateTicketDialogOpened(false)
+    setTicketNote("") // reset
     await refetch()
-  }, [ticketQuantity, event.id])
+  }, [ticketQuantity, ticketNote, event.id])
 
   return (
     <div key={event.id} className={`mb-6 p-2`}>
@@ -94,14 +99,22 @@ export default function GenerateTicket({
             <DialogHeader>
               <DialogTitle>Generate ticket(s) for {event?.name}</DialogTitle>
             </DialogHeader>
-            <div>
+            <div className={"space-y-3"}>
               <Input
                 type={"number"}
+                min={1}
                 value={ticketQuantity}
                 disabled={generateLoading}
                 onChange={(e) =>
                   setTicketQuantity(parseInt(e.currentTarget.value, 10))
                 }
+              />
+              <Input
+                type={"text"}
+                value={ticketNote}
+                placeholder={"A note attached to the ticket(s)"}
+                disabled={generateLoading}
+                onChange={(e) => setTicketNote(e.currentTarget.value)}
               />
             </div>
             <DialogFooter>

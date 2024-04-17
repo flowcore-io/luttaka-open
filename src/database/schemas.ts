@@ -10,12 +10,14 @@ export const tickets = pgTable("tickets", {
   userId: text("user_id").notNull(),
   state: text("state").notNull(),
   createdAt: timestamp("created_at").default(sql`now()`),
+  note: text("note").default(""),
 })
 
 export const ticketTransfers = pgTable("ticket_transfers", {
   id: text("id").primaryKey(),
   ticketId: text("ticket_id").notNull(),
   state: text("state").notNull(),
+  note: text("note").default(""),
 })
 
 export const users = pgTable("users", {

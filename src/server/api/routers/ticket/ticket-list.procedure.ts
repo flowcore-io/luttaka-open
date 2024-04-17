@@ -13,6 +13,8 @@ export const getTicketsProcedure = protectedProcedure.query(({ ctx }) => {
       eventId: tickets.eventId,
       state: tickets.state,
       transferId: ticketTransfers.id,
+      ticketNote: tickets.note,
+      transferNote: ticketTransfers.note,
     })
     .from(tickets)
     .leftJoin(

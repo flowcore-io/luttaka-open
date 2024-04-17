@@ -40,10 +40,12 @@ const CheckoutResponse = z.object({
 interface EventProps {
   event: RouterOutput["event"]["list"][0]
 }
+
 export default function BuyTicket({ event }: EventProps) {
   const [purchaseTicketDialogOpened, setPurchaseTicketDialogOpened] =
     useState(false)
   const [ticketQuantity, setTicketQuantity] = useState(1)
+  const [ticketNote, setTicketNote] = useState("")
   const [purchaseLoading, setPurchaseLoading] = useState(false)
   const router = useRouter()
 
@@ -60,6 +62,7 @@ export default function BuyTicket({ event }: EventProps) {
       await apiCreateTicket.mutateAsync({
         eventId: event.id,
         quantity: ticketQuantity,
+        note: ticketNote,
       })
       toast.success("Ticket(s) created")
       router.push("/me/tickets")
@@ -69,7 +72,8 @@ export default function BuyTicket({ event }: EventProps) {
       toast.error(title)
     }
     setPurchaseLoading(false)
-  }, [ticketQuantity, event.id])
+    setTicketNote("") // reset
+  }, [ticketQuantity, event.id, ticketNote])
 
   const purchaseTicket = useCallback(async () => {
     setPurchaseLoading(true)
@@ -83,18 +87,21 @@ export default function BuyTicket({ event }: EventProps) {
       body: JSON.stringify({
         eventId: event.id,
         quantity: ticketQuantity,
+        note: ticketNote,
       }),
     })
     const session = CheckoutResponse.parse(await response.json())
     const result = await stripe.redirectToCheckout({
       sessionId: session.sessionId,
     })
+
+    setTicketNote("") // reset
     if (result.error) {
       toast.error("Failed to redirect to checkout")
       setPurchaseLoading(false)
       return
     }
-  }, [ticketQuantity, event.id])
+  }, [ticketQuantity, event.id, ticketNote])
 
   return (
     <div key={event.id} className={`mb-6 p-2`}>
@@ -134,14 +141,22 @@ export default function BuyTicket({ event }: EventProps) {
                 Price: {formatCurrency(event.ticketPrice, event.ticketCurrency)}
               </DialogDescription>
             </DialogHeader>
-            <div>
+            <div className={"space-y-3"}>
               <Input
                 type={"number"}
+                min={1}
                 value={ticketQuantity}
                 disabled={purchaseLoading}
                 onChange={(e) =>
                   setTicketQuantity(parseInt(e.currentTarget.value, 10))
                 }
+              />
+              <Input
+                type={"text"}
+                value={ticketNote}
+                placeholder={"A note attached to the ticket(s)"}
+                disabled={purchaseLoading}
+                onChange={(e) => setTicketNote(e.currentTarget.value)}
               />
             </div>
             <DialogFooter>
