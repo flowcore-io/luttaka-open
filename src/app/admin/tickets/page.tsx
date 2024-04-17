@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuth } from "@clerk/nextjs"
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
@@ -10,20 +10,32 @@ import { api } from "@/trpc/react"
 
 import GenerateTicket from "./generate-ticket"
 import { Ticket } from "./ticket.component"
+import { inferRouterOutputs } from "@trpc/server"
+import { appRouter } from "@/server/api/root"
+
+type RouterOutput = inferRouterOutputs<typeof appRouter>
 
 export default function Tickets() {
   const { isLoaded, userId } = useAuth()
   const [createTicketDialogOpened, setCreateTicketDialogOpened] =
     useState(false)
-
   const [selectedTickets, setSelectedTickets] = useState<string[]>([])
-
   const { eventId } = useContext(EventContext)
-  const { data: event } = api.event.get.useQuery({ id: eventId ?? "" })
+  const [event, setEvent] = useState<RouterOutput["event"]["list"][0]>()
   const { data: tickets, refetch } = api.ticket.listForEvent.useQuery(
     { eventId: eventId ?? "" },
     { enabled: !!eventId },
   )
+  const eventQuery = api.event.get.useQuery(
+    { id: eventId ?? "" },
+    { enabled: !!eventId },
+  )
+  useEffect(() => {
+    if (eventQuery.data) {
+      setEvent(eventQuery.data)
+    }
+  }, [eventQuery.data])
+
   const ticketsForEvent = tickets?.filter(
     (ticket) => ticket.eventId === eventId,
   )
