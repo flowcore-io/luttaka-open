@@ -20,7 +20,6 @@ export default function HomeAvailableEvents({
   return (
     <div className="mx-auto w-full p-4 md:p-6">
       <PageTitle title={"Available events"} />
-      <PageTitle title={"Available events"} />
       {isLoading || !events ? (
         <Skeleton />
       ) : (
