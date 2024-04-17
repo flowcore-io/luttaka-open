@@ -21,7 +21,13 @@ export const UpdateTicketInputDto = TicketDto.pick({
     eventId: true,
   })
 
+export const TicketsForEventInputDto = TicketDto.pick({
+  eventId: true,
+})
+
 // Types
 export type Ticket = z.infer<typeof TicketDto>
+
+export type TicketsForEventInput = z.infer<typeof TicketsForEventInputDto>
 
 export type UpdateTicketInput = z.infer<typeof UpdateTicketInputDto>

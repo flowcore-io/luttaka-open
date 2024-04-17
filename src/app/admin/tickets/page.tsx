@@ -17,7 +17,10 @@ export default function Tickets() {
     useState(false)
   const { eventId } = useContext(EventContext)
   const { data: event } = api.event.get.useQuery({ id: eventId ?? "" })
-  const { data: tickets, refetch } = api.ticket.list.useQuery()
+  const { data: tickets, refetch } = api.ticket.listForEvent.useQuery(
+    { eventId: eventId ?? "" },
+    { enabled: !!eventId },
+  )
   const ticketsForEvent = tickets?.filter(
     (ticket) => ticket.eventId === eventId,
   )
