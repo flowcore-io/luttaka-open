@@ -110,7 +110,8 @@ export function Ticket({ ticket, refetch }: TicketProps) {
           <EditTicketDialog
             eventId={ticket.eventId}
             ticketId={ticket.id}
-            note={ticket.note}>
+            note={ticket.note}
+            onComplete={refetch}>
             <Button size={"sm"} disabled={loading} variant={"secondary"}>
               {loading ? (
                 <Loader className={"animate-spin"} />

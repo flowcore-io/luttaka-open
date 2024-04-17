@@ -29,6 +29,8 @@ export type EditTicketDialogProps = {
   eventId: string
   ticketId: string
   note: string
+
+  onComplete: () => void
 }
 
 export const EditTicketDialog: FC<PropsWithChildren<EditTicketDialogProps>> = (
@@ -48,6 +50,7 @@ export const EditTicketDialog: FC<PropsWithChildren<EditTicketDialogProps>> = (
     onSuccess: () => {
       setOpen(false)
       form.reset()
+      props.onComplete()
     },
   })
 
