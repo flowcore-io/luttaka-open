@@ -1,17 +1,17 @@
 "use client"
 
 import { useAuth } from "@clerk/nextjs"
+import { type inferRouterOutputs } from "@trpc/server"
 import { useCallback, useContext, useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { EventContext } from "@/context/event-context"
+import { type appRouter } from "@/server/api/root"
 import { api } from "@/trpc/react"
 
 import GenerateTicket from "./generate-ticket"
 import { Ticket } from "./ticket.component"
-import { inferRouterOutputs } from "@trpc/server"
-import { appRouter } from "@/server/api/root"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
 
