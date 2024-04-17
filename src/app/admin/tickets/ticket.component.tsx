@@ -11,6 +11,7 @@ import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
 import { EditTicketDialog } from "@/app/admin/tickets/edit-ticket.dialog"
+import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -121,25 +122,22 @@ export function Ticket({ ticket, refetch }: TicketProps) {
               )}
             </Button>
           </EditTicketDialog>
-          <Button
-            variant={"destructive"}
-            size={"sm"}
-            // todo: use a wrapper method for this call
-            onClick={(e) => {
-              e.stopPropagation()
-              return archiveTicket()
-            }}
-            disabled={loading}>
-            {loading ? (
-              <Loader className={"animate-spin"} />
-            ) : (
-              // todo: incorporate the icon into the button (or create an icon text component)
-              <span className={"flex items-center gap-2"}>
-                <p>Archive</p>
-                <FontAwesomeIcon icon={faArchive} />
-              </span>
-            )}
-          </Button>
+          <ConfirmDialog
+            title={"Are you sure you want to archive the ticket"}
+            description={"Doing so will remove the ticket for the user"}
+            onConfirm={archiveTicket}>
+            <Button variant={"destructive"} size={"sm"} disabled={loading}>
+              {loading ? (
+                <Loader className={"animate-spin"} />
+              ) : (
+                // todo: incorporate the icon into the button (or create an icon text component)
+                <span className={"flex items-center gap-2"}>
+                  <p>Archive</p>
+                  <FontAwesomeIcon icon={faArchive} />
+                </span>
+              )}
+            </Button>
+          </ConfirmDialog>
         </div>
       </div>
     </>
