@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuth } from "@clerk/nextjs"
-import { useContext, useState } from "react"
+import { useCallback, useContext, useMemo, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
@@ -15,6 +15,9 @@ export default function Tickets() {
   const { isLoaded, userId } = useAuth()
   const [createTicketDialogOpened, setCreateTicketDialogOpened] =
     useState(false)
+
+  const [selectedTickets, setSelectedTickets] = useState<string[]>([])
+
   const { eventId } = useContext(EventContext)
   const { data: event } = api.event.get.useQuery({ id: eventId ?? "" })
   const { data: tickets, refetch } = api.ticket.listForEvent.useQuery(
@@ -23,6 +26,36 @@ export default function Tickets() {
   )
   const ticketsForEvent = tickets?.filter(
     (ticket) => ticket.eventId === eventId,
+  )
+
+  const toggleAllSelection = useCallback(() => {
+    if (selectedTickets.length > 0) {
+      setSelectedTickets([])
+      return
+    }
+
+    setSelectedTickets(ticketsForEvent?.map((ticket) => ticket.id) ?? [])
+  }, [selectedTickets])
+
+  const handleSelected = useCallback(
+    (selected: boolean, id: string) => {
+      if (!selected) {
+        setSelectedTickets(
+          selectedTickets.filter((ticketId) => ticketId !== id),
+        )
+        return
+      }
+
+      if (selectedTickets.includes(id)) {
+        setSelectedTickets(
+          selectedTickets.filter((ticketId) => ticketId !== id),
+        )
+        return
+      }
+
+      setSelectedTickets([...selectedTickets, id])
+    },
+    [selectedTickets],
   )
 
   if (!isLoaded || !userId) {
@@ -40,6 +73,10 @@ export default function Tickets() {
         </div>
       </div>
 
+      <Button variant={"link"} onClick={toggleAllSelection}>
+        {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
+      </Button>
+
       {ticketsForEvent?.map((ticket) => (
         <Ticket
           key={ticket.id}
@@ -51,6 +88,8 @@ export default function Tickets() {
             transferId: ticket.transferId ?? "",
             note: ticket.ticketNote ?? "",
           }}
+          selected={selectedTickets.includes(ticket.id)}
+          onSelected={(status) => handleSelected(status, ticket.id)}
           refetch={async () => {
             await refetch()
           }}

@@ -7,15 +7,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Loader } from "lucide-react"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
-
 import { EditTicketDialog } from "@/app/admin/tickets/edit-ticket.dialog"
 import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { api } from "@/trpc/react"
+import { cn } from "@/lib/utils"
 
 export interface TicketProps {
   ticket: {
@@ -27,9 +27,11 @@ export interface TicketProps {
     note: string
   }
   refetch: () => Promise<void>
+  selected: boolean
+  onSelected: (value: boolean) => void
 }
 
-export function Ticket({ ticket, refetch }: TicketProps) {
+export function Ticket({ ticket, refetch, selected, onSelected }: TicketProps) {
   const [loading, setLoading] = useState(false)
 
   const user = api.profile.getByUserId.useQuery({ userId: ticket.userId })
@@ -52,10 +54,12 @@ export function Ticket({ ticket, refetch }: TicketProps) {
   return (
     <>
       <div
+        onClick={() => onSelected(!selected)}
         key={ticket.id}
-        className={
-          "relative mb-2 flex cursor-pointer flex-wrap items-center gap-1 rounded-lg border p-4 shadow transition hover:scale-101 hover:shadow-lg sm:gap-4"
-        }>
+        className={cn(
+          "relative mb-2 flex cursor-pointer flex-wrap items-center gap-1 rounded-lg border p-4 shadow transition hover:scale-101 hover:shadow-lg sm:gap-4",
+          selected ? "bg-accent" : "",
+        )}>
         <div
           className={
             "absolute right-1.5 top-1.5 sm:relative sm:right-0 sm:top-0"
