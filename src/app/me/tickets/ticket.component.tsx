@@ -10,7 +10,7 @@ import {
   Trash,
 } from "lucide-react"
 import { useQRCode } from "next-qrcode"
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
@@ -29,6 +29,8 @@ export interface TicketProps {
     eventId: string
     state: string
     transferId: string | null
+    transferNote: string
+    ticketNote: string
   }
   selected?: boolean
   onSelect: (selected: boolean) => void
@@ -89,6 +91,11 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
     await refetch()
   }, [ticket.id])
 
+  const note = useMemo(
+    () => ticket.transferNote || ticket.ticketNote,
+    [ticket.transferNote, ticket.ticketNote],
+  )
+
   return (
     <>
       <Card className="mb-4">
@@ -107,11 +114,17 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
                 className={
                   "mt-2 flex flex-wrap space-x-2 overflow-hidden text-wrap"
                 }>
-                <FontAwesomeIcon
-                  icon={faNoteSticky as IconProp}
-                  className={"text-sm text-muted"}
-                />
-                <p>Bob Marley</p>
+                {!!note ? (
+                  <>
+                    <FontAwesomeIcon
+                      icon={faNoteSticky as IconProp}
+                      className={"text-sm text-muted"}
+                    />
+                    <p>{note}</p>
+                  </>
+                ) : (
+                  <p className={"text-xs italic text-muted"}>no notes</p>
+                )}
               </div>
             </div>
 
