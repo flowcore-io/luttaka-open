@@ -8,6 +8,7 @@ import {
   KeyRoundIcon,
   Newspaper,
   Ticket,
+  TicketIcon,
   Users,
 } from "lucide-react"
 
@@ -84,6 +85,13 @@ const Sidebar = () => {
             label: "",
             superuserRequired: true,
             icon: BookOpen,
+          },
+          {
+            href: "/admin/tickets",
+            title: "Manage Tickets",
+            label: "",
+            superuserRequired: true,
+            icon: TicketIcon,
           },
           {
             href: "/admin/activities",
