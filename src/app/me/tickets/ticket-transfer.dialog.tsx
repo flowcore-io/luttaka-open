@@ -35,6 +35,11 @@ export interface TransferTicketsDialogProps {
   onDone: () => void
 }
 
+type ResponseData = {
+  message: string
+  status: string
+}
+
 export default function TransferTicketsDialog(
   props: TransferTicketsDialogProps,
 ) {
@@ -79,7 +84,7 @@ export default function TransferTicketsDialog(
       method: "POST",
       body: JSON.stringify(formData),
     })
-      .then((res) => res.json())
+      .then((res) => res.json() as Promise<ResponseData>)
       .then((res) => {
         console.log(res.message)
         console.log(res.status)

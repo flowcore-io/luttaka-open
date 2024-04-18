@@ -8,9 +8,15 @@ type ResponseData = {
   message?: string
 }
 
+type RequestBody = {
+  email: string
+  subject: string
+  message: string
+}
+
 export async function POST(request: Request) {
   let response: ResponseData = {}
-  const body = await request.json()
+  const body = (await request.json()) as RequestBody
   const data = {
     to: body.email,
     from: "Luttaka <noreply@luttaka.com>",
