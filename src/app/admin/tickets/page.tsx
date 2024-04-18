@@ -12,6 +12,9 @@ import { api } from "@/trpc/react"
 
 import GenerateTicket from "./generate-ticket"
 import { Ticket } from "./ticket.component"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
+import { TransferTicketsDialog } from "./transfer-tickets.dialog"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
 
@@ -85,9 +88,21 @@ export default function Tickets() {
         </div>
       </div>
 
-      <Button variant={"link"} onClick={toggleAllSelection}>
-        {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
-      </Button>
+      <div className="mb-4 flex justify-between">
+        <Button variant={"link"} onClick={toggleAllSelection}>
+          {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
+        </Button>
+
+        <TransferTicketsDialog ticketIds={selectedTickets} onComplete={refetch}>
+          <Button
+            disabled={selectedTickets.length < 1}
+            variant={"secondary"}
+            className={"space-x-2"}>
+            <p>Transfer Ticket(s)</p>
+            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+          </Button>
+        </TransferTicketsDialog>
+      </div>
 
       {ticketsForEvent?.map((ticket) => (
         <Ticket

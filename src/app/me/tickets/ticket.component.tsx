@@ -21,6 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { UserRole } from "@/contracts/user/user-role"
 import { api } from "@/trpc/react"
+import { cn } from "@/lib/utils"
 
 export interface TicketProps {
   ticket: {
@@ -98,14 +99,15 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
 
   return (
     <>
-      <Card className="mb-4">
+      <Card
+        className={cn(
+          "mb-4 cursor-pointer shadow transition hover:scale-101 hover:shadow-lg sm:gap-4",
+          selected ? "bg-accent" : "",
+        )}>
         <CardContent className="h-min-28 group relative flex space-x-4 p-4">
           <div
-            className={`${!selected && "invisible"} absolute left-2 top-2 ${ticket.state === "open" ? "group-hover:visible" : ""}`}>
-            <Checkbox checked={selected} onClick={() => onSelect(!selected)} />
-          </div>
-
-          <div className={"flex flex-grow flex-wrap justify-between space-y-3"}>
+            className={"flex flex-grow flex-wrap justify-between space-y-3"}
+            onClick={() => onSelect(!selected)}>
             {/* Ticket Description */}
             <div>
               <p className={"font-bold"}>{event?.name}</p>
@@ -133,25 +135,6 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
               <div className={"flex flex-wrap items-center justify-end"}>
                 {!ticket.transferId && ticket.state === "open" && (
                   <>
-                    <ConfirmDialog
-                      title={"Do you want to transfer this ticket?"}
-                      description={
-                        "This will create a code on the ticket that can be used to redeem the ticket. While the ticket is in transfer it cannot be used to check in"
-                      }
-                      onConfirm={async () => {
-                        await createTicketTransfer()
-                        await refetch()
-                      }}>
-                      <Button
-                        size={"sm"}
-                        className={"mr-2"}
-                        variant={"ghost"}
-                        disabled={loading}>
-                        <ArrowBigRightDash className={"mr-2"} />
-                        Transfer ticket
-                      </Button>
-                    </ConfirmDialog>
-
                     <Button
                       size={"lg"}
                       disabled={loading}

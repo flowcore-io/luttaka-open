@@ -14,6 +14,8 @@ import { EventContext } from "@/context/event-context"
 import { api } from "@/trpc/react"
 
 import BuyTicket from "./buy-ticket"
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export default function Tickets() {
   const router = useRouter()
@@ -45,30 +47,72 @@ export default function Tickets() {
     setTicketsCurrentEvent(tickets0)
   }, [tickets, eventId])
 
-  const onSelect = useCallback(
-    (ticketId: string) => (selected: boolean) => {
-      const selectedTicketIds = selectedTickets.filter((id) => id !== ticketId)
-      if (selected) {
-        setSelectedTickets([...selectedTicketIds, ticketId])
-      } else {
-        setSelectedTickets(selectedTicketIds)
+  const ticketsOtherEvents =
+    tickets?.filter((ticket) => ticket.eventId !== eventId) ?? []
+
+  const toggleAllSelection = useCallback(() => {
+    if (selectedTickets.length > 0) {
+      setSelectedTickets([])
+      return
+    }
+
+    setSelectedTickets(ticketsOtherEvents?.map((ticket) => ticket.id) ?? [])
+  }, [selectedTickets])
+
+  const handleSelected = useCallback(
+    (selected: boolean, id: string) => {
+      if (!selected) {
+        setSelectedTickets(
+          selectedTickets.filter((ticketId) => ticketId !== id),
+        )
+        return
       }
+
+      if (selectedTickets.includes(id)) {
+        setSelectedTickets(
+          selectedTickets.filter((ticketId) => ticketId !== id),
+        )
+        return
+      }
+
+      setSelectedTickets([...selectedTickets, id])
     },
     [selectedTickets],
   )
-
-  const ticketsOtherEvents =
-    tickets?.filter((ticket) => ticket.eventId !== eventId) ?? []
 
   return (
     <div className="mx-auto w-full p-4 md:p-6">
       <div className="pb-8">
         <PageTitle title={"My tickets"} />
+        <div className="mb-4 flex justify-between">
+          <Button variant={"link"} onClick={toggleAllSelection}>
+            {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
+          </Button>
+
+          {/* todo: make the buttons drop to the next line on mobile */}
+          <div className="flex flex-grow flex-wrap items-center justify-end space-x-4 space-y-2 sm:space-y-0">
+            <TransferTicketsDialog ticketIds={selectedTickets} onDone={refetch}>
+              <Button
+                disabled={selectedTickets.length < 1}
+                variant={"secondary"}
+                className={"space-x-2"}>
+                <p>Transfer Ticket(s)</p>
+                <FontAwesomeIcon icon={faArrowUpFromBracket} />
+              </Button>
+            </TransferTicketsDialog>
+            <RedeemTicketsDialog onDone={() => refetch()}>
+              <Button variant={"secondary"}>
+                <TicketIcon className={"mr-2"} /> Redeem ticket
+              </Button>
+            </RedeemTicketsDialog>
+          </div>
+        </div>
+
         {ticketsCurrentEvent?.map((ticket) => (
           <Ticket
             key={ticket.id}
             selected={selectedTickets.includes(ticket.id)}
-            onSelect={onSelect(ticket.id)}
+            onSelect={(status) => handleSelected(status, ticket.id)}
             ticket={{
               ...ticket,
               ticketNote: ticket.ticketNote ?? "",
@@ -79,29 +123,12 @@ export default function Tickets() {
             }}
           />
         ))}
-        <div className="whitespace-nowrap md:mt-4 md:flex-1 md:text-right">
-          {selectedTickets.length > 0 && (
-            <TransferTicketsDialog
-              ticketIds={selectedTickets}
-              onDone={() => refetch()}>
-              <Button className={"mr-2"}>
-                <ArrowBigRightDash className={"mr-2"} />
-                Transfer tickets
-              </Button>
-            </TransferTicketsDialog>
-          )}
-          <RedeemTicketsDialog onDone={() => refetch()}>
-            <Button variant={"secondary"}>
-              <TicketIcon className={"mr-2"} /> Redeem ticket
-            </Button>
-          </RedeemTicketsDialog>
-        </div>
         {ticketsOtherEvents?.length > 0 && <h3 className={"mb-4 mt-16"} />}
         {ticketsOtherEvents?.map((ticket) => (
           <div key={ticket.id}>
             <Ticket
               selected={selectedTickets.includes(ticket.id)}
-              onSelect={onSelect(ticket.id)}
+              onSelect={(status) => handleSelected(status, ticket.id)}
               ticket={{
                 ...ticket,
                 ticketNote: ticket.ticketNote ?? "",
