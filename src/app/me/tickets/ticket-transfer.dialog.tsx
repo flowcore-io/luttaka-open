@@ -26,13 +26,18 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import doMailto from "@/lib/do-mailto"
+//import doMailto from "@/lib/do-mailto"
 import { api } from "@/trpc/react"
 
 export interface TransferTicketsDialogProps {
   children: ReactNode
   ticketIds: string[]
   onDone: () => void
+}
+
+type ResponseData = {
+  message: string
+  status: string
 }
 
 export default function TransferTicketsDialog(
@@ -63,11 +68,28 @@ export default function TransferTicketsDialog(
 
     const shareLink = `${window.location.origin}/me/tickets?redeemCode=${transferIds.join(",")}`
 
-    doMailto(
-      values.email,
-      "You have received tickets:)",
-      `Hi\n\nYou have received tickets on Luttaka.\n\n You can redeem them by visiting the following link:\n ${shareLink}`,
-    )
+    // doMailto(
+    //   values.email,
+    //   "You have received tickets:)",
+    //   `Hi\n\nYou have received tickets on Luttaka.\n\n You can redeem them by visiting the following link:\n ${shareLink}`,
+    // )
+
+    const formData = {
+      email: values.email,
+      subject: "You have received ticket(s) on Luttaka",
+      message: `You have received ticket(s) on Luttaka.\n\n You can redeem the ticket(s) by visiting the following link:\n ${shareLink}`,
+    }
+
+    await fetch("/api/sendgrid", {
+      method: "POST",
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json() as Promise<ResponseData>)
+      .then((res) => {
+        console.log(res.message)
+        console.log(res.status)
+        toast.success("Email sent")
+      })
 
     setLoading(false)
     setOpened(false)

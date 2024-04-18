@@ -8,6 +8,7 @@ export default authMiddleware({
     "/api/trpc/event.getPublic",
     "/api/trpc/event.getPublicList",
     "/api/stripe/webhook",
+    "/api/sendgrid",
     "/api/transform/ticket.0",
     "/api/transform/user.0",
     "/api/transform/profile.0",
