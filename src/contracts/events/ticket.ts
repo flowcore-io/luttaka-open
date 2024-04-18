@@ -30,6 +30,11 @@ export const TicketEventUpdatedPayload = z.object({
   note: z.string().optional(),
 })
 
+export const TicketEventOwnershipChanged = z.object({
+  id: z.string(),
+  userId: z.string().optional(),
+})
+
 export const TicketEventArchivedPayload = z.object({
   id: z.string(),
   _reason: z.string().optional(),

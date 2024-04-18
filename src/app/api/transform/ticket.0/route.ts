@@ -6,10 +6,11 @@ import ticketTransferCreated from "@/app/api/transform/ticket.0/route-ticket-tra
 import ticketUpdated from "@/app/api/transform/ticket.0/route-ticket-updated"
 import { ticket } from "@/contracts/events/ticket"
 import EventTransformer from "@/lib/event-transformer"
+import ticketOwnerChanged from "./route-ticket-owner-changed"
 
 const eventTransformer = new EventTransformer(ticket, {
-  created: ticketCreated,
-  updated: ticketUpdated,
+  created: [ticketCreated, ticketOwnerChanged],
+  updated: [ticketUpdated, ticketOwnerChanged],
   archived: ticketArchived,
   transferCreated: ticketTransferCreated,
   transferAccepted: ticketTransferAccepted,

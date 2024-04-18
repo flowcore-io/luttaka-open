@@ -2,6 +2,7 @@ import { archiveTicketProcedure } from "@/server/api/routers/ticket/ticket-archi
 import { checkInTicketProcedure } from "@/server/api/routers/ticket/ticket-check-in.procedure"
 import { createTicketProcedure } from "@/server/api/routers/ticket/ticket-create.procedure"
 import { getTicketProcedure } from "@/server/api/routers/ticket/ticket-get.procedure"
+import { ticketHistoryProcedure } from "@/server/api/routers/ticket/ticket-history.procedure"
 import { getTicketsProcedure } from "@/server/api/routers/ticket/ticket-list.procedure"
 import { listForEventProcedure } from "@/server/api/routers/ticket/ticket-list-for-event.procedure"
 import { acceptTicketTransferProcedure } from "@/server/api/routers/ticket/ticket-transfer-accept.procedure"
@@ -14,6 +15,7 @@ import { createTicketTransferBundleProcedure } from "./ticket-transfer-create-bu
 
 export const ticketRouter = createTRPCRouter({
   get: getTicketProcedure,
+  ticketHistory: ticketHistoryProcedure,
   list: getTicketsProcedure,
   listForEvent: listForEventProcedure,
   create: createTicketProcedure,
