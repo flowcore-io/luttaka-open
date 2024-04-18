@@ -2,13 +2,7 @@ import type { IconProp } from "@fortawesome/fontawesome-svg-core"
 import { faNoteSticky } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import copy from "copy-to-clipboard"
-import {
-  ArrowBigLeftDash,
-  ArrowBigRightDash,
-  Clipboard,
-  TicketIcon,
-  Trash,
-} from "lucide-react"
+import { ArrowBigLeftDash, Clipboard, TicketIcon, Trash } from "lucide-react"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -19,8 +13,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { UserRole } from "@/contracts/user/user-role"
-import { api } from "@/trpc/react"
 import { cn } from "@/lib/utils"
+import { api } from "@/trpc/react"
 
 export interface TicketProps {
   ticket: {
