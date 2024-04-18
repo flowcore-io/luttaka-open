@@ -1,15 +1,18 @@
 import type { NextRequest } from "next/server"
-
-import { EventDto } from "@/contracts/common"
+import { EventDto, EventMetadataDto, EventMetdata } from "@/contracts/common"
+import { isArray } from "radash"
 
 interface Domain {
   flowType: string
   eventType: Record<string, string>
 }
 
-type Transformer = (payload: unknown) => Promise<void>
+type Transformer = (payload: unknown, metadata?: EventMetdata) => Promise<void>
 
-type Transformers<T extends string = string> = Record<T, Transformer>
+type Transformers<T extends string = string> = Record<
+  T,
+  Transformer | Transformer[]
+>
 
 export default class EventTransformer {
   constructor(
@@ -22,6 +25,7 @@ export default class EventTransformer {
       if (request.headers.get("X-Secret") !== process.env.TRANSFORMER_SECRET) {
         return Response.json({ success: false }, { status: 401 })
       }
+
       await this.transform(await request.json())
       return Response.json({ success: true }, { status: 200 })
     } catch (error) {
@@ -30,11 +34,12 @@ export default class EventTransformer {
     }
   }
 
-  transform(rawEvent: unknown) {
+  async transform(rawEvent: unknown): Promise<void> {
     const event = EventDto.parse(rawEvent)
     if (event.aggregator !== this.domain.flowType) {
       throw new Error("Invalid flowType")
     }
+
     const key = this.getEventTypeKey(event.eventType)
     if (!key) {
       throw new Error("Invalid eventType")
@@ -43,7 +48,24 @@ export default class EventTransformer {
     if (!transformer) {
       throw new Error("No transformer found")
     }
-    return transformer(event.payload)
+
+    const metadata = EventMetadataDto.parse(event)
+
+    if (isArray(transformer)) {
+      console.log("transformer", transformer)
+      const results = await Promise.allSettled(
+        transformer.map((t) => t(event.payload, metadata)),
+      )
+
+      for (const result of results) {
+        if (result.status === "rejected") {
+          console.error(`Error occurred: `, result.reason)
+        }
+      }
+      return
+    }
+
+    await transformer(event.payload, metadata)
   }
 
   getEventTypeKey(eventType: string): string | undefined {
