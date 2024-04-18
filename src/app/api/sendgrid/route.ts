@@ -21,8 +21,8 @@ export async function POST(request: Request) {
     to: body.email,
     from: "Luttaka <noreply@luttaka.com>",
     subject: body.subject,
-    text: body.message,
-    html: body.message.replace(/\r\n/g, "<br />"),
+    text: undefined,
+    html: body.message,
   }
 
   await mail
