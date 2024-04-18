@@ -56,7 +56,7 @@ export default function Tickets() {
       return
     }
 
-    setSelectedTickets(ticketsOtherEvents?.map((ticket) => ticket.id) ?? [])
+    setSelectedTickets(tickets?.map((ticket) => ticket.id) ?? [])
   }, [selectedTickets])
 
   const handleSelected = useCallback(
