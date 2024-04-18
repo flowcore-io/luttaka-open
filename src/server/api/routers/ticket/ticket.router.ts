@@ -10,6 +10,8 @@ import { createTicketTransferProcedure } from "@/server/api/routers/ticket/ticke
 import { updateTicketProcedure } from "@/server/api/routers/ticket/ticket-update.procedure"
 import { createTRPCRouter } from "@/server/api/trpc"
 
+import { createTicketTransferBundleProcedure } from "./ticket-transfer-create-bundle.procedure"
+
 export const ticketRouter = createTRPCRouter({
   get: getTicketProcedure,
   list: getTicketsProcedure,
@@ -19,6 +21,7 @@ export const ticketRouter = createTRPCRouter({
   checkIn: checkInTicketProcedure,
   archive: archiveTicketProcedure,
   createTransfer: createTicketTransferProcedure,
+  createTransferBundle: createTicketTransferBundleProcedure,
   cancelTransfer: cancelTicketTransferProcedure,
   acceptTransfer: acceptTicketTransferProcedure,
 })

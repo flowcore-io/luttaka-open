@@ -2,13 +2,7 @@ import type { IconProp } from "@fortawesome/fontawesome-svg-core"
 import { faNoteSticky } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import copy from "copy-to-clipboard"
-import {
-  ArrowBigLeftDash,
-  ArrowBigRightDash,
-  Clipboard,
-  TicketIcon,
-  Trash,
-} from "lucide-react"
+import { ArrowBigLeftDash, Clipboard, TicketIcon, Trash } from "lucide-react"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -17,9 +11,9 @@ import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { UserRole } from "@/contracts/user/user-role"
+import { cn } from "@/lib/utils"
 import { api } from "@/trpc/react"
 
 export interface TicketProps {
@@ -45,22 +39,6 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
   const { data: event } = api.event.get.useQuery({
     id: ticket.eventId,
   })
-
-  const apiCreateTicketTransfer = api.ticket.createTransfer.useMutation()
-  const createTicketTransfer = useCallback(async () => {
-    setLoading(true)
-    try {
-      await apiCreateTicketTransfer.mutateAsync({
-        ticketId: ticket.id,
-      })
-      await refetch()
-      toast.success("Ticket transfer created")
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Transfer failed"
-      toast.error(message)
-    }
-    setLoading(false)
-  }, [ticket.id])
 
   const apiCancelTicketTransfer = api.ticket.cancelTransfer.useMutation()
   const cancelTicketTransfer = useCallback(async () => {
@@ -98,14 +76,15 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
 
   return (
     <>
-      <Card className="mb-4">
+      <Card
+        className={cn(
+          "mb-4 cursor-pointer shadow transition hover:scale-101 hover:shadow-lg sm:gap-4",
+          selected ? "bg-accent" : "",
+        )}>
         <CardContent className="h-min-28 group relative flex space-x-4 p-4">
           <div
-            className={`${!selected && "invisible"} absolute left-2 top-2 ${ticket.state === "open" ? "group-hover:visible" : ""}`}>
-            <Checkbox checked={selected} onClick={() => onSelect(!selected)} />
-          </div>
-
-          <div className={"flex flex-grow flex-wrap justify-between space-y-3"}>
+            className={"flex flex-grow flex-wrap justify-between space-y-3"}
+            onClick={() => onSelect(!selected)}>
             {/* Ticket Description */}
             <div>
               <p className={"font-bold"}>{event?.name}</p>
@@ -133,25 +112,6 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
               <div className={"flex flex-wrap items-center justify-end"}>
                 {!ticket.transferId && ticket.state === "open" && (
                   <>
-                    <ConfirmDialog
-                      title={"Do you want to transfer this ticket?"}
-                      description={
-                        "This will create a code on the ticket that can be used to redeem the ticket. While the ticket is in transfer it cannot be used to check in"
-                      }
-                      onConfirm={async () => {
-                        await createTicketTransfer()
-                        await refetch()
-                      }}>
-                      <Button
-                        size={"sm"}
-                        className={"mr-2"}
-                        variant={"ghost"}
-                        disabled={loading}>
-                        <ArrowBigRightDash className={"mr-2"} />
-                        Transfer ticket
-                      </Button>
-                    </ConfirmDialog>
-
                     <Button
                       size={"lg"}
                       disabled={loading}

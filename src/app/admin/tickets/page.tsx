@@ -1,9 +1,12 @@
 "use client"
 
 import { useAuth } from "@clerk/nextjs"
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { type inferRouterOutputs } from "@trpc/server"
 import { useCallback, useContext, useEffect, useState } from "react"
 
+import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { EventContext } from "@/context/event-context"
@@ -26,6 +29,7 @@ export default function Tickets() {
     { eventId: eventId ?? "" },
     { enabled: !!eventId },
   )
+
   const eventQuery = api.event.get.useQuery(
     { id: eventId ?? "" },
     { enabled: !!eventId },
@@ -85,9 +89,22 @@ export default function Tickets() {
         </div>
       </div>
 
-      <Button variant={"link"} onClick={toggleAllSelection}>
-        {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
-      </Button>
+      <div className="mb-4 flex justify-between">
+        <Button variant={"link"} onClick={toggleAllSelection}>
+          {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
+        </Button>
+
+        {/* todo: move this component into an organism or "dialog" folder */}
+        <TransferTicketsDialog ticketIds={selectedTickets} onDone={refetch}>
+          <Button
+            disabled={selectedTickets.length < 1}
+            variant={"secondary"}
+            className={"space-x-2"}>
+            <p>Transfer Ticket(s)</p>
+            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+          </Button>
+        </TransferTicketsDialog>
+      </div>
 
       {ticketsForEvent?.map((ticket) => (
         <Ticket
@@ -98,7 +115,9 @@ export default function Tickets() {
             eventId: ticket.eventId ?? "",
             state: ticket.state ?? "",
             transferId: ticket.transferId ?? "",
-            note: ticket.ticketNote ?? "",
+            note: !!ticket.transferNote
+              ? ticket.transferNote
+              : ticket.ticketNote ?? "",
           }}
           selected={selectedTickets.includes(ticket.id)}
           onSelected={(status) => handleSelected(status, ticket.id)}
