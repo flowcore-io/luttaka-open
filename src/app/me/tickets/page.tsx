@@ -1,6 +1,8 @@
 "use client"
 
-import { ArrowBigRightDash, TicketIcon } from "lucide-react"
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { TicketIcon } from "lucide-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useContext, useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -14,8 +16,6 @@ import { EventContext } from "@/context/event-context"
 import { api } from "@/trpc/react"
 
 import BuyTicket from "./buy-ticket"
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export default function Tickets() {
   const router = useRouter()

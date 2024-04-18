@@ -1,9 +1,12 @@
 "use client"
 
 import { useAuth } from "@clerk/nextjs"
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { type inferRouterOutputs } from "@trpc/server"
 import { useCallback, useContext, useEffect, useState } from "react"
 
+import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { EventContext } from "@/context/event-context"
@@ -12,9 +15,6 @@ import { api } from "@/trpc/react"
 
 import GenerateTicket from "./generate-ticket"
 import { Ticket } from "./ticket.component"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
-import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
 
@@ -29,6 +29,7 @@ export default function Tickets() {
     { eventId: eventId ?? "" },
     { enabled: !!eventId },
   )
+
   const eventQuery = api.event.get.useQuery(
     { id: eventId ?? "" },
     { enabled: !!eventId },
