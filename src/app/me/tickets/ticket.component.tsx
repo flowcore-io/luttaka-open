@@ -47,22 +47,6 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
     id: ticket.eventId,
   })
 
-  const apiCreateTicketTransfer = api.ticket.createTransfer.useMutation()
-  const createTicketTransfer = useCallback(async () => {
-    setLoading(true)
-    try {
-      await apiCreateTicketTransfer.mutateAsync({
-        ticketId: ticket.id,
-      })
-      await refetch()
-      toast.success("Ticket transfer created")
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Transfer failed"
-      toast.error(message)
-    }
-    setLoading(false)
-  }, [ticket.id])
-
   const apiCancelTicketTransfer = api.ticket.cancelTransfer.useMutation()
   const cancelTicketTransfer = useCallback(async () => {
     setLoading(true)

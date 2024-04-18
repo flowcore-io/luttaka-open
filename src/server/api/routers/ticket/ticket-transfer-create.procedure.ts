@@ -14,6 +14,7 @@ import { protectedProcedure } from "@/server/api/trpc"
 const CreateTicketTransferInput = z.object({
   ticketId: z.string(),
   userId: z.string().optional(),
+  note: z.string().optional(),
 })
 
 export const createTicketTransferProcedure = protectedProcedure

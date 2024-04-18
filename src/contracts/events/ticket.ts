@@ -39,6 +39,7 @@ export const TicketEventTransferCreatedPayload = z.object({
   id: z.string(),
   ticketId: z.string(),
   state: z.string(),
+  note: z.string().optional(),
 })
 
 export const TicketEventTransferAcceptedPayload = z.object({

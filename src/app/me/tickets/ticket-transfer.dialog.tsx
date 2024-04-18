@@ -49,6 +49,7 @@ export default function TransferTicketsDialog(
 
   const formSchema = z.object({
     email: z.string().email(),
+    note: z.string(),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,7 +63,7 @@ export default function TransferTicketsDialog(
     setLoading(true)
     const transferIds = await Promise.all(
       props.ticketIds.map((ticketId) =>
-        apiTransferTicket.mutateAsync({ ticketId }),
+        apiTransferTicket.mutateAsync({ ticketId, note: values.note }),
       ),
     )
 
@@ -143,6 +144,28 @@ export default function TransferTicketsDialog(
                     </FormControl>
                     <FormDescription>
                       The email to share the tickets with
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="note"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Transfer Note</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="a note on the ticket transfer"
+                        {...field}
+                        autoComplete={"off"}
+                        data-1p-ignore
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      This note is ideal for keeping track of who the ticket is
+                      for
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

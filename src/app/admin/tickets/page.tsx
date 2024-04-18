@@ -113,7 +113,9 @@ export default function Tickets() {
             eventId: ticket.eventId ?? "",
             state: ticket.state ?? "",
             transferId: ticket.transferId ?? "",
-            note: ticket.ticketNote ?? "",
+            note: !!ticket.transferNote
+              ? ticket.transferNote
+              : ticket.ticketNote ?? "",
           }}
           selected={selectedTickets.includes(ticket.id)}
           onSelected={(status) => handleSelected(status, ticket.id)}
