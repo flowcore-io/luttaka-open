@@ -17,6 +17,7 @@ export const env = createEnv({
     TRANSFORMER_SECRET: z.string(),
     STRIPE_SECRET_KEY: z.string(),
     WEBHOOK_SECRET: z.string(),
+    SENDGRID_API_KEY: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -51,6 +52,7 @@ export const env = createEnv({
     WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
     NODE_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
