@@ -14,7 +14,7 @@ import GenerateTicket from "./generate-ticket"
 import { Ticket } from "./ticket.component"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
-import { TransferTicketsDialog } from "./transfer-tickets.dialog"
+import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
 
@@ -93,7 +93,8 @@ export default function Tickets() {
           {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
         </Button>
 
-        <TransferTicketsDialog ticketIds={selectedTickets} onComplete={refetch}>
+        {/* todo: move this component into an organism or "dialog" folder */}
+        <TransferTicketsDialog ticketIds={selectedTickets} onDone={refetch}>
           <Button
             disabled={selectedTickets.length < 1}
             variant={"secondary"}
