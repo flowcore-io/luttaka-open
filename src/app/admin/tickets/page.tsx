@@ -74,6 +74,11 @@ export default function Tickets() {
     [selectedTickets],
   )
 
+  const transferComplete = async () => {
+    setSelectedTickets([])
+    await refetch()
+  }
+
   if (!isLoaded || !userId) {
     return null
   }
@@ -95,7 +100,9 @@ export default function Tickets() {
         </Button>
 
         {/* todo: move this component into an organism or "dialog" folder */}
-        <TransferTicketsDialog ticketIds={selectedTickets} onDone={refetch}>
+        <TransferTicketsDialog
+          ticketIds={selectedTickets}
+          onDone={transferComplete}>
           <Button
             disabled={selectedTickets.length < 1}
             variant={"secondary"}
