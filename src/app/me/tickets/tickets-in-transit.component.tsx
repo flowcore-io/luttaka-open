@@ -1,12 +1,13 @@
 import { faBan } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { type FC, useCallback, useState } from "react"
+import { type FC,useCallback } from "react"
 import { toast } from "sonner"
 
 import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
 import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
 import { Button } from "@/components/ui/button"
 import { MissingText } from "@/components/ui/messages/missing-text"
+import { useSelector } from "@/hooks/use-selector"
 import { api } from "@/trpc/react"
 
 import { Ticket } from "./ticket.component"
@@ -15,60 +16,18 @@ export const TicketsInTransit: FC = () => {
   const { data: tickets, isLoading, refetch } = api.ticket.inTransit.useQuery()
   const apiCancelTicketTransfer = api.ticket.cancelTransfer.useMutation()
 
-  const [selectedTickets, setSelectedTickets] = useState<string[]>([])
-
-  const toggleAllSelection = useCallback(() => {
-    if (selectedTickets.length > 0) {
-      setSelectedTickets([])
-      return
-    }
-
-    if (!tickets) {
-      setSelectedTickets([])
-      return
-    }
-
-    const ticketsWithTransferIds: string[] = tickets
-      .filter((ticket) => ticket.transferId !== null)
-      .map((ticket): string => ticket.transferId!)
-
-    setSelectedTickets(ticketsWithTransferIds)
-  }, [selectedTickets])
-
-  const handleSelected = useCallback(
-    (selected: boolean, id: string) => {
-      if (!id) {
-        return
-      }
-
-      if (!selected) {
-        setSelectedTickets(
-          selectedTickets.filter((transferId) => transferId !== id),
-        )
-        return
-      }
-
-      if (selectedTickets.includes(id)) {
-        setSelectedTickets(
-          selectedTickets.filter((transferId) => transferId !== id),
-        )
-        return
-      }
-
-      setSelectedTickets([...selectedTickets, id])
-    },
-    [selectedTickets],
-  )
+  const selector = useSelector({
+    onSelectAll: () => tickets?.map((ticket) => ticket.transferId!) ?? [],
+    onRemoveFilter: (existing, incoming) => existing !== incoming,
+  })
 
   const cancelTicketTransfers = useCallback(async () => {
-    if (selectedTickets.length < 1) {
+    if (!selector.hasSelections) {
       return
     }
 
-    console.log(selectedTickets)
-
     const result = await Promise.allSettled(
-      selectedTickets.map((transferId) => {
+      selector.selections.map((transferId) => {
         return apiCancelTicketTransfer.mutateAsync({ transferId })
       }),
     )
@@ -83,7 +42,8 @@ export const TicketsInTransit: FC = () => {
     }
 
     await refetch()
-  }, [tickets, selectedTickets])
+    selector.deselectAll()
+  }, [tickets, selector.selections])
 
   if (isLoading) {
     // todo make a new skeleton loader for this
@@ -93,8 +53,8 @@ export const TicketsInTransit: FC = () => {
   return (
     <div>
       <div className="mb-4 flex justify-between">
-        <Button variant={"link"} onClick={toggleAllSelection}>
-          {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
+        <Button variant={"link"} onClick={selector.toggleAllSelections}>
+          {selector.hasSelections ? "Deselect All" : "Select All"}
         </Button>
 
         <div className="flex flex-grow flex-wrap items-center justify-end space-x-4 space-y-2 sm:space-y-0">
@@ -105,7 +65,7 @@ export const TicketsInTransit: FC = () => {
             }
             onConfirm={cancelTicketTransfers}>
             <Button
-              disabled={selectedTickets.length < 1}
+              disabled={!selector.hasSelections}
               variant={"secondary"}
               className={"space-x-2"}>
               <p>Cancel Transfer(s)</p>
@@ -118,8 +78,8 @@ export const TicketsInTransit: FC = () => {
         tickets.map((ticket) => (
           <Ticket
             key={ticket.id}
-            selected={selectedTickets.includes(ticket.transferId!)}
-            onSelect={(status) => handleSelected(status, ticket.transferId!)}
+            selected={selector.isSelected(ticket.transferId!)}
+            onSelect={(status) => selector.select(status, ticket.transferId!)}
             ticket={{
               ...ticket,
               ticketNote: ticket.ticketNote ?? "",
