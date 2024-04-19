@@ -28,6 +28,7 @@ export default function Tickets() {
   const [ticketsCurrentEvent, setTicketsCurrentEvent] = useState<
     typeof tickets
   >([])
+  const profile = api.profile.me.useQuery().data
 
   useEffect(() => {
     const success = searchParams.get("success")
@@ -91,7 +92,10 @@ export default function Tickets() {
 
           {/* todo: make the buttons drop to the next line on mobile */}
           <div className="flex flex-grow flex-wrap items-center justify-end space-x-4 space-y-2 sm:space-y-0">
-            <TransferTicketsDialog ticketIds={selectedTickets} onDone={refetch}>
+            <TransferTicketsDialog
+              ticketIds={selectedTickets}
+              onDone={refetch}
+              sender={profile?.displayName}>
               <Button
                 disabled={selectedTickets.length < 1}
                 variant={"secondary"}
