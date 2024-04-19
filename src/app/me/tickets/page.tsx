@@ -81,6 +81,12 @@ export default function Tickets() {
     [selectedTickets],
   )
 
+  // todo: make the ticket selection option into a component, to avoid repeating the same code in the admin and the "my tickets" page
+  const ticketTransferred = async () => {
+    setSelectedTickets([])
+    await refetch()
+  }
+
   return (
     <div className="mx-auto w-full p-4 md:p-6">
       <div className="pb-8">
@@ -94,7 +100,7 @@ export default function Tickets() {
           <div className="flex flex-grow flex-wrap items-center justify-end space-x-4 space-y-2 sm:space-y-0">
             <TransferTicketsDialog
               ticketIds={selectedTickets}
-              onDone={refetch}
+              onDone={ticketTransferred}
               sender={profile?.displayName}>
               <Button
                 disabled={selectedTickets.length < 1}
