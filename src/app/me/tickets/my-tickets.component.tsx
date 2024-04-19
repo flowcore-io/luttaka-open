@@ -6,6 +6,7 @@ import { type FC } from "react"
 import { SelectAllController } from "@/components/molecules/selector/select-all-controller"
 import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
 import { Button } from "@/components/ui/button"
+import { MissingText } from "@/components/ui/messages/missing-text"
 import { useSelector } from "@/hooks/use-selector"
 import { api } from "@/trpc/react"
 
@@ -54,20 +55,25 @@ export const MyTickets: FC = () => {
           </RedeemTicketsDialog>
         </div>
       </div>
-      {tickets!.map((ticket) => (
-        <Ticket
-          selected={selector.isSelected(ticket.id)}
-          onSelect={(status) => selector.select(status, ticket.id)}
-          ticket={{
-            ...ticket,
-            ticketNote: ticket.ticketNote ?? "",
-            transferNote: ticket.transferNote ?? "",
-          }}
-          refetch={async () => {
-            await refetch()
-          }}
-        />
-      ))}
+
+      {tickets?.length ? (
+        tickets.map((ticket) => (
+          <Ticket
+            selected={selector.isSelected(ticket.id)}
+            onSelect={(status) => selector.select(status, ticket.id)}
+            ticket={{
+              ...ticket,
+              ticketNote: ticket.ticketNote ?? "",
+              transferNote: ticket.transferNote ?? "",
+            }}
+            refetch={async () => {
+              await refetch()
+            }}
+          />
+        ))
+      ) : (
+        <MissingText text="You don't have any tickets" />
+      )}
     </div>
   )
 }
