@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm"
+import { and, desc, eq, isNull } from "drizzle-orm"
 
 import { db } from "@/database"
 import { tickets, ticketTransfers } from "@/database/schemas"
@@ -18,6 +18,7 @@ export type TicketDetails = {
 export const getTicketsProcedure = protectedProcedure.query<TicketDetails[]>(
   async ({ ctx }): Promise<TicketDetails[]> => {
     const userId = ctx.user.id
+
     const result = await db
       .select({
         id: tickets.id,
@@ -41,7 +42,7 @@ export const getTicketsProcedure = protectedProcedure.query<TicketDetails[]>(
         desc(ticketTransfers.id),
         desc(tickets.createdAt),
       )
-      .where(eq(tickets.userId, userId))
+      .where(and(eq(tickets.userId, userId), isNull(ticketTransfers.id)))
       .execute()
 
     return result.map(
