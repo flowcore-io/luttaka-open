@@ -16,6 +16,7 @@ import { EventContext } from "@/context/event-context"
 
 import { MyTickets } from "./my-tickets.component"
 import { TicketsInTransit } from "./tickets-in-transit.component"
+import { TransferredTickets } from "./transferred-tickets.component"
 
 const MY_TICKET_TAB = "my-tickets"
 const TICKETS_IN_TRANSIT_TAB = "tickets-in-transit"
@@ -73,6 +74,7 @@ export default function Tickets() {
           </TabsContent>
           <TabsContent value={TRANSFERRED_TICKETS_TAB}>
             <h3 className={"mb-4 text-2xl font-bold"}>Tickets Transferred</h3>
+            <TransferredTickets />
           </TabsContent>
         </Tabs>
       </div>
