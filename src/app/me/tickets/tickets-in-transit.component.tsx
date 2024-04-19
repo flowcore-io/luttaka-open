@@ -1,9 +1,10 @@
 import { faBan } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { type FC,useCallback } from "react"
+import { type FC, useCallback } from "react"
 import { toast } from "sonner"
 
 import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
+import { SelectAllController } from "@/components/molecules/selector/select-all-controller"
 import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
 import { Button } from "@/components/ui/button"
 import { MissingText } from "@/components/ui/messages/missing-text"
@@ -53,9 +54,7 @@ export const TicketsInTransit: FC = () => {
   return (
     <div>
       <div className="mb-4 flex justify-between">
-        <Button variant={"link"} onClick={selector.toggleAllSelections}>
-          {selector.hasSelections ? "Deselect All" : "Select All"}
-        </Button>
+        <SelectAllController selector={selector} />
 
         <div className="flex flex-grow flex-wrap items-center justify-end space-x-4 space-y-2 sm:space-y-0">
           <ConfirmDialog

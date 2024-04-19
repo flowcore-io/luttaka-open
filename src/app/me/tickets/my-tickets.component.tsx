@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { TicketIcon } from "lucide-react"
 import { type FC } from "react"
 
+import { SelectAllController } from "@/components/molecules/selector/select-all-controller"
 import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
 import { Button } from "@/components/ui/button"
 import { useSelector } from "@/hooks/use-selector"
@@ -33,10 +34,7 @@ export const MyTickets: FC = () => {
   return (
     <div>
       <div className="mb-4 flex justify-between">
-        <Button variant={"link"} onClick={selector.toggleAllSelections}>
-          {selector.hasSelections ? "Deselect All" : "Select All"}
-        </Button>
-
+        <SelectAllController selector={selector} />
         <div className="flex flex-grow flex-wrap items-center justify-end space-x-4 space-y-2 sm:space-y-0">
           <TransferTicketsDialog
             ticketIds={selector.selections}

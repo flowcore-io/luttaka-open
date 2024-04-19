@@ -4,12 +4,14 @@ import { useAuth } from "@clerk/nextjs"
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { type inferRouterOutputs } from "@trpc/server"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
+import { SelectAllController } from "@/components/molecules/selector/select-all-controller"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import { EventContext } from "@/context/event-context"
+import { useSelector } from "@/hooks/use-selector"
 import { type appRouter } from "@/server/api/root"
 import { api } from "@/trpc/react"
 
@@ -22,13 +24,18 @@ export default function Tickets() {
   const { isLoaded, userId } = useAuth()
   const [createTicketDialogOpened, setCreateTicketDialogOpened] =
     useState(false)
-  const [selectedTickets, setSelectedTickets] = useState<string[]>([])
+
   const { eventId } = useContext(EventContext)
   const [event, setEvent] = useState<RouterOutput["event"]["list"][0]>()
   const { data: tickets, refetch } = api.ticket.listForEvent.useQuery(
     { eventId: eventId ?? "" },
     { enabled: !!eventId },
   )
+
+  const selector = useSelector({
+    onSelectAll: () => tickets?.map((ticket) => ticket.id) ?? [],
+    onRemoveFilter: (existing, incoming) => existing !== incoming,
+  })
 
   const eventQuery = api.event.get.useQuery(
     { id: eventId ?? "" },
@@ -42,36 +49,6 @@ export default function Tickets() {
 
   const ticketsForEvent = tickets?.filter(
     (ticket) => ticket.eventId === eventId,
-  )
-
-  const toggleAllSelection = useCallback(() => {
-    if (selectedTickets.length > 0) {
-      setSelectedTickets([])
-      return
-    }
-
-    setSelectedTickets(ticketsForEvent?.map((ticket) => ticket.id) ?? [])
-  }, [selectedTickets])
-
-  const handleSelected = useCallback(
-    (selected: boolean, id: string) => {
-      if (!selected) {
-        setSelectedTickets(
-          selectedTickets.filter((ticketId) => ticketId !== id),
-        )
-        return
-      }
-
-      if (selectedTickets.includes(id)) {
-        setSelectedTickets(
-          selectedTickets.filter((ticketId) => ticketId !== id),
-        )
-        return
-      }
-
-      setSelectedTickets([...selectedTickets, id])
-    },
-    [selectedTickets],
   )
 
   if (!isLoaded || !userId) {
@@ -90,14 +67,12 @@ export default function Tickets() {
       </div>
 
       <div className="mb-4 flex justify-between">
-        <Button variant={"link"} onClick={toggleAllSelection}>
-          {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
-        </Button>
+        <SelectAllController selector={selector} />
 
         {/* todo: move this component into an organism or "dialog" folder */}
-        <TransferTicketsDialog ticketIds={selectedTickets} onDone={refetch}>
+        <TransferTicketsDialog ticketIds={selector.selections} onDone={refetch}>
           <Button
-            disabled={selectedTickets.length < 1}
+            disabled={!selector.hasSelections}
             variant={"secondary"}
             className={"space-x-2"}>
             <p>Transfer Ticket(s)</p>
@@ -119,8 +94,8 @@ export default function Tickets() {
               ? ticket.transferNote
               : ticket.ticketNote ?? "",
           }}
-          selected={selectedTickets.includes(ticket.id)}
-          onSelected={(status) => handleSelected(status, ticket.id)}
+          selected={selector.isSelected(ticket.id)}
+          onSelected={(status) => selector.select(status, ticket.id)}
           refetch={async () => {
             await refetch()
           }}
