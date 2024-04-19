@@ -51,6 +51,11 @@ export default function Tickets() {
     (ticket) => ticket.eventId === eventId,
   )
 
+  const transferComplete = async () => {
+    selector.deselectAll()
+    await refetch()
+  }
+
   if (!isLoaded || !userId) {
     return null
   }
@@ -70,7 +75,9 @@ export default function Tickets() {
         <SelectAllController selector={selector} />
 
         {/* todo: move this component into an organism or "dialog" folder */}
-        <TransferTicketsDialog ticketIds={selector.selections} onDone={refetch}>
+        <TransferTicketsDialog
+          ticketIds={selector.selections}
+          onDone={transferComplete}>
           <Button
             disabled={!selector.hasSelections}
             variant={"secondary"}
