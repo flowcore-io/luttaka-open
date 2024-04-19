@@ -1,15 +1,10 @@
-import { and, asc, desc, eq, gt, gte, or } from "drizzle-orm"
+import { asc, eq } from "drizzle-orm"
 import { z } from "zod"
 
-import { db } from "@/database"
-import {
-  profiles,
-  ticketOwnershipHistory,
-  tickets,
-  ticketTransfers,
-} from "@/database/schemas"
-import { protectedProcedure } from "@/server/api/trpc"
 import { UserRole } from "@/contracts/user/user-role"
+import { db } from "@/database"
+import { profiles, ticketOwnershipHistory } from "@/database/schemas"
+import { protectedProcedure } from "@/server/api/trpc"
 
 const TicketHistoryInput = z.object({
   ticketId: z.string(),

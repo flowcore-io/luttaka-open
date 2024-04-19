@@ -1,33 +1,31 @@
 "use client"
 
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
+import {
+  faArrowUpFromBracket,
+  faEnvelopeCircleCheck,
+  faTicket,
+} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { TicketIcon } from "lucide-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 import { toast } from "sonner"
 
-import RedeemTicketsDialog from "@/app/me/tickets/redeem-ticket.dialog"
-import { Ticket } from "@/app/me/tickets/ticket.component"
-import TransferTicketsDialog from "@/app/me/tickets/ticket-transfer.dialog"
-import { Button } from "@/components/ui/button"
 import { PageTitle } from "@/components/ui/page-title"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { EventContext } from "@/context/event-context"
-import { api } from "@/trpc/react"
 
-import BuyTicket from "./buy-ticket"
+import { MyTickets } from "./my-tickets.component"
+import { TicketsInTransit } from "./tickets-in-transit.component"
+
+const MY_TICKET_TAB = "my-tickets"
+const TICKETS_IN_TRANSIT_TAB = "tickets-in-transit"
+const TRANSFERRED_TICKETS_TAB = "transferred-tickets"
 
 export default function Tickets() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const { data: tickets, refetch } = api.ticket.list.useQuery()
-  const { data: events } = api.event.list.useQuery()
-  const [selectedTickets, setSelectedTickets] = useState<string[]>([])
   const { eventId, setEventId } = useContext(EventContext)
-  const [ticketsCurrentEvent, setTicketsCurrentEvent] = useState<
-    typeof tickets
-  >([])
 
   useEffect(() => {
     const success = searchParams.get("success")
@@ -41,55 +39,54 @@ export default function Tickets() {
     }
   }, [])
 
-  useEffect(() => {
-    const tickets0 =
-      tickets?.filter((ticket) => ticket.eventId === eventId) ?? []
-    setTicketsCurrentEvent(tickets0)
-  }, [tickets, eventId])
-
-  const ticketsOtherEvents =
-    tickets?.filter((ticket) => ticket.eventId !== eventId) ?? []
-
-  const toggleAllSelection = useCallback(() => {
-    if (selectedTickets.length > 0) {
-      setSelectedTickets([])
-      return
-    }
-
-    setSelectedTickets(tickets?.map((ticket) => ticket.id) ?? [])
-  }, [selectedTickets])
-
-  const handleSelected = useCallback(
-    (selected: boolean, id: string) => {
-      if (!selected) {
-        setSelectedTickets(
-          selectedTickets.filter((ticketId) => ticketId !== id),
-        )
-        return
-      }
-
-      if (selectedTickets.includes(id)) {
-        setSelectedTickets(
-          selectedTickets.filter((ticketId) => ticketId !== id),
-        )
-        return
-      }
-
-      setSelectedTickets([...selectedTickets, id])
-    },
-    [selectedTickets],
-  )
-
   return (
     <div className="mx-auto w-full p-4 md:p-6">
       <div className="pb-8">
-        <PageTitle title={"My tickets"} />
-        <div className="mb-4 flex justify-between">
+        <PageTitle title={"Tickets"} />
+        <Tabs
+          defaultValue={MY_TICKET_TAB}
+          className=""
+          onValueChange={(value) => {
+            console.log(value)
+          }}>
+          <TabsList className="grid-wrap mb-6 grid h-auto w-full grid-cols-2 gap-y-3 sm:grid-cols-3">
+            <TabsTrigger value={MY_TICKET_TAB} className="gap-x-2">
+              <p>My Tickets</p>
+              <FontAwesomeIcon icon={faTicket} />
+            </TabsTrigger>
+            <TabsTrigger value={TICKETS_IN_TRANSIT_TAB} className="gap-x-2">
+              <p>Tickets in Transit</p>
+              <FontAwesomeIcon icon={faArrowUpFromBracket} />
+            </TabsTrigger>
+            <TabsTrigger value={TRANSFERRED_TICKETS_TAB} className="gap-x-2">
+              <p>Transferred Tickets</p>
+              <FontAwesomeIcon icon={faEnvelopeCircleCheck} />
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value={MY_TICKET_TAB}>
+            <h3 className={"mb-4 text-2xl font-bold"}>My Tickets</h3>
+            <MyTickets />
+          </TabsContent>
+          <TabsContent value={TICKETS_IN_TRANSIT_TAB}>
+            <h3 className={"mb-4 text-2xl font-bold"}>Tickets in Transit</h3>
+            <TicketsInTransit />
+          </TabsContent>
+          <TabsContent value={TRANSFERRED_TICKETS_TAB}>
+            <h3 className={"mb-4 text-2xl font-bold"}>Tickets Transferred</h3>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  )
+}
+
+{
+  /* <div className="mb-4 flex justify-between">
           <Button variant={"link"} onClick={toggleAllSelection}>
             {selectedTickets.length > 0 ? "Deselect All" : "Select All"}
           </Button>
 
-          {/* todo: make the buttons drop to the next line on mobile */}
+          
           <div className="flex flex-grow flex-wrap items-center justify-end space-x-4 space-y-2 sm:space-y-0">
             <TransferTicketsDialog ticketIds={selectedTickets} onDone={refetch}>
               <Button
@@ -153,6 +150,5 @@ export default function Tickets() {
         <h3 className={"mb-4 mt-16 text-2xl font-bold"}>Buy more tickets</h3>
         {events?.map((event) => <BuyTicket key={event.id} event={event} />)}
       </div>
-    </div>
-  )
+    </div> */
 }
