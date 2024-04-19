@@ -18,7 +18,6 @@ type TicketTransferHistoryRecipient = {
 
 export type TicketTransferHistory = {
   id: string
-  eventId: string
   event: string
   recipients: TicketTransferHistoryRecipient[]
   ticketNote: string
@@ -66,7 +65,6 @@ export const ticketsTransferredProcedure = protectedProcedure.query<
 
       return {
         id: originPoint.ticketId,
-        eventId: originPoint.events ?? "",
         event: originPoint.events ?? "",
         recipients: ticketChanges.map(
           (ticketChange): TicketTransferHistoryRecipient => ({

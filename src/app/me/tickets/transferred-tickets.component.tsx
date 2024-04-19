@@ -19,8 +19,8 @@ export const TransferredTickets: FC = () => {
   return (
     <div>
       {tickets?.length ? (
-        tickets.map((ticket) => (
-          <div>
+        tickets.map((ticket, i) => (
+          <div key={ticket.id + i}>
             <Card className={cn("shadowsm:gap-4 mb-4")}>
               <CardContent className="h-min-28 group p-4">
                 <div className="flex items-center  space-x-4">
