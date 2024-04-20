@@ -9,18 +9,24 @@ import { useRouter } from "next/navigation"
 import { UserRole } from "@/contracts/user/user-role"
 
 import { RestrictedToRole } from "./restricted-to-role"
+import { useState } from "react"
 
 export const LuttakaUserButton = () => {
   const { isLoaded, user } = useUser()
   const { signOut, openUserProfile } = useClerk()
   const router = useRouter()
+  const [open, setOpen] = useState(false)
   if (!isLoaded) return null
   if (!user?.id) return null
 
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root onOpenChange={setOpen}>
       <DropdownMenu.Trigger asChild>
-        <button className="flex h-[63px] w-[63px] flex-row rounded-full bg-gradient-to-t from-[#FFDD57] to-[#FF51FF]">
+        <button
+          className={`relative flex h-[63px] w-[63px] flex-row rounded-full ${open ? "bg-gradient-to-t from-[#FF51FF] to-[#FFDD57]" : ""} transition-colors duration-300`}>
+          <div
+            className={`absolute inset-[-0.2em] z-0 rounded-full bg-gradient-to-t from-[#FF51FF] to-[#FFDD57] ${open ? "opacity-1" : "opacity-0"} transition-opacity duration-300`}
+          />
           <Image
             unoptimized
             alt={
@@ -29,7 +35,7 @@ export const LuttakaUserButton = () => {
             src={user?.imageUrl}
             width={55}
             height={55}
-            className="m-auto rounded-full"
+            className="z-10 m-auto rounded-full"
           />
         </button>
       </DropdownMenu.Trigger>
