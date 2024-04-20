@@ -10,10 +10,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useContext, useEffect } from "react"
 import { toast } from "sonner"
 
+import Loading from "@/app/loading"
+import { MissingText } from "@/components/ui/messages/missing-text"
 import { PageTitle } from "@/components/ui/page-title"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { EventContext } from "@/context/event-context"
+import { api } from "@/trpc/react"
 
+import BuyTicket from "./buy-ticket"
 import { MyTickets } from "./my-tickets.component"
 import { TicketsInTransit } from "./tickets-in-transit.component"
 import { TransferredTickets } from "./transferred-tickets.component"
@@ -26,6 +30,7 @@ export default function Tickets() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const { data: events, isLoading: eventsLoading } = api.event.list.useQuery()
   const { eventId, setEventId } = useContext(EventContext)
 
   useEffect(() => {
@@ -77,6 +82,18 @@ export default function Tickets() {
             <TransferredTickets />
           </TabsContent>
         </Tabs>
+
+        <h3 className={"mb-4 mt-16 text-2xl font-bold"}>Buy more tickets</h3>
+
+        {/* todo: create a loading indicator */}
+        {/* todo: create a list check */}
+        {eventsLoading ? (
+          <Loading />
+        ) : events?.length ? (
+          events?.map((event) => <BuyTicket key={event.id} event={event} />)
+        ) : (
+          <MissingText text="No events available" />
+        )}
       </div>
     </div>
   )
