@@ -9,16 +9,19 @@ import { useRouter } from "next/navigation"
 import { UserRole } from "@/contracts/user/user-role"
 
 import { RestrictedToRole } from "./restricted-to-role"
+import { useState } from "react"
 
 export const LuttakaUserButton = () => {
   const { isLoaded, user } = useUser()
   const { signOut, openUserProfile } = useClerk()
   const router = useRouter()
+  const [open, setOpen] = useState(false)
   if (!isLoaded) return null
   if (!user?.id) return null
 
+  console.log(open)
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root onOpenChange={setOpen}>
       <DropdownMenu.Trigger asChild>
         <button className="flex h-[63px] w-[63px] flex-row rounded-full bg-gradient-to-t from-[#FFDD57] to-[#FF51FF]">
           <Image
