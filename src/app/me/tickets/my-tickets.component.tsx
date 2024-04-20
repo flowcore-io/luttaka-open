@@ -14,7 +14,12 @@ import RedeemTicketsDialog from "./redeem-ticket.dialog"
 import { Ticket } from "./ticket.component"
 import TransferTicketsDialog from "./ticket-transfer.dialog"
 
-export const MyTickets: FC = () => {
+export type MyTicketsProps = {
+  currentEventId: string
+  changeEvent: (eventId: string) => void
+}
+
+export const MyTickets: FC<MyTicketsProps> = (props) => {
   const { data: tickets, isLoading, refetch } = api.ticket.list.useQuery()
 
   const selector = useSelector({
@@ -58,18 +63,30 @@ export const MyTickets: FC = () => {
 
       {tickets?.length ? (
         tickets.map((ticket) => (
-          <Ticket
-            selected={selector.isSelected(ticket.id)}
-            onSelect={(status) => selector.select(status, ticket.id)}
-            ticket={{
-              ...ticket,
-              ticketNote: ticket.ticketNote ?? "",
-              transferNote: ticket.transferNote ?? "",
-            }}
-            refetch={async () => {
-              await refetch()
-            }}
-          />
+          <>
+            <Ticket
+              selected={selector.isSelected(ticket.id)}
+              onSelect={(status) => selector.select(status, ticket.id)}
+              ticket={{
+                ...ticket,
+                ticketNote: ticket.ticketNote ?? "",
+                transferNote: ticket.transferNote ?? "",
+              }}
+              refetch={async () => {
+                await refetch()
+              }}
+            />
+            {ticket.eventId !== props.currentEventId && (
+              <Button
+                className="mb-8"
+                variant="outline"
+                onClick={() => {
+                  props.changeEvent(ticket.eventId)
+                }}>
+                Switch to event
+              </Button>
+            )}
+          </>
         ))
       ) : (
         <MissingText text="You don't have any tickets" />

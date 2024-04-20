@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useContext, useEffect } from "react"
+import { useCallback, useContext, useEffect } from "react"
 import { toast } from "sonner"
 
 import Loading from "@/app/loading"
@@ -45,6 +45,15 @@ export default function Tickets() {
     }
   }, [])
 
+  const changeEventTo = useCallback(
+    (eventId: string) => {
+      setEventId(eventId)
+      toast.success(`Switched event.`)
+      router.push("/")
+    },
+    [eventId],
+  )
+
   return (
     <div className="mx-auto w-full p-4 md:p-6">
       <div className="pb-8">
@@ -71,7 +80,10 @@ export default function Tickets() {
           </TabsList>
           <TabsContent value={MY_TICKET_TAB}>
             <h3 className={"mb-4 text-2xl font-bold"}>My Tickets</h3>
-            <MyTickets />
+            <MyTickets
+              currentEventId={eventId ?? ""}
+              changeEvent={changeEventTo}
+            />
           </TabsContent>
           <TabsContent value={TICKETS_IN_TRANSIT_TAB}>
             <h3 className={"mb-4 text-2xl font-bold"}>Tickets in Transit</h3>
