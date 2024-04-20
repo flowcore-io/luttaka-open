@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={`min-h-screen ${inter.variable} ${dongle.variable} ${lato.variable} font-inter`}>
+        className={`min-h-screen ${inter.variable} ${dongle.variable} ${lato.variable} ${roboto.variable} font-inter`}>
         <ThemeProvider
           attribute={"class"}
           defaultTheme={"system"}

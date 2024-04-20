@@ -1,11 +1,10 @@
 "use client"
 
 import { useAuth } from "@clerk/nextjs"
+import Image from "next/image"
+import Link from "next/link"
 
 import HomeProtectedPage from "../home-protected-page"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
 
 export default function Home() {
   const { isLoaded, userId } = useAuth()
