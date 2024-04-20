@@ -1,9 +1,10 @@
-import { EventMetdata } from "@/contracts/common"
+import { desc, eq } from "drizzle-orm"
+import shortUUID from "short-uuid"
+
+import { type EventMetdata } from "@/contracts/common"
 import { TicketEventOwnershipChanged } from "@/contracts/events/ticket"
 import { db } from "@/database"
 import { ticketOwnershipHistory } from "@/database/schemas"
-import { eq } from "drizzle-orm"
-import shortUUID from "short-uuid"
 
 // todo: update all the methods with a metadata parameter
 export default async function ticketOwnerChanged(
@@ -12,15 +13,18 @@ export default async function ticketOwnerChanged(
 ) {
   const parsedPayload = TicketEventOwnershipChanged.parse(payload)
 
+  // we are only interested in the events where the user is changing
   if (!parsedPayload.userId) {
     return
   }
 
-  const lastChangeEntry = await db.query.ticketOwnershipHistory.findFirst({
-    where: eq(ticketOwnershipHistory.ticketId, parsedPayload.id),
-  })
-
-  if (lastChangeEntry && lastChangeEntry.userId === parsedPayload.userId) {
+  // just to make sure we are not inserting the same owner twice
+  if (
+    await isTheLastOwnerTheSameAsTheIncomingOwner(
+      parsedPayload.id,
+      parsedPayload.userId,
+    )
+  ) {
     return
   }
 
@@ -33,4 +37,16 @@ export default async function ticketOwnerChanged(
       timestamp: new Date(metadata!.validTime).getTime(),
     })
     .execute()
+}
+
+async function isTheLastOwnerTheSameAsTheIncomingOwner(
+  ticket: string,
+  incomingUserId: string,
+) {
+  const lastOwnerOfTicket = await db.query.ticketOwnershipHistory.findFirst({
+    where: eq(ticketOwnershipHistory.ticketId, ticket),
+    orderBy: desc(ticketOwnershipHistory.timestamp),
+  })
+
+  return lastOwnerOfTicket && lastOwnerOfTicket.userId === incomingUserId
 }
