@@ -155,11 +155,14 @@ this will create the required resources in the Flowcore Platform, inside your te
   Because of how Flowcore works, we do not need to consider database migrations. The databases are purely populated from the flowcore platform, hence why we can wipe the database whenever we want to make a change with no worry.
 
 - Run `yarn dev` to start the development server
-- Run `yarn local:stream` to start streaming data from Flowcore to your local database
+- Run `yarn local:stream -s now` to start streaming data from Flowcore to your local instance
 - **You can access the app by browsing to [http://localhost:3000](<[https://](http://localhost:3000)>)**
 
 The first user to login gets admin privileges.
 
+> Note: The `-s now` flag is used to stream from now on. If you want to stream from a specific time, you can use the `-s 1d` flag. Consult the [flowcore docs](https://docs.flowcore.io/guides/flowcore-cli/4stream-cli/#stream-from-a-specific-time) for more information.
+
+> Note: The `local:stream` command uses the `flowcore.local.development.yaml` file to configure what streams to start and where to send the events for each stream. You can read more about the configuration [here](https://docs.flowcore.io/guides/flowcore-cli/4stream-cli/#local-development)
 # License
 
 The license is MIT. [You can read more about it here](./LICENSE)
