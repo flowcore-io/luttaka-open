@@ -12,6 +12,9 @@ interface EventsListProps {
   events: RouterOutput["event"]["list"]
 }
 export function EventsList({ events }: EventsListProps) {
+  if (events.length === 0) {
+    return <div>No events found</div>
+  }
   return events
     .sort((a, b) => {
       return dayjs(a.startDate).isBefore(dayjs(b.startDate)) ? -1 : 1
