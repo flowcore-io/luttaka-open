@@ -19,15 +19,13 @@ export const LuttakaUserButton = () => {
   if (!isLoaded) return null
   if (!user?.id) return null
 
-  console.log(open)
   return (
     <DropdownMenu.Root onOpenChange={setOpen}>
       <DropdownMenu.Trigger asChild>
-        {/* <button className="flex h-[63px] w-[63px] flex-row rounded-full bg-gradient-to-t from-[#FFDD57] to-[#FF51FF]"> */}
         <button
           className={`relative flex h-[63px] w-[63px] flex-row rounded-full ${open ? "bg-gradient-to-t from-[#FF51FF] to-[#FFDD57]" : ""} transition-colors duration-300`}>
           <div
-            className={`absolute inset-[-0.3em] z-0 rounded-full bg-gradient-to-t from-[#FF51FF] to-[#FFDD57] ${open ? "opacity-1" : "opacity-0"} transition-opacity duration-300`}
+            className={`absolute inset-[-0.2em] z-0 rounded-full bg-gradient-to-t from-[#FF51FF] to-[#FFDD57] ${open ? "opacity-1" : "opacity-0"} transition-opacity duration-300`}
           />
           <Image
             unoptimized
