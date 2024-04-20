@@ -1,23 +1,23 @@
+import { DialogDescription } from "@radix-ui/react-dialog"
 import { type FC, type PropsWithChildren, useState } from "react"
+
+import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { api } from "@/trpc/react"
-import { DialogDescription } from "@radix-ui/react-dialog"
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { SkeletonList } from "@/components/molecules/skeletons/skeleton-list"
+import { api } from "@/trpc/react"
 
 export type TicketHistoryDialogProps = {
   ticketId: string
