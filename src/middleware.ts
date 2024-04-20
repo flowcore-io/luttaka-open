@@ -4,7 +4,6 @@ export default authMiddleware({
   publicRoutes: [
     "/",
     "/tonik",
-    "/event/:slug*",
     "/api/trpc/event.getPublic",
     "/api/trpc/event.getPublicList",
     "/api/stripe/webhook",
