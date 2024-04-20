@@ -91,7 +91,7 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
               </div>
             </div>
 
-            {/* Transfer And Check-in */}
+            {/* Check-in */}
             <div className={"flex flex-grow flex-col items-end justify-end"}>
               <div className={"flex flex-wrap items-center justify-end"}>
                 {!ticket.transferId && ticket.state === "open" && (
