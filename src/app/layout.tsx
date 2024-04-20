@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
-import { Dongle, Inter, Lato } from "next/font/google"
+import { Dongle, Inter, Lato, Roboto } from "next/font/google"
 import { cookies } from "next/headers"
 
 import PublicFooter from "@/components/public-footer"
@@ -26,6 +26,12 @@ const dongle = Dongle({
 const lato = Lato({
   subsets: ["latin"],
   variable: "--font-lato",
+  weight: "400",
+})
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-roboto",
   weight: "400",
 })
 
@@ -54,12 +60,10 @@ export default function RootLayout({
             <SignedOut>
               <TRPCReactProvider cookies={cookies().toString()}>
                 <div className="flex h-full min-h-screen flex-row">
-                  <div className="relative flex w-96 flex-1 flex-col">
+                  <div className="relative flex flex-1 flex-col">
                     <PublicHeader />
                     <main>
-                      <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                        {children}
-                      </div>
+                      <div className="mx-auto">{children}</div>
                     </main>
                     <PublicFooter />
                   </div>
