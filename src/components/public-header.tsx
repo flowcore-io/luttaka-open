@@ -1,8 +1,8 @@
 import { SignInButton } from "@clerk/nextjs"
 import Image from "next/image"
+import Link from "next/link"
 
 import { Button } from "./ui/button"
-import Link from "next/link"
 
 const PublicHeader = () => {
   return (
