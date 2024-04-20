@@ -1,0 +1,66 @@
+development:
+  proxyEndpoints:
+    companies:
+      description: "transformer for company management"
+      dataCore: luttaka-open-dev
+      flowType: company.0
+      events:
+        - company.created.0
+        - company.updated.0
+        - company.archived.0
+      endpoints:
+        - "/api/transform/company.0"
+    events:
+      description: "transformer for event management"
+      dataCore: luttaka-open-dev
+      flowType: event.0
+      events:
+        - event.created.0
+        - event.updated.0
+        - event.archived.0
+      endpoints:
+        - "/api/transform/event.0"
+    tickets:
+      description: "transformer for tickets"
+      dataCore: luttaka-open-dev
+      flowType: ticket.0
+      events:
+        - ticket.created.0
+        - ticket.updated.0
+        - ticket.archived.0
+        - ticket.transfer-created.0
+        - ticket.transfer-accepted.0
+        - ticket.transfer-cancelled.0
+      endpoints:
+        - "/api/transform/ticket.0"
+    users:
+      description: "transformer for users"
+      dataCore: luttaka-open-dev
+      flowType: user.0
+      events:
+        - user.created.0
+        - user.updated.0
+        - user.archived.0
+        - user.profile-updated.0
+      endpoints:
+        - "/api/transform/user.0"
+    newsitems:
+      description: "transformer for news items"
+      dataCore: luttaka-open-dev
+      flowType: newsitem.0
+      events:
+        - newsitem.created.0
+        - newsitem.updated.0
+        - newsitem.archived.0
+      endpoints:
+        - "api/transform/newsitem.0"
+    activities:
+      description: "transformer for activities"
+      dataCore: luttaka-open-dev
+      flowType: activity.0
+      events:
+        - activity.created.0
+        - activity.updated.0
+        - activity.archived.0
+      endpoints:
+        - "/api/transform/activity.0"

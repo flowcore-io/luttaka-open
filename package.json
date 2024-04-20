@@ -14,7 +14,7 @@
     "docker:app": "docker compose --env-file .container.env up",
     "flowcore:dev": "flowcore data-core apply -f flowcore.yaml -f flowcore.local.yaml",
     "flowcore:prod": "flowcore apply -f flowcore.yaml",
-    "local:stream": "env-cmd -x flowcore scenario local -f flowcore.yaml -f flowcore.local.yaml -s now -e http://localhost:3000/api/transform -H \"X-Secret: \\$TRANSFORMER_SECRET\"",
+    "local:stream": "env-cmd -x flowcore scenario local -f flowcore.yaml -f flowcore.local.development.yaml -f flowcore.local.yaml -e http://localhost:3000 -H \"X-Secret: \\$TRANSFORMER_SECRET\"",
     "prepare": "husky"
   },
   "dependencies": {
