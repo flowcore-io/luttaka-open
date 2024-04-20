@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 0, 0%, 97.6%;
     --foreground: 330 8% 5%;
 
     --card: 0 8% 97%;
@@ -21,6 +21,17 @@
 
     --muted: 330 6% 73%;
     --muted-foreground: 330 6% 45%;
+
+    --navigation: 0, 0%, 100%;
+    --navigation-foreground: 0 0% 98%;
+
+    --navigation-mobile: 219.47, 20.88%, 35.69%;
+
+    --sidebar: 0, 0%, 100%;
+    --sidebar-foreground: 0 0% 98%;
+
+    --sub-header: 219.47, 20.88%, 35.69%;
+    --sub-header-foreground: 0, 0%, 98%;
 
     --accent: 330 6% 93%;
     --accent-foreground: 330 8% 5%;
@@ -59,9 +70,14 @@
     --navigation: 219.47, 20.88%, 35.69%;
     --navigation-foreground: 0 0% 98%;
 
+    --navigation-mobile: 219.47, 20.88%, 35.69%;
+
     /* darker */
     --sidebar: 221.38, 20.57%, 27.65%;
     --sidebar-foreground: 0 0% 98%;
+
+    --sub-header: 221.38, 20.57%, 27.65%;
+    --sub-header-foreground: 0, 0%, 100%;
 
     --accent: 0 0% 6%;
     --accent-foreground: 0 0% 98%;
