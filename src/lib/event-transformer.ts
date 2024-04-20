@@ -1,6 +1,11 @@
 import type { NextRequest } from "next/server"
-import { EventDto, EventMetadataDto, EventMetdata } from "@/contracts/common"
 import { isArray } from "radash"
+
+import {
+  EventDto,
+  EventMetadataDto,
+  type EventMetdata,
+} from "@/contracts/common"
 
 interface Domain {
   flowType: string
