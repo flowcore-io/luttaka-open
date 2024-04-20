@@ -14,12 +14,14 @@ type TicketTransferHistoryRecipient = {
   firstName: string
   lastName: string
   timestamp: number
+  ticketNote: string
 }
 
 export type TicketTransferHistory = {
   id: string
   event: string
   recipients: TicketTransferHistoryRecipient[]
+  ticketNote: string
 }
 
 type TicketHistoryRow = {
@@ -29,6 +31,7 @@ type TicketHistoryRow = {
   recipientEmail: string | null
   recipientFirstName: string | null
   recipientLastName: string | null
+  ticketNote: string | null
 }[]
 
 export const ticketsTransferredProcedure = protectedProcedure.query<
@@ -61,6 +64,7 @@ export const ticketsTransferredProcedure = protectedProcedure.query<
       recipientEmail: profiles.emails,
       recipientFirstName: profiles.firstName,
       recipientLastName: profiles.lastName,
+      ticketNote: tickets.note,
     })
     .from(ticketOwnershipHistory)
     .leftJoin(tickets, eq(tickets.id, ticketOwnershipHistory.ticketId))
@@ -101,6 +105,7 @@ function groupRecipientsByTicketId(result: TicketHistoryRow) {
         id: row.ticketId,
         event: row.event ?? "",
         recipients: [],
+        ticketNote: row.ticketNote ?? "",
       }
     }
 
@@ -109,6 +114,7 @@ function groupRecipientsByTicketId(result: TicketHistoryRow) {
       firstName: row.recipientFirstName ?? "",
       lastName: row.recipientLastName ?? "",
       timestamp: row.transferTimestamp,
+      ticketNote: row.ticketNote ?? "",
     })
   }
   return collection
