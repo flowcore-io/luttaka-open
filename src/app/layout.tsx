@@ -1,6 +1,10 @@
 import "@/styles/globals.css"
+// The following import prevents a Font Awesome icon server-side rendering bug,
+// where the icons flash from a very large icon down to a properly sized one:
+import "@fortawesome/fontawesome-svg-core/styles.css"
 
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
+import { config } from "@fortawesome/fontawesome-svg-core"
 import { Dongle, Inter, Lato, Roboto } from "next/font/google"
 import { cookies } from "next/headers"
 
@@ -11,6 +15,9 @@ import { Toaster } from "@/components/ui/sonner"
 import { TRPCReactProvider } from "@/trpc/react"
 
 import ProtectedPage from "./protected-page"
+
+// Prevent fontawesome from adding its CSS since we did it manually above:
+config.autoAddCss = false
 
 const inter = Inter({
   subsets: ["latin"],

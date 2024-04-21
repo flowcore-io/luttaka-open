@@ -63,7 +63,7 @@ export const MyTickets: FC<MyTicketsProps> = (props) => {
 
       {tickets?.length ? (
         tickets.map((ticket) => (
-          <>
+          <div key={ticket.id}>
             <Ticket
               selected={selector.isSelected(ticket.id)}
               onSelect={(status) => selector.select(status, ticket.id)}
@@ -86,7 +86,7 @@ export const MyTickets: FC<MyTicketsProps> = (props) => {
                 Switch to event
               </Button>
             )}
-          </>
+          </div>
         ))
       ) : (
         <MissingText text="You don't have any tickets" />
