@@ -64,17 +64,17 @@ export default function Tickets() {
           onValueChange={(value) => {
             console.log(value)
           }}>
-          <TabsList className="grid-wrap mb-6 grid h-auto w-full grid-cols-2 gap-y-3 sm:grid-cols-3">
+          <TabsList className="grid-wrap mb-6 grid h-auto w-full grid-cols-3 gap-y-3">
             <TabsTrigger value={MY_TICKET_TAB} className="gap-x-2">
-              <p>My Tickets</p>
+              <p>My tickets</p>
               <FontAwesomeIcon icon={faTicket} />
             </TabsTrigger>
             <TabsTrigger value={TICKETS_IN_TRANSIT_TAB} className="gap-x-2">
-              <p>Tickets in Transit</p>
+              <p>In transit</p>
               <FontAwesomeIcon icon={faArrowUpFromBracket} />
             </TabsTrigger>
             <TabsTrigger value={TRANSFERRED_TICKETS_TAB} className="gap-x-2">
-              <p>Transferred Tickets</p>
+              <p>Transferred</p>
               <FontAwesomeIcon icon={faEnvelopeCircleCheck} />
             </TabsTrigger>
           </TabsList>
