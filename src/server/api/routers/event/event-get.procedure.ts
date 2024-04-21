@@ -11,8 +11,14 @@ const GetEventInput = z.object({
 
 export const getEventProcedure = protectedProcedure
   .input(GetEventInput)
-  .query(({ input }) => {
-    return db.query.events.findFirst({
+  .query(async ({ input }) => {
+    const event = await db.query.events.findFirst({
       where: eq(events.id, input.id),
     })
+
+    if (!event) {
+      throw new Error(`No event found with id ${input.id}`)
+    }
+
+    return event
   })
