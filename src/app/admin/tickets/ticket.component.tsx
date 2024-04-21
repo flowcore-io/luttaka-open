@@ -1,5 +1,6 @@
 import {
   faArchive,
+  faHistory,
   faPencil,
   faStickyNote,
   faTicket,
@@ -17,6 +18,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { api } from "@/trpc/react"
+
+import { TicketHistoryDialog } from "./ticket-history.dialog"
 
 export interface TicketProps {
   ticket: {
@@ -51,7 +54,6 @@ export function Ticket({ ticket, refetch, selected, onSelected }: TicketProps) {
     }
     setLoading(false)
   }, [ticket.id])
-
   return (
     <>
       <div
@@ -112,6 +114,14 @@ export function Ticket({ ticket, refetch, selected, onSelected }: TicketProps) {
 
         {/* Ticket Controls */}
         <div className={"flex flex-grow justify-end space-x-2"}>
+          <TicketHistoryDialog ticketId={ticket.id} userId={ticket.userId}>
+            <Button asChild variant={"secondary"}>
+              <span className={"flex items-center gap-2"}>
+                <p>History</p>
+                <FontAwesomeIcon icon={faHistory} />
+              </span>
+            </Button>
+          </TicketHistoryDialog>
           <EditTicketDialog
             eventId={ticket.eventId}
             ticketId={ticket.id}

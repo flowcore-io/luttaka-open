@@ -7,3 +7,9 @@ export const EventDto = z.object({
   validTime: z.string(),
   payload: z.any(),
 })
+
+export const EventMetadataDto = EventDto.omit({
+  payload: true,
+})
+
+export type EventMetdata = z.infer<typeof EventMetadataDto>

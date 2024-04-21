@@ -2,7 +2,7 @@ import type { IconProp } from "@fortawesome/fontawesome-svg-core"
 import { faNoteSticky } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import copy from "copy-to-clipboard"
-import { ArrowBigLeftDash, Clipboard, TicketIcon, Trash } from "lucide-react"
+import { Clipboard, TicketIcon, Trash } from "lucide-react"
 import { useQRCode } from "next-qrcode"
 import { useCallback, useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -39,22 +39,6 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
   const { data: event } = api.event.get.useQuery({
     id: ticket.eventId,
   })
-
-  const apiCancelTicketTransfer = api.ticket.cancelTransfer.useMutation()
-  const cancelTicketTransfer = useCallback(async () => {
-    setLoading(true)
-    try {
-      await apiCancelTicketTransfer.mutateAsync({
-        transferId: ticket.transferId!,
-      })
-      await refetch()
-      toast.success("Ticket transfer cancelled")
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Cancel failed"
-      toast.error(message)
-    }
-    setLoading(false)
-  }, [ticket.transferId])
 
   const apiArchiveTicket = api.ticket.archive.useMutation()
   const archiveTicket = useCallback(async () => {
@@ -107,7 +91,7 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
               </div>
             </div>
 
-            {/* Transfer And Check-in */}
+            {/* Check-in */}
             <div className={"flex flex-grow flex-col items-end justify-end"}>
               <div className={"flex flex-wrap items-center justify-end"}>
                 {!ticket.transferId && ticket.state === "open" && (
@@ -123,25 +107,6 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
                 )}
                 {ticket.state === "open" && ticket.transferId && (
                   <>
-                    <ConfirmDialog
-                      title={"Cancel ticket transfer"}
-                      description={
-                        "Are you sure you want to cancel the ticket transfer? The redeem code will be removed and the ticket will be available for check in again"
-                      }
-                      onConfirm={async () => {
-                        await cancelTicketTransfer()
-                        await refetch()
-                      }}>
-                      <Button
-                        size={"sm"}
-                        className={"mr-2"}
-                        variant={"secondary"}
-                        disabled={loading}>
-                        <ArrowBigLeftDash className={"mr-2"} />
-                        Cancel transfer
-                      </Button>
-                    </ConfirmDialog>
-
                     <Button
                       size={"sm"}
                       variant={"ghost"}

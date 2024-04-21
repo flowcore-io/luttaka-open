@@ -14,7 +14,8 @@
     "docker:app": "docker compose --env-file .container.env up",
     "flowcore:dev": "flowcore data-core apply -f flowcore.yaml -f flowcore.local.yaml",
     "flowcore:prod": "flowcore apply -f flowcore.yaml",
-    "local:stream": "env-cmd -x flowcore scenario local -f flowcore.yaml -f flowcore.local.development.yaml -f flowcore.local.yaml -e http://localhost:3000 -H \"X-Secret: \\$TRANSFORMER_SECRET\"",
+    "local:stream": "env-cmd -x flowcore scenario local -f flowcore.yaml -f flowcore.local.yaml -f flowcore.local.development.yaml -s now -e http://localhost:3000/api/transform -H \"X-Secret: \\$TRANSFORMER_SECRET\"",
+    "local:stream:backlog": "env-cmd -x flowcore scenario local -f flowcore.yaml -f flowcore.local.yaml -f flowcore.local.development.yaml -e http://localhost:3000/api/transform -H \"X-Secret: \\$TRANSFORMER_SECRET\"",
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
     "prepare": "husky"
   },
@@ -38,6 +39,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-toggle": "^1.0.3",
     "@sendgrid/mail": "^8.1.3",
