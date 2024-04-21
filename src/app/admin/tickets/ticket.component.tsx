@@ -115,7 +115,7 @@ export function Ticket({ ticket, refetch, selected, onSelected }: TicketProps) {
         {/* Ticket Controls */}
         <div className={"flex flex-grow justify-end space-x-2"}>
           <TicketHistoryDialog ticketId={ticket.id} userId={ticket.userId}>
-            <Button variant={"secondary"}>
+            <Button asChild variant={"secondary"}>
               <span className={"flex items-center gap-2"}>
                 <p>History</p>
                 <FontAwesomeIcon icon={faHistory} />
