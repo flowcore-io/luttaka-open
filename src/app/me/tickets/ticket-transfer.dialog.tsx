@@ -77,7 +77,7 @@ export default function TransferTicketsDialog(
     const formData = {
       email: values.email,
       subject: `You have received ${countIds} ${ticketText} on Luttaka for ${eventName}`,
-      message: `You can redeem the ${ticketText} for ${eventName} ${props.sender ? `that ${props.sender} has sent you ` : ""}by visiting the following link:<br> ${shareLink}<br><br>Regards,<br>Luttaka Team<br><br>P.S. You can contact Pal Joensen at pal@flowcore.com or +298 272030 if you want to use Luttaka for your own event.`,
+      message: `You can redeem the ${ticketText} for ${eventName} ${props.sender ? `that ${props.sender} has sent you ` : ""}by visiting the following link:<br> ${shareLink}<br><br>Regards,<br>Luttaka Team<br><br>P.S. Luttaka is an event experience app powered by Flowcore. Contact Pal Joensen at pal@flowcore.com or +298 272030 if you are curious about using Luttaka for your own event.`,
     }
 
     await fetch("/api/sendgrid", {
