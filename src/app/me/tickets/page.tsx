@@ -58,12 +58,7 @@ export default function Tickets() {
     <div className="mx-auto w-full p-4 md:p-6">
       <div className="pb-8">
         <PageTitle title={"Tickets"} />
-        <Tabs
-          defaultValue={MY_TICKET_TAB}
-          className=""
-          onValueChange={(value) => {
-            console.log(value)
-          }}>
+        <Tabs defaultValue={MY_TICKET_TAB}>
           <TabsList className="grid-wrap mb-6 grid h-auto w-full grid-cols-3 gap-y-3">
             <TabsTrigger value={MY_TICKET_TAB} className="gap-x-2">
               <p>My tickets</p>
