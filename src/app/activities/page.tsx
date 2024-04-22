@@ -44,7 +44,7 @@ export default function ActivitiesPage() {
                       <Image
                         src={activity.imageBase64}
                         alt={activity.title}
-                        className="rounded-xl"
+                        className="h-[50px] min-h-[50px] w-[50px] min-w-[50px] rounded-xl"
                         width={50}
                         height={50}
                       />
