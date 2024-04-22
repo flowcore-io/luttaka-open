@@ -15,12 +15,14 @@ export const env = createEnv({
     FLOWCORE_DATACORE: z.string(),
     FLOWCORE_KEY: z.string(),
     TRANSFORMER_SECRET: z.string(),
-    STRIPE_SECRET_KEY: z.string(),
-    WEBHOOK_SECRET: z.string(),
-    SENDGRID_API_KEY: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+
+    // -- CLOUD SPECIFIC ENV VARIABLES --
+    STRIPE_SECRET_KEY: z.string(),
+    WEBHOOK_SECRET: z.string(),
+    SENDGRID_API_KEY: z.string(),
   },
 
   /**
@@ -30,6 +32,8 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+
+    // -- CLOUD SPECIFIC ENV VARIABLES --
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
   },
 
@@ -48,13 +52,14 @@ export const env = createEnv({
     FLOWCORE_DATACORE: process.env.FLOWCORE_DATACORE,
     FLOWCORE_KEY: process.env.FLOWCORE_KEY,
     TRANSFORMER_SECRET: process.env.TRANSFORMER_SECRET,
+    NODE_ENV: process.env.NODE_ENV,
+
+    // -- CLOUD SPECIFIC ENV VARIABLES --
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
-    NODE_ENV: process.env.NODE_ENV,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
