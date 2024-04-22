@@ -12,7 +12,7 @@ import {
 import { usePagination } from "@/hooks/use-pagination"
 import { api } from "@/trpc/react"
 
-const PAGE_SIZE = 8
+const PAGE_SIZE = 100
 
 export type ProfileListProps = {
   eventId: string
@@ -73,7 +73,7 @@ export const ProfileList: FC<ProfileListProps> = ({ eventId }) => {
       </ul>
       <div
         className={
-          "absolute bottom-6 left-4 right-4 rounded-full bg-background"
+          "absolute bottom-6 left-4 right-4 mb-8 rounded-full bg-background"
         }>
         <Pagination>
           <PaginationContent>
