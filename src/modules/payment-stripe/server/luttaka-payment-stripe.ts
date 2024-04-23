@@ -3,26 +3,17 @@
 import Stripe from "stripe"
 
 import { type CreateProductInput } from "./contracts/create-product"
+import { type CreateSessionInput } from "./contracts/create-session-input"
 import { type LuttakaPaymentStripeOptions } from "./contracts/luttaka-payment-stripe-options"
 import { type UpdateProductInput } from "./contracts/update-product"
 
 type Metadata = Record<string, string | number | null>
 
-export type CreateSessionOptions = {
-  quantity: number
-  userId: string
-  priceId: string
-  emailAddress?: string
-  metadata: Record<string, string | number | null>
-  successUrl: string
-  cancelUrl: string
-}
-
 export class LuttakaPaymentStripe {
   private stripe: Stripe
 
-  constructor(options: LuttakaPaymentStripeOptions) {
-    this.stripe = new Stripe(options.secretKey)
+  constructor(private readonly options: LuttakaPaymentStripeOptions) {
+    this.stripe = new Stripe(this.options.secretKey)
   }
 
   async createProduct<T extends CreateProductInput>(input: T) {
@@ -41,7 +32,7 @@ export class LuttakaPaymentStripe {
     })
   }
 
-  async createSessionId(options: CreateSessionOptions) {
+  async createSessionId(options: CreateSessionInput) {
     const session = await this.stripe.checkout.sessions.create({
       line_items: [
         {
@@ -58,6 +49,14 @@ export class LuttakaPaymentStripe {
       cancel_url: options.cancelUrl,
     })
     return session.id
+  }
+
+  createWebhookEvent(content: string, stripeSignature: string) {
+    return this.stripe.webhooks.constructEvent(
+      content,
+      stripeSignature,
+      this.options.webhookSecret,
+    )
   }
 
   async updateProduct(input: UpdateProductInput) {

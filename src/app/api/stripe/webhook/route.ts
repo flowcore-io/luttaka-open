@@ -1,9 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
-import Stripe from "stripe"
 
+import { payment } from "@/cloud"
 import { sendTicketCreatedEvent } from "@/contracts/events/ticket"
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(request: NextRequest) {
   const body = await request.text()
@@ -14,18 +12,12 @@ export async function POST(request: NextRequest) {
   }
   let event
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      stripeSignature,
-      process.env.WEBHOOK_SECRET!,
-    )
+    event = payment.createWebhookEvent(body, stripeSignature)
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error"
     console.error("Webhook Error:", message)
     return NextResponse.json({ success: false }, { status: 400 })
   }
-
-  console.log("Stripe Event", event.type)
 
   if (event.type === "checkout.session.completed") {
     const userId = event.data.object.client_reference_id

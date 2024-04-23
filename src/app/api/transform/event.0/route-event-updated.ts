@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm"
 
+import { payment } from "@/cloud"
 import { EventEventUpdatedPayload } from "@/contracts/events/event"
 import { db } from "@/database"
 import { events } from "@/database/schemas"
-import { updateProduct } from "@/lib/stripe/product"
 
 export default async function eventUpdated(payload: unknown) {
   console.log("Got updated event", payload)
@@ -15,7 +15,7 @@ export default async function eventUpdated(payload: unknown) {
     return
   }
 
-  await updateProduct({
+  await payment.updateProduct({
     id: exists.stripeId,
     name: parsedPayload.name,
     description: parsedPayload.ticketDescription,

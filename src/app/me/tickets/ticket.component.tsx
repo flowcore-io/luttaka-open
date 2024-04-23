@@ -1,5 +1,5 @@
 import type { IconProp } from "@fortawesome/fontawesome-svg-core"
-import { faNoteSticky } from "@fortawesome/free-solid-svg-icons"
+import { faHistory, faNoteSticky } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import copy from "copy-to-clipboard"
 import { Clipboard, TicketIcon, Trash } from "lucide-react"
@@ -7,6 +7,7 @@ import { useQRCode } from "next-qrcode"
 import { useCallback, useMemo, useState } from "react"
 import { toast } from "sonner"
 
+import { TicketHistoryDialog } from "@/app/admin/tickets/ticket-history.dialog"
 import ConfirmDialog from "@/components/molecules/dialogs/confirm.dialog"
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
@@ -94,6 +95,14 @@ export function Ticket({ ticket, refetch, selected, onSelect }: TicketProps) {
             {/* Check-in */}
             <div className={"flex flex-grow flex-col items-end justify-end"}>
               <div className={"flex flex-wrap items-center justify-end"}>
+                <TicketHistoryDialog ticketId={ticket.id}>
+                  <Button variant={"secondary"}>
+                    <span className={"flex items-center gap-2"}>
+                      <p>History</p>
+                      <FontAwesomeIcon icon={faHistory} />
+                    </span>
+                  </Button>
+                </TicketHistoryDialog>
                 {!ticket.transferId && ticket.state === "open" && (
                   <>
                     <Button

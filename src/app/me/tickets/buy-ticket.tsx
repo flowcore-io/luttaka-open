@@ -6,7 +6,6 @@ import dayjs from "dayjs"
 import { useRouter } from "next/navigation"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
-import { z } from "zod"
 
 import { RestrictedToRole } from "@/components/restricted-to-role"
 import { Button } from "@/components/ui/button"
@@ -27,15 +26,11 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { UserRole } from "@/contracts/user/user-role"
-import getStripe from "@/lib/stripe/get"
+import { makePayment } from "@/modules/payment-stripe/react"
 import { type appRouter } from "@/server/api/root"
 import { api } from "@/trpc/react"
 
 type RouterOutput = inferRouterOutputs<typeof appRouter>
-
-const CheckoutResponse = z.object({
-  sessionId: z.string(),
-})
 
 interface EventProps {
   event: RouterOutput["event"]["list"][0]
@@ -77,29 +72,17 @@ export default function BuyTicket({ event }: EventProps) {
 
   const purchaseTicket = useCallback(async () => {
     setPurchaseLoading(true)
-    const stripe = await getStripe()
-    if (!stripe) {
-      toast.error("Failed to redirect to checkout")
-      return
-    }
-    const response = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      body: JSON.stringify({
-        eventId: event.id,
-        quantity: ticketQuantity,
-        note: ticketNote,
-      }),
-    })
-    const session = CheckoutResponse.parse(await response.json())
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.sessionId,
+
+    const result = await makePayment({
+      eventId: event.id,
+      quantity: ticketQuantity,
+      note: ticketNote,
     })
 
+    setPurchaseLoading(false)
     setTicketNote("") // reset
-    if (result.error) {
+    if (!result.success) {
       toast.error("Failed to redirect to checkout")
-      setPurchaseLoading(false)
-      return
     }
   }, [ticketQuantity, event.id, ticketNote])
 
