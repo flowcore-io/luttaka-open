@@ -18,8 +18,12 @@ export const EventEventCreatedPayload = z.object({
   imageBase64: z.string(),
   description: z.string(),
   ticketDescription: z.string(),
+  ticketPrice: z.number(),
+  ticketCurrency: z.string(),
   startDate: z.string(),
   endDate: z.string(),
+  productId: z.string().optional(),
+  stripeId: z.string().optional(),
 })
 
 export const EventEventUpdatedPayload = EventEventCreatedPayload.pick({
@@ -29,6 +33,8 @@ export const EventEventUpdatedPayload = EventEventCreatedPayload.pick({
   imageBase64: true,
   description: true,
   ticketDescription: true,
+  ticketPrice: true,
+  ticketCurrency: true,
   startDate: true,
   endDate: true,
 })

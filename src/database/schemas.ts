@@ -1,5 +1,12 @@
 import { sql } from "drizzle-orm"
-import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core"
+import {
+  bigint,
+  boolean,
+  decimal,
+  pgTable,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core"
 
 import { CompanyType } from "@/contracts/company/company-type"
 import { UserRole } from "@/contracts/user/user-role"
@@ -10,12 +17,21 @@ export const tickets = pgTable("tickets", {
   userId: text("user_id").notNull(),
   state: text("state").notNull(),
   createdAt: timestamp("created_at").default(sql`now()`),
+  note: text("note").default(""),
+})
+
+export const ticketOwnershipHistory = pgTable("ticket_ownership_history", {
+  id: text("id").unique().primaryKey(),
+  ticketId: text("ticket_id").notNull(),
+  userId: text("user_id").notNull(),
+  timestamp: bigint("timestamp", { mode: "number" }).notNull(),
 })
 
 export const ticketTransfers = pgTable("ticket_transfers", {
   id: text("id").primaryKey(),
   ticketId: text("ticket_id").notNull(),
   state: text("state").notNull(),
+  note: text("note").default(""),
 })
 
 export const users = pgTable("users", {
@@ -50,8 +66,11 @@ export const events = pgTable("events", {
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
   ticketDescription: text("ticket_description"),
+  ticketPrice: decimal("ticket_price").notNull().$type<number>(),
+  ticketCurrency: text("ticket_currency").notNull(),
   startDate: text("start_date").notNull(),
   endDate: text("end_date").notNull(),
+  productId: text("product_id").notNull(),
 })
 
 export const companies = pgTable("companies", {

@@ -17,7 +17,7 @@ export default function NetworkingPage() {
     <div className="p-4 md:p-6">
       <PageTitle
         title={"Networking"}
-        subtitle={`A list of all the people who have tickets for ${eventName}`}
+        subtitle={`People at ${eventName} to network with`}
       />
 
       {eventId ? (

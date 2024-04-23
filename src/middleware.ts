@@ -3,10 +3,9 @@ import { authMiddleware } from "@clerk/nextjs"
 export default authMiddleware({
   publicRoutes: [
     "/",
-    "/event/:slug*",
+    "/tonik",
     "/api/trpc/event.getPublic",
     "/api/trpc/event.getPublicList",
-    "/api/stripe/webhook",
     "/api/transform/ticket.0",
     "/api/transform/user.0",
     "/api/transform/profile.0",

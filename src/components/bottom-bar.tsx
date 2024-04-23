@@ -23,7 +23,7 @@ export const BottomBar = () => {
   }
   //219, 20%, 19.61%
   return (
-    <div className="fixed bottom-0 w-full bg-navigation sm:hidden">
+    <div className="fixed bottom-0 w-full bg-navigation text-navigation-foreground sm:hidden">
       <div className="flex flex-row justify-between text-5xl">
         <Link href="/me/tickets" className={`${linkClass("/me/tickets")}`}>
           <FontAwesomeIcon icon={faTicket as IconProp} />

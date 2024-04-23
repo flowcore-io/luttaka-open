@@ -45,7 +45,6 @@ export const env = createEnv({
     FLOWCORE_KEY: process.env.FLOWCORE_KEY,
     TRANSFORMER_SECRET: process.env.TRANSFORMER_SECRET,
     NODE_ENV: process.env.NODE_ENV,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

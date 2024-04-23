@@ -82,7 +82,9 @@ export function Newsitem({ newsitem, refetch }: NewsitemProps) {
           onOpenChange={(open) => {
             !open && setUpdateNewsitemDialogOpened(open)
           }}>
-          <DialogContent className={"max-w-4xl"}>
+          <DialogContent
+            className={"max-w-4xl"}
+            onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
             <DialogHeader>Edit News Item</DialogHeader>
             <UpdateNewsitemForm
               newsitem={{

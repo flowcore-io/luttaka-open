@@ -12,7 +12,7 @@ import {
 import { usePagination } from "@/hooks/use-pagination"
 import { api } from "@/trpc/react"
 
-const PAGE_SIZE = 8
+const PAGE_SIZE = 100
 
 export type ProfileListProps = {
   eventId: string
@@ -21,7 +21,7 @@ export type ProfileListProps = {
 export const ProfileList: FC<ProfileListProps> = ({ eventId }) => {
   const pager = usePagination()
 
-  const profileCountRequest = api.profile.count.useQuery()
+  const profileCountRequest = api.attendance.count.useQuery({ eventId })
   const profilesRequest = api.attendance.page.useQuery(
     {
       page: pager.page,
@@ -73,7 +73,7 @@ export const ProfileList: FC<ProfileListProps> = ({ eventId }) => {
       </ul>
       <div
         className={
-          "absolute bottom-6 left-4 right-4 rounded-full bg-background"
+          "absolute bottom-6 left-4 right-4 mb-8 rounded-full bg-background"
         }>
         <Pagination>
           <PaginationContent>

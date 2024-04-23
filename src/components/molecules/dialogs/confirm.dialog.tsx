@@ -21,9 +21,10 @@ export interface ConfirmDialogProps {
 
 export default function ConfirmDialog(props: ConfirmDialogProps) {
   const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -39,6 +40,7 @@ export default function ConfirmDialog(props: ConfirmDialogProps) {
               e.preventDefault()
               await props.onConfirm()
               setLoading(false)
+              setOpen(false)
             }}>
             Confirm
           </AlertDialogAction>

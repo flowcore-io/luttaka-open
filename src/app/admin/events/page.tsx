@@ -35,6 +35,9 @@ export default function Events() {
           key={event.id}
           event={{
             ...event,
+            ...(typeof event.ticketPrice === "string" && {
+              ticketPrice: parseFloat(event.ticketPrice),
+            }),
           }}
           refetch={async () => {
             await refetch()
@@ -47,7 +50,9 @@ export default function Events() {
         onOpenChange={(open) => {
           !open && setCreateEventDialogOpened(open)
         }}>
-        <DialogContent className={"max-w-4xl"}>
+        <DialogContent
+          className={"max-w-4xl"}
+          onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
           <DialogHeader>Create new event</DialogHeader>
           <CreateEventForm
             close={() => setCreateEventDialogOpened(false)}
