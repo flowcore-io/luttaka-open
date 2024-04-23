@@ -76,6 +76,11 @@ export default function CheckInPage() {
       setWarning("Ticket is part of a transfer")
     } else {
       setWarning(undefined)
+      window.open(
+        `/admin/check-in/print/${ticket.userId}`,
+        "_blank",
+        "height=600,width=800",
+      )
     }
   }, [ticket, profile])
 
@@ -123,15 +128,27 @@ export default function CheckInPage() {
             <CardTitle>Ticket Info</CardTitle>
           </CardHeader>
           <CardContent>
-            <div>Ticket ID</div>
-            <code>{ticket.id}</code>
-            <div>Ticket State</div>
-            <code>{ticket.state}</code>
-            <div>Ticket Holder</div>
-            <code>{profile.displayName}</code>
-            <div>Ticket Holder Company</div>
+            <div>
+              Ticket ID:&nbsp;
+              <code>{ticket.id}</code>
+            </div>
+            <div>
+              Ticket State:&nbsp;
+              <code>{ticket.state}</code>
+            </div>
+            <br />
             <code>
-              {profile.company || (
+              {profile.displayName ?? (
+                <em className={"text-gray-500"}>no name</em>
+              )}
+            </code>
+            <br />
+            <code>
+              {profile.title ?? <em className={"text-gray-500"}>no title</em>}
+            </code>
+            <br />
+            <code>
+              {profile.company ?? (
                 <em className={"text-gray-500"}>no company</em>
               )}
             </code>
@@ -144,6 +161,17 @@ export default function CheckInPage() {
                 setUserId(undefined)
               }}>
               Start Over
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                window.open(
+                  `/admin/check-in/print/${ticket.userId}`,
+                  "_blank",
+                  "height=600,width=800",
+                )
+              }>
+              Print
             </Button>
             <Button
               disabled={!!warning || apiCheckInTicket.isLoading}
