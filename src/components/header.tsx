@@ -3,11 +3,11 @@ import { LuttakaUserButton } from "./luttaka-user-button"
 
 const Header = () => {
   return (
-    <header className="flex min-h-[78px] items-center justify-between bg-navigation shadow-lg sm:shadow-none">
-      <div className="ml-4 block sm:ml-0 sm:hidden">
+    <header className="relative flex min-h-[78px] items-center justify-between bg-navigation">
+      <div className="absolute right-0 left-0 bottom-0 top-[99%] shadow-sm" />
+      <div className="ml-4">
         <LuttakaLogoAndTitle />
       </div>
-      <div className="hidden sm:block">&nbsp;</div>
       <div className="m-2 mr-6 dark:[&_*]:text-white">
         <LuttakaUserButton />
       </div>

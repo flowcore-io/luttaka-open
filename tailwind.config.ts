@@ -72,11 +72,16 @@ const config = {
         navigation: {
           DEFAULT: "hsl(var(--navigation))",
           foreground: "hsl(var(--navigation-foreground))",
+          mobile: "hsl(var(--navigation-mobile))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar))",
           foreground: "hsl(var(--sidebar-foreground))",
         },
+        subheader: {
+          DEFAULT: "hsl(var(--sub-header))",
+          foreground: "hsl(var(--sub-header-foreground))",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",

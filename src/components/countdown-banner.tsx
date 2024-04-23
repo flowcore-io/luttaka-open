@@ -34,7 +34,7 @@ const CountdownBanner: React.FC<CountdownBannerProps> = ({ targetDate }) => {
   const seconds = Math.floor((countdown % (1000 * 60)) / 1000)
 
   return (
-    <div className="flex h-16 w-full flex-row justify-center gap-x-4 bg-navigation p-2 text-white">
+    <div className="flex h-16 w-full flex-row justify-center gap-x-4 bg-subheader p-2 text-subheader-foreground">
       {countdown > 0 ? (
         <>
           <div className="flex w-16 flex-col items-center">
