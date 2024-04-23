@@ -1,7 +1,11 @@
 import "@/styles/globals.css"
+// The following import prevents a Font Awesome icon server-side rendering bug,
+// where the icons flash from a very large icon down to a properly sized one:
+import "@fortawesome/fontawesome-svg-core/styles.css"
 
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
-import { Dongle, Inter, Lato } from "next/font/google"
+import { config } from "@fortawesome/fontawesome-svg-core"
+import { Dongle, Inter, Lato, Roboto } from "next/font/google"
 import { cookies } from "next/headers"
 
 import PublicFooter from "@/components/public-footer"
@@ -11,6 +15,9 @@ import { Toaster } from "@/components/ui/sonner"
 import { TRPCReactProvider } from "@/trpc/react"
 
 import ProtectedPage from "./protected-page"
+
+// Prevent fontawesome from adding its CSS since we did it manually above:
+config.autoAddCss = false
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,6 +36,12 @@ const lato = Lato({
   weight: "400",
 })
 
+const roboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-roboto",
+  weight: "400",
+})
+
 export const metadata = {
   manifest: "/manifest.json",
   title: "Luttaka",
@@ -44,7 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={`min-h-screen ${inter.variable} ${dongle.variable} ${lato.variable} font-inter`}>
+        className={`min-h-screen ${inter.variable} ${dongle.variable} ${lato.variable} ${roboto.variable} font-inter`}>
         <ThemeProvider
           attribute={"class"}
           defaultTheme={"system"}
@@ -53,13 +66,11 @@ export default function RootLayout({
           <ClerkProvider>
             <SignedOut>
               <TRPCReactProvider cookies={cookies().toString()}>
-                <div className="flex h-full min-h-screen flex-row overflow-hidden">
-                  <div className="relative flex w-96 flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                <div className="flex h-full min-h-screen flex-row">
+                  <div className="relative flex flex-1 flex-col">
                     <PublicHeader />
                     <main>
-                      <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                        {children}
-                      </div>
+                      <div className="mx-auto">{children}</div>
                     </main>
                     <PublicFooter />
                   </div>

@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm"
 
+import { payment } from "@/cloud"
 import { EventEventArchivedPayload } from "@/contracts/events/event"
 import { db } from "@/database"
 import { events } from "@/database/schemas"
@@ -13,6 +14,8 @@ export default async function eventArchived(payload: unknown) {
   if (!exists) {
     return
   }
+
+  await payment.archiveProduct(exists.productId)
 
   await db
     .update(events)

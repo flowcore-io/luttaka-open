@@ -1,19 +1,19 @@
 tenant: <some tenant>
 dataCore:
-  name: luttaka-open-dev
+  name: luttaka-cloud-dev
   isPublic: true
 scenario:
-  name: luttaka-open-dev
+  name: luttaka-cloud-dev
   transformers:
     companies:
-      dataCore: luttaka-open-dev
+      dataCore: luttaka-cloud-dev
     events:
-      dataCore: luttaka-open-dev
+      dataCore: luttaka-cloud-dev
     tickets:
-      dataCore: luttaka-open-dev
+      dataCore: luttaka-cloud-dev
     users:
-      dataCore: luttaka-open-dev
+      dataCore: luttaka-cloud-dev
     newsitems:
-      dataCore: luttaka-open-dev
+      dataCore: luttaka-cloud-dev
     activities:
-      dataCore: luttaka-open-dev
+      dataCore: luttaka-cloud-dev

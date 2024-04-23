@@ -1,10 +1,9 @@
 "use client"
 
-import { SignInButton } from "@clerk/nextjs"
 import dayjs from "dayjs"
+import Image from "next/image"
 import Link from "next/link"
 
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardDescription,
@@ -12,18 +11,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { PageTitle } from "@/components/ui/page-title"
 import { api } from "@/trpc/react"
 
 export default function HomePublicPage() {
   const { data: events } = api.event.getPublicList.useQuery()
   return (
-    <div className="mx-auto w-full p-4 md:p-6">
-      <div className="text-center">Luttaka Open Source</div>
-      <div className="text-center">Event Experience Application</div>
-      <div className="mt-12 text-center">
-        <SignInButton redirectUrl={`/`} mode="modal">
-          <Button>Sign In</Button>
-        </SignInButton>
+    <div className="mx-auto flex w-full flex-col items-center p-4 md:p-6">
+      <div className="text-center">
+        <PageTitle title={"Events near You"} />
       </div>
       <div className="mt-12 flex flex-row flex-wrap justify-center gap-4">
         {events?.map((event) => (
@@ -43,6 +39,15 @@ export default function HomePublicPage() {
           </Card>
         ))}
       </div>
+      <Link href="/tonik">
+        <Image
+          src="/images/tonik-logo.svg"
+          width={360}
+          height={360}
+          alt="Tonik logo"
+          className="mt-16"
+        />
+      </Link>
     </div>
   )
 }

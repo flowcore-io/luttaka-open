@@ -1,5 +1,7 @@
 "use client"
 
+import { usePathname } from "next/navigation"
+
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { EventProvider } from "@/context/event-context"
@@ -7,6 +9,10 @@ import { EventProvider } from "@/context/event-context"
 import { BottomBar } from "../components/bottom-bar"
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname()
+  if (pathname.startsWith("/admin/check-in/print/")) {
+    return <>{children}</>
+  }
   return (
     <div className="">
       <EventProvider>

@@ -56,7 +56,9 @@ export default function Companies() {
         onOpenChange={(open) => {
           !open && setCreateCompanyDialogOpened(open)
         }}>
-        <DialogContent className={"max-w-4xl"}>
+        <DialogContent
+          className={"max-w-4xl"}
+          onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
           <DialogHeader>Create Company</DialogHeader>
           <CreateCompanyForm
             close={() => setCreateCompanyDialogOpened(false)}

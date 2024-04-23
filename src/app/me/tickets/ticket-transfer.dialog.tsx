@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import copy from "copy-to-clipboard"
 import { Clipboard, SendHorizontal } from "lucide-react"
-import { type ReactNode, useState } from "react"
+import { type ReactNode, useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -26,30 +26,40 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import doMailto from "@/lib/do-mailto"
+import { EventContext } from "@/context/event-context"
 import { api } from "@/trpc/react"
 
 export interface TransferTicketsDialogProps {
   children: ReactNode
   ticketIds: string[]
+  sender?: string
   onDone: () => void
+}
+
+type ResponseData = {
+  message: string
+  status: string
 }
 
 export default function TransferTicketsDialog(
   props: TransferTicketsDialogProps,
 ) {
+  const { eventName } = useContext(EventContext)
   const [opened, setOpened] = useState(false)
   const [loading, setLoading] = useState(false)
   const apiTransferTicket = api.ticket.createTransfer.useMutation()
+  const [noteIsTouched, setNoteIsTouched] = useState(false)
 
   const formSchema = z.object({
     email: z.string().email(),
+    note: z.string(),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
+      note: "",
     },
   })
 
@@ -57,20 +67,33 @@ export default function TransferTicketsDialog(
     setLoading(true)
     const transferIds = await Promise.all(
       props.ticketIds.map((ticketId) =>
-        apiTransferTicket.mutateAsync({ ticketId }),
+        apiTransferTicket.mutateAsync({ ticketId, note: values.note }),
       ),
     )
-
+    const countIds = transferIds.length
+    const ticketText = countIds > 1 ? "tickets" : "ticket"
     const shareLink = `${window.location.origin}/me/tickets?redeemCode=${transferIds.join(",")}`
 
-    doMailto(
-      values.email,
-      "You have received tickets:)",
-      `Hi\n\nYou have received tickets on Luttaka.\n\n You can redeem them by visiting the following link:\n ${shareLink}`,
-    )
+    const formData = {
+      email: values.email,
+      subject: `You have received ${countIds} ${ticketText} on Luttaka for ${eventName}`,
+      message: `You can redeem the ${ticketText} for ${eventName} ${props.sender ? `that ${props.sender} has sent you ` : ""}by visiting the following link:<br> ${shareLink}<br><br>Regards,<br>Luttaka Team<br><br>P.S. Luttaka is an event experience app powered by Flowcore. Contact Pal Joensen at pal@flowcore.com or +298 272030 if you are curious about using Luttaka for your own event.`,
+    }
+
+    await fetch("/api/sendgrid", {
+      method: "POST",
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json() as Promise<ResponseData>)
+      .then(() => {
+        toast.success("Email sent")
+      })
 
     setLoading(false)
     setOpened(false)
+    form.setValue("email", "")
+    form.setValue("note", "")
+    setNoteIsTouched(false)
     props.onDone()
   }
 
@@ -117,10 +140,42 @@ export default function TransferTicketsDialog(
                         {...field}
                         autoComplete={"off"}
                         data-1p-ignore
+                        onChange={(e) => {
+                          field.onChange(e)
+                          if (!noteIsTouched) {
+                            form.setValue("note", e.target.value)
+                          }
+                        }}
                       />
                     </FormControl>
                     <FormDescription>
                       The email to share the tickets with
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="note"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Transfer Note</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="a note on the ticket transfer"
+                        {...field}
+                        autoComplete={"off"}
+                        data-1p-ignore
+                        onChange={(e) => {
+                          field.onChange(e)
+                          setNoteIsTouched(true)
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      This note is ideal for keeping track of who the ticket is
+                      for
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

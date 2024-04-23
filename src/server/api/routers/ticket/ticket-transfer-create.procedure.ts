@@ -13,12 +13,14 @@ import { protectedProcedure } from "@/server/api/trpc"
 
 const CreateTicketTransferInput = z.object({
   ticketId: z.string(),
+  userId: z.string().optional(),
+  note: z.string().optional(),
 })
 
 export const createTicketTransferProcedure = protectedProcedure
   .input(CreateTicketTransferInput)
-  .mutation(async ({ ctx, input }) => {
-    const userId = ctx.user.id
+  .mutation(async ({ ctx, input }): Promise<string> => {
+    const userId = input.userId ?? ctx.user.id
     const ticket = await db.query.tickets.findFirst({
       where: and(eq(tickets.id, input.ticketId), eq(tickets.userId, userId)),
     })

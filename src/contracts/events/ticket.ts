@@ -19,6 +19,7 @@ export const TicketEventCreatedPayload = z.object({
   eventId: z.string(),
   userId: z.string(),
   state: z.string(),
+  note: z.string().optional(),
 })
 
 export const TicketEventUpdatedPayload = z.object({
@@ -26,6 +27,12 @@ export const TicketEventUpdatedPayload = z.object({
   eventId: z.string().optional(),
   userId: z.string().optional(),
   state: z.string().optional(),
+  note: z.string().optional(),
+})
+
+export const TicketEventOwnershipChanged = z.object({
+  id: z.string(),
+  userId: z.string().optional(),
 })
 
 export const TicketEventArchivedPayload = z.object({
@@ -37,6 +44,7 @@ export const TicketEventTransferCreatedPayload = z.object({
   id: z.string(),
   ticketId: z.string(),
   state: z.string(),
+  note: z.string().optional(),
 })
 
 export const TicketEventTransferAcceptedPayload = z.object({

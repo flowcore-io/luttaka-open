@@ -16,13 +16,15 @@ export const searchProfileProcedure = protectedProcedure
       (await db
         .select({
           id: profiles.id,
+          userId: profiles.userId,
           firstName: profiles.firstName,
+          emails: profiles.emails,
         })
         .from(profiles)
         .where(
           and(
             eq(profiles.archived, false),
-            ilike(profiles.firstName, `%${input.firstName}%`),
+            ilike(profiles.emails, `%${input.firstName}%`),
           ),
         )
         .limit(50)

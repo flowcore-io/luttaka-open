@@ -23,8 +23,11 @@ export const attendanceMyEventsProcedure = protectedProcedure.query(
       imageBase64: event.imageBase64 ?? "",
       description: event.description ?? "",
       ticketDescription: event.ticketDescription ?? "",
+      ticketPrice: event.ticketPrice,
+      ticketCurrency: event.ticketCurrency,
       startDate: event.startDate,
       endDate: event.endDate,
+      productId: event.productId,
     }))
   },
 )

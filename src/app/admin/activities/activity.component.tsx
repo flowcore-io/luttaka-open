@@ -95,7 +95,9 @@ export function Activity({ activity, refetch }: ActivityProps) {
           onOpenChange={(open) => {
             !open && setUpdateActivityDialogOpened(open)
           }}>
-          <DialogContent className={"max-w-4xl"}>
+          <DialogContent
+            className={"max-w-4xl"}
+            onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
             <DialogHeader>Edit Activity</DialogHeader>
             <UpdateActivityForm
               activity={{

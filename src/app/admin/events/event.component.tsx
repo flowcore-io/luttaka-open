@@ -15,8 +15,11 @@ export interface EventProps {
     imageBase64: string | null
     description: string | null
     ticketDescription: string | null
+    ticketPrice: number
+    ticketCurrency: string
     startDate: string
     endDate: string
+    productId: string
   }
   refetch: () => Promise<void>
 }
@@ -51,6 +54,12 @@ export function Event({ event, refetch }: EventProps) {
           <div className={"text-sm text-gray-500"}>{event.description}</div>
           <div className={"text-sm text-gray-500"}>Event ID: {event.id}</div>
           <div className={"text-sm text-gray-500"}>
+            Product ID: {event.productId}
+          </div>
+          <div className={"text-sm text-gray-500"}>
+            Price: {event.ticketPrice} {event.ticketCurrency}
+          </div>
+          <div className={"text-sm text-gray-500"}>
             Start: {event.startDate}
           </div>
           <div className={"text-sm text-gray-500"}>End: {event.endDate}</div>
@@ -78,7 +87,9 @@ export function Event({ event, refetch }: EventProps) {
           onOpenChange={(open) => {
             !open && setUpdateEventDialogOpened(open)
           }}>
-          <DialogContent className={"max-w-4xl"}>
+          <DialogContent
+            className={"max-w-4xl"}
+            onCloseAutoFocus={() => (document.body.style.overflow = "auto")}>
             <DialogHeader>Edit event</DialogHeader>
             <UpdateEventForm
               event={{
