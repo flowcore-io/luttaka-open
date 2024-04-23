@@ -29,9 +29,9 @@ export default function TicketLabel({
   }
 
   return (
-    <div style={{ width: "4in", height: "2.125in", border: "1px solid black" }}>
+    <div className="m-auto h-40 w-80 p-0">
       {profile?.data?.displayName !== undefined && (
-        <div className="mt-8 flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <div className="text-2xl font-bold">{profile?.data?.displayName}</div>
           <div>{profile?.data?.title}</div>
           <div>{profile?.data?.company}</div>
