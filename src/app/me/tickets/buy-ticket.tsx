@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { UserRole } from "@/contracts/user/user-role"
-import { makePayment } from "@/modules/payment-stripe/react"
 import { type appRouter } from "@/server/api/root"
 import { api } from "@/trpc/react"
 
@@ -68,22 +67,6 @@ export default function BuyTicket({ event }: EventProps) {
     }
     setPurchaseLoading(false)
     setTicketNote("") // reset
-  }, [ticketQuantity, event.id, ticketNote])
-
-  const purchaseTicket = useCallback(async () => {
-    setPurchaseLoading(true)
-
-    const result = await makePayment({
-      eventId: event.id,
-      quantity: ticketQuantity,
-      note: ticketNote,
-    })
-
-    setPurchaseLoading(false)
-    setTicketNote("") // reset
-    if (!result.success) {
-      toast.error("Failed to redirect to checkout")
-    }
   }, [ticketQuantity, event.id, ticketNote])
 
   return (
@@ -152,11 +135,6 @@ export default function BuyTicket({ event }: EventProps) {
                   {ticketQuantity > 1 ? "s" : ""}
                 </Button>
               </RestrictedToRole>
-              <Button
-                onClick={() => purchaseTicket()}
-                disabled={purchaseLoading}>
-                Purchase {ticketQuantity} ticket{ticketQuantity > 1 ? "s" : ""}
-              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

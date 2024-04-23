@@ -13,10 +13,6 @@ export default authMiddleware({
     "/api/transform/company.0",
     "/api/transform/newsitem.0",
     "/api/transform/activity.0",
-
-    // -- CLOUD SPECIFIC ROUTES --
-    "/api/stripe/webhook",
-    "/api/sendgrid",
   ],
 })
 
