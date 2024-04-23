@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       event?.stripeId,
     )
 
-    if (!priceError || !price) {
+    if (priceError || !price) {
       return NextResponse.json({ error: "Price not found" }, { status: 400 })
     }
 
