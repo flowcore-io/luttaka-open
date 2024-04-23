@@ -10,7 +10,7 @@ import { type UpdateProductInput } from "./contracts/update-product"
 type Metadata = Record<string, string | number | null>
 
 export class LuttakaPaymentStripe {
-  private stripe: Stripe
+  public readonly stripe: Stripe
 
   constructor(private readonly options: LuttakaPaymentStripeOptions) {
     this.stripe = new Stripe(this.options.secretKey)

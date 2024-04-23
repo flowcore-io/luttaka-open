@@ -1,6 +1,6 @@
 import { clerkClient, getAuth } from "@clerk/nextjs/server"
 import { eq } from "drizzle-orm"
-import { type NextRequest, NextResponse } from "next/server"
+import { NextResponse, type NextRequest } from "next/server"
 import shortUuid from "short-uuid"
 import { z } from "zod"
 
@@ -13,6 +13,7 @@ const CheckoutRequest = z.object({
   quantity: z.number().min(1).default(1),
 })
 
+// todo: convert this route to be wrapped within the lutta payment module
 export async function POST(request: NextRequest) {
   const auth = getAuth(request)
   if (!auth.userId) {
@@ -32,33 +33,35 @@ export async function POST(request: NextRequest) {
     const event = await db.query.events.findFirst({
       where: eq(events.id, body.eventId),
     })
-
-    const { data: price, error: priceError } = await payment.tryGetPrice(
-      event?.stripeId,
-    )
-
-    if (priceError || !price) {
+    const prices = await payment.stripe.prices.list({
+      lookup_keys: [`standard_${event?.stripeId}`],
+    })
+    const price = prices.data[0]
+    if (!price) {
       return NextResponse.json({ error: "Price not found" }, { status: 400 })
     }
-
     const ticketIds = Array.from({ length: body.quantity }, () =>
       shortUuid.generate(),
     )
-
-    const sessionId = await payment.createSessionId({
-      priceId: price.id,
-      quantity: body.quantity,
-      userId: user.id,
-      emailAddress: clerkUser.emailAddresses[0]?.emailAddress,
-      successUrl: `${request.headers.get("origin")}/me/tickets?success=true&eventid=${body.eventId}&tickets=${ticketIds.join(",")}`,
-      cancelUrl: `${request.headers.get("origin")}/me/tickets?success=false`,
+    const session = await payment.stripe.checkout.sessions.create({
+      line_items: [
+        {
+          quantity: body.quantity,
+          price: price.id,
+        },
+      ],
+      allow_promotion_codes: true,
+      client_reference_id: user.id,
+      customer_email: clerkUser.emailAddresses[0]?.emailAddress,
       metadata: {
         eventId: body.eventId,
         ticketIds: ticketIds.join(","),
       },
+      mode: "payment",
+      success_url: `${request.headers.get("origin")}/me/tickets?success=true&eventid=${body.eventId}&tickets=${ticketIds.join(",")}`,
+      cancel_url: `${request.headers.get("origin")}/me/tickets?success=false`,
     })
-
-    return NextResponse.json({ sessionId })
+    return NextResponse.json({ sessionId: session.id })
   } catch (error) {
     console.error("Error creating checkout session:", error)
     return NextResponse.json(
