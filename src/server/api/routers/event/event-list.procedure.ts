@@ -18,7 +18,7 @@ export const getEventsProcedure = protectedProcedure.query(async () => {
         ticketCurrency: events.ticketCurrency,
         startDate: events.startDate,
         endDate: events.endDate,
-        stripeId: events.stripeId,
+        productId: events.productId,
       })
       .from(events)
       .where(eq(events.archived, false))

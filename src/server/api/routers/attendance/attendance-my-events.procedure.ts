@@ -27,7 +27,7 @@ export const attendanceMyEventsProcedure = protectedProcedure.query(
       ticketCurrency: event.ticketCurrency,
       startDate: event.startDate,
       endDate: event.endDate,
-      stripeId: event.stripeId,
+      productId: event.productId,
     }))
   },
 )

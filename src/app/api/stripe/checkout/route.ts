@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       where: eq(events.id, body.eventId),
     })
     const prices = await payment.stripe.prices.list({
-      lookup_keys: [`standard_${event?.stripeId}`],
+      lookup_keys: [`standard_${event?.productId}`],
     })
     const price = prices.data[0]
     if (!price) {

@@ -13,7 +13,7 @@ export const EventProfileDto = z.object({
   ticketCurrency: z.string(),
   startDate: z.string(),
   endDate: z.string(),
-  stripeId: z.string(),
+  productId: z.string(),
 })
 
 export const EventPreviewDto = EventProfileDto.pick({
@@ -31,11 +31,11 @@ export const CreateEventInputDto = EventProfileDto.pick({
   ticketCurrency: true,
   startDate: true,
   endDate: true,
-  stripeId: true,
+  productId: true,
 })
 
 export const UpdateEventInputDto = EventProfileDto.partial()
-  .omit({ stripeId: true })
+  .omit({ productId: true })
   .required({
     id: true,
   })

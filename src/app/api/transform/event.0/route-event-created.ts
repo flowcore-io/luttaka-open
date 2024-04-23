@@ -15,8 +15,13 @@ export default async function eventCreated(payload: unknown) {
     return
   }
 
+  const productId = parsedPayload.productId ?? parsedPayload.stripeId
+  if (!productId) {
+    throw new Error("Product ID or Stripe ID is required")
+  }
+
   await payment.createProduct({
-    id: parsedPayload.stripeId,
+    id: productId,
     eventId: parsedPayload.id,
     name: parsedPayload.name,
     price: parsedPayload.ticketPrice,
@@ -24,5 +29,8 @@ export default async function eventCreated(payload: unknown) {
     description: parsedPayload.ticketDescription,
   })
 
-  await db.insert(events).values(parsedPayload)
+  await db.insert(events).values({
+    ...parsedPayload,
+    productId,
+  })
 }

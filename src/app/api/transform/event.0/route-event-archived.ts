@@ -15,7 +15,7 @@ export default async function eventArchived(payload: unknown) {
     return
   }
 
-  await payment.archiveProduct(exists.stripeId)
+  await payment.archiveProduct(exists.productId)
 
   await db
     .update(events)

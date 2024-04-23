@@ -31,7 +31,7 @@ type EventData =
       ticketCurrency: string
       startDate: string
       endDate: string
-      stripeId: string
+      productId: string
       noResults?: boolean
     }
   | {

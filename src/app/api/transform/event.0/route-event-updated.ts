@@ -16,7 +16,7 @@ export default async function eventUpdated(payload: unknown) {
   }
 
   await payment.updateProduct({
-    id: exists.stripeId,
+    id: exists.productId,
     name: parsedPayload.name,
     description: parsedPayload.ticketDescription,
     price: parsedPayload.ticketPrice,

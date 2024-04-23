@@ -70,7 +70,7 @@ export const events = pgTable("events", {
   ticketCurrency: text("ticket_currency").notNull(),
   startDate: text("start_date").notNull(),
   endDate: text("end_date").notNull(),
-  stripeId: text("stripe_id").notNull(),
+  productId: text("product_id").notNull(),
 })
 
 export const companies = pgTable("companies", {

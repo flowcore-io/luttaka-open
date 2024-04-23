@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import currencyCodes from "currency-codes"
 import { Loader } from "lucide-react"
 import Image from "next/image"
-import { type FC, useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type FC } from "react"
 import { useForm } from "react-hook-form"
 import { NumericFormat } from "react-number-format"
 import { toast } from "sonner"
@@ -27,8 +27,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
-  type CreateEventInput,
   CreateEventInputDto,
+  type CreateEventInput,
 } from "@/contracts/event/event"
 import { api } from "@/trpc/react"
 
@@ -59,7 +59,7 @@ export const CreateEventForm: FC<CreateEventProps> = ({ close, refetch }) => {
       ticketPrice: 0.0,
       startDate: new Date().toISOString(),
       endDate: new Date().toISOString(),
-      stripeId: "",
+      productId: "",
     },
   })
 
