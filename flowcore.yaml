@@ -66,6 +66,13 @@ dataCore:
           description: "an activity has been updated"
         activity.archived.0:
           description: "an activity has been archived"
+    user-activity.0:
+      description: "activities on user schedule"
+      eventTypes:
+        user-activity.added.0:
+          description: "a user activity has been added"
+        user-activity.removed.0:
+          description: "a user activity has been removed"
 scenario:
   name: luttaka-open
   description: "This scenario contains the transformers for Luttaka"
@@ -171,6 +178,22 @@ scenario:
         - name: PROXY_ENDPOINT
           type: manual
           value: "https://luttaka.com/api/transform/activity.0"
+        - name: PROXY_HEADER_SECRET
+          type: secret
+          value: open-source-luttaka-secret
+      blueprint:
+        artifactUrl: "https://flowcore-public-runtimes.s3.eu-west-1.amazonaws.com/transformer-proxy-1.2.0.zip"
+    user-activities:
+      description: "transformer for user activities"
+      dataCore: luttaka-open
+      flowType: user-activity.0
+      events:
+        - user-activity.added.0
+        - user-activity.removed.0
+      parameters:
+        - name: PROXY_ENDPOINT
+          type: manual
+          value: "https://luttaka.com/api/transform/user-activity.0"
         - name: PROXY_HEADER_SECRET
           type: secret
           value: open-source-luttaka-secret

@@ -89,3 +89,10 @@ export const activities = pgTable("activities", {
   archived: boolean("archived").notNull().default(false),
   reason: text("reason"),
 })
+
+export const userActivities = pgTable("user_activities", {
+  id: text("id").primaryKey(),
+  userId: text("user_id"),
+  eventId: text("event_id"),
+  activityId: text("activity_id"),
+})
